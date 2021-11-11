@@ -54,7 +54,7 @@ class _MonProfilState extends State<MonProfil> {
                   ],
                 ),
                 onTap: () {
-                  Navigator.pushNamed(context, "/");
+                  Navigator.pushNamed(context, "/accueil");
                 },
               ),
               ListTile(

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'splash.dart';
-import 'signup.dart';
-import 'signin.dart';
+
+import 'package:mon_pass/accueil.dart';
+import 'package:mon_pass/back_office.dart';
+import 'package:mon_pass/mon_profil.dart';
+import 'package:mon_pass/signin.dart';
+import 'package:mon_pass/signup.dart';
+import 'package:mon_pass/splash.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -12,34 +17,36 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   Widget build(BuildContext context) {
-    return  MaterialApp(
-      title: 'MonPass',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-
-
-      //home: Splash(),
-      //home : Signup(),
-      home:Signin(),
 
 
 
+
+
+
+    return MaterialApp(
+      title: 'Mon Passe',
+      routes: {
+        "/": (BuildContext context) {
+          return const Splash();
+        },
+        "/signin": (BuildContext context) {
+          return const Signin();
+        },
+        "/signup": (BuildContext context) {
+          return const Signup();
+        },
+        "/accueil": (BuildContext context) {
+          return const Accueil();
+        },
+        "/profil": (BuildContext context) {
+          return const MonProfil();
+        },
+        "/back": (BuildContext context) {
+          return const BackOffice();
+        },
+      },
     );
-
   }
 }
-
-
-
 
 

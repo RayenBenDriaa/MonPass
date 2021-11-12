@@ -270,17 +270,31 @@ class Splash extends StatelessWidget {
                 ),
                 color: Color.fromRGBO(36, 140, 40, 1),
               ),
-              child: Align(
-                alignment: Alignment.center,
+
+              child: ElevatedButton(
+                onPressed: () { Navigator.pushNamed(context, "/signin");  },
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.green),
+                        )
+                    )
+                ),
                 child: Text(
-                  'S"inscrire',
+                  "S'inscrire",
+
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       decoration: TextDecoration.none,
                       fontSize: 20,
                       color: Color.fromRGBO(255, 255, 255, 1)),
                 ),
-              )),
+
+              ),
+          ),
+
         ),
         const Center(
           child: Text(

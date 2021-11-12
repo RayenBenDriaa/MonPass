@@ -312,28 +312,40 @@ class _SignupState extends State<Signup> {
                     top: 642,
                     left: 56,
                     child: Container(
-                        width: 263,
-                        height: 54,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(60),
-                            topRight: Radius.circular(60),
-                            bottomLeft: Radius.circular(60),
-                            bottomRight: Radius.circular(60),
-                          ),
-                          color: Color.fromRGBO(36, 140, 40, 1),
+
+                      width: 263,
+                      height: 54,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(60),
+                          topRight: Radius.circular(60),
+                          bottomLeft: Radius.circular(60),
+                          bottomRight: Radius.circular(60),
                         ),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'S"inscrire',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                decoration: TextDecoration.none,
-                                fontSize: 20,
-                                color: Color.fromRGBO(255, 255, 255, 1)),
-                          ),
-                        )),
+                        color: Color.fromRGBO(36, 140, 40, 1),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () { Navigator.pushNamed(context, "/signin");  },
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0),
+                                  side: BorderSide(color: Colors.green),
+                                )
+                            )
+                        ),
+                        child: Text(
+                          "S'inscrire",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              decoration: TextDecoration.none,
+                              fontSize: 20,
+                              color: Color.fromRGBO(255, 255, 255, 1)),
+                        ),
+                      ),
+                    ),
+
                   ),
                   Center(
                     child: Container(

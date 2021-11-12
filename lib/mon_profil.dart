@@ -122,91 +122,116 @@ class _MonProfilState extends State<MonProfil> {
           ),
         ),
         backgroundColor: Colors.transparent,
-        body: ListView(
-          children: [
-            Container(
-              margin: EdgeInsets.fromLTRB(15, 30, 15, 0),
-              child: Column(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                    child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: "Email",
-                        fillColor: Colors.white,
+        body: Form(
+            key: _keyForm,
+          child: ListView(
+            children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(15, 30, 15, 0),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                      child: TextFormField(
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: "Email",
+                          fillColor: Colors.white,
+                        ),
+                        onSaved: (String? value) {
+                          _email = value;
+                        },
+                        validator: (String? value) {
+                          String pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+                          if(value == null || value.isEmpty) {
+                            return "L'adresse email ne doit pas etre vide";
+                          }
+                          else if(!RegExp(pattern).hasMatch(value)) {
+                            return "L'adresse email est incorrecte";
+                          }
+                          else {
+                            return null;
+                          }
+                        },
                       ),
-                      onSaved: (String? value) {
-                        _email = value;
-                      },
-                      validator: (String? value) {
-                        String pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-                        if(value == null || value.isEmpty) {
-                          return "L'adresse email ne doit pas etre vide";
-                        }
-                        else if(!RegExp(pattern).hasMatch(value)) {
-                          return "L'adresse email est incorrecte";
-                        }
-                        else {
-                          return null;
-                        }
-                      },
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                    child: TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(), labelText: "Mot de passe"),
-                      onSaved: (String? value) {
-                        _password = value;
-                      },
-                      validator: (value) {
-                        if(value == null || value.isEmpty) {
-                          return "Le mot de passe ne doit pas etre vide";
-                        }
-                        else if(value.length < 5) {
-                          return "Le mot de passe doit avoir au moins 5 caractères";
-                        }
-                        else {
-                          return null;
-                        }
-                      },
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                      child: TextFormField(
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(), labelText: "Mot de passe"),
+                        onSaved: (String? value) {
+                          _password = value;
+                        },
+                        validator: (value) {
+                          if(value == null || value.isEmpty) {
+                            return "Le mot de passe ne doit pas etre vide";
+                          }
+                          else if(value.length < 5) {
+                            return "Le mot de passe doit avoir au moins 5 caractères";
+                          }
+                          else {
+                            return null;
+                          }
+                        },
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                    child: TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(), labelText: "Repeter le mot de passe"),
-                      onSaved: (String? value) {
-                        _repeatPassword = value;
-                      },
-                      validator: (value) {
-                        if(value == null || value.isEmpty) {
-                          return "Le mot de passe ne doit pas etre vide";
-                        }
-                        else if(value.length < 5) {
-                          return "Le mot de passe doit avoir au moins 5 caractères";
-                        }
-                        else {
-                          return null;
-                        }
-                      },
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                      child: TextFormField(
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(), labelText: "Repeter le mot de passe"),
+                        onSaved: (String? value) {
+                          _repeatPassword = value;
+                        },
+                        validator: (value) {
+                          if(value == null || value.isEmpty) {
+                            return "Le mot de passe ne doit pas etre vide";
+                          }
+                          else if(value.length < 5) {
+                            return "Le mot de passe doit avoir au moins 5 caractères";
+                          }
+                          else {
+                            return null;
+                          }
+                        },
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                    child: OutlinedButton(
-                        onPressed: (){},
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                      child: OutlinedButton(
+                          onPressed: (){return null;},
+                          child: Container(
+                            margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            child: Row(
+                              children: [
+                                const Text("Carte d'identité nationale",textScaleFactor: 1.1,),
+                                Expanded(
+                                  child: Container(
+                                  ),
+                                ),
+                                const Icon(Icons.upload_rounded),
+                              ],
+                            ),
+                          ),
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          primary: Colors.black,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                      child: OutlinedButton(
+                        onPressed: (){return null;},
                         child: Container(
                           margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                           child: Row(
                             children: [
-                              const Text("Carte d'identité nationale",textScaleFactor: 1.1,),
+                              const Text("Passeport",textScaleFactor: 1.1,),
                               Expanded(
                                 child: Container(
                                 ),
@@ -215,77 +240,55 @@ class _MonProfilState extends State<MonProfil> {
                             ],
                           ),
                         ),
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        primary: Colors.black,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                    child: OutlinedButton(
-                      onPressed: (){},
-                      child: Container(
-                        margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        child: Row(
-                          children: [
-                            const Text("Passeport",textScaleFactor: 1.1,),
-                            Expanded(
-                              child: Container(
-                              ),
-                            ),
-                            const Icon(Icons.upload_rounded),
-                          ],
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          primary: Colors.black,
                         ),
                       ),
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        primary: Colors.black,
-                      ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                    child: OutlinedButton(
-                      onPressed: (){},
-                      child: Container(
-                        margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        child: Row(
-                          children: [
-                            const Text("Facture STEG ou SONEDE",textScaleFactor: 1.1,),
-                            Expanded(
-                              child: Container(
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                      child: OutlinedButton(
+                        onPressed: (){ return null;},
+                        child: Container(
+                          margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          child: Row(
+                            children: [
+                              const Text("Facture STEG ou SONEDE",textScaleFactor: 1.1,),
+                              Expanded(
+                                child: Container(
+                                ),
                               ),
-                            ),
-                            const Icon(Icons.upload_rounded),
-                          ],
+                              const Icon(Icons.upload_rounded),
+                            ],
+                          ),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          primary: Colors.black,
                         ),
                       ),
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        primary: Colors.black,
-                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Container(
-                margin: const EdgeInsets.fromLTRB(100, 20, 100, 0),
-                child: ElevatedButton(
-                  style:  ElevatedButton.styleFrom(
-                    primary : Colors.green,
-                  ),
-                  child: const Text("Enregistrer",textScaleFactor: 1.1,),
-                  onPressed: () {
-                    if(_keyForm.currentState!.validate()) {
-                      _keyForm.currentState!.save();
-                    }
-                  },
-                )
-            ),
+              Container(
+                  margin: const EdgeInsets.fromLTRB(100, 20, 100, 0),
+                  child: ElevatedButton(
+                    style:  ElevatedButton.styleFrom(
+                      primary : Colors.green,
+                    ),
+                    child: const Text("Enregistrer",textScaleFactor: 1.1,),
+                    onPressed: () {
+                      if(_keyForm.currentState!.validate()) {
+                        _keyForm.currentState!.save();
+                      }
+                    },
+                  )
+              ),
 
-          ],
+            ],
+          ),
         ),
       ),
     );

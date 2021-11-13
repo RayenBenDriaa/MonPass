@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cin index{% endblock %}
+
+{% block body %}
+    <h1>Cin index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>IdUser</th>
+                <th>UrlImage</th>
+                <th>Etat</th>
+                <th>Date</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cin in cins %}
+            <tr>
+                <td>{{ cin.id }}</td>
+                <td>{{ cin.idUser }}</td>
+                <td>{{ cin.urlImage }}</td>
+                <td>{{ cin.etat }}</td>
+                <td>{{ cin.date ? cin.date|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('cin_show', {'id': cin.id}) }}">show</a>
+                    <a href="{{ path('cin_edit', {'id': cin.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('cin_new') }}">Create new</a>
+{% endblock %}

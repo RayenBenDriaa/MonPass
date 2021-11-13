@@ -55,28 +55,48 @@ class PasseportController extends AbstractController
     /**
      * @Route("/addPasseportJSON", name="passeportJSON_new")
      */
-    public function addPasseportJSON(Request $request, NormalizerInterface $Normalizer,FileUploader $fileUploader): Response
+    public function addPasseportJSON(Request $request, NormalizerInterface $Normalizer,FileUploader $fileUploader,PasseportRepository $repository): Response
     {
-        $passeport = new Passeport();
-        $timeDate = new \DateTime ();
-        $timeString= $timeDate->format('d/m/Y');
-        $passeport->setIdUser($request->get('idUser'));
-        $passeport->setEtat("En attente");
-        $passeport->setDate($timeDate);
-        $filePath=$request->get('urlImage');
-        $fileName=basename($filePath);
-        $uploadedFile= new UploadedFile($filePath,$fileName, null, null, true);
-        $imageFileName=$fileUploader->upload($uploadedFile);
-        $passeport->setUrlImage($imageFileName);
+        $passeport = $repository->findOneBy(['idUser' => $request->get('idUser')]);
+        if($passeport!=null)
+        {
+            return new Response("Vous avez déjà déposer ce document, veuillez attendre la validation par un administrateur.");
+        }
+        else
+        {
+            $passeport = new Passeport();
+            $timeDate = new \DateTime ();
+            $timeString= $timeDate->format('d/m/Y');
+            $passeport->setIdUser($request->get('idUser'));
+            $passeport->setEtat("En attente");
+            $passeport->setDate($timeDate);
+            $filePath=$request->get('urlImage');
+            $fileName=basename($filePath);
+            $uploadedFile= new UploadedFile($filePath,$fileName, null, null, true);
+            $imageFileName=$fileUploader->upload($uploadedFile);
+            $passeport->setUrlImage($imageFileName);
 
 
 
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($passeport);
+            $entityManager->flush();
+
+            $jsonContent=$Normalizer->normalize($passeport,'json',['groups'=>'post:read']);
+            return new Response("Passeport ajouter avec succés");
+        }
+
+    }
+
+    /**
+     * @Route("/showPasseportJSON", name="passeportJSON_show")
+     */
+    public function showPasseportJSON(Request $request, NormalizerInterface $Normalizer, PasseportRepository $repository): Response
+    {
+        $passeport = $repository->findOneBy(['idUser' => $request->get('idUser')]);
         $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($passeport);
-        $entityManager->flush();
-
         $jsonContent=$Normalizer->normalize($passeport,'json',['groups'=>'post:read']);
-        return new Response("Passeport added successfully".json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+        return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
     }
 
     /**

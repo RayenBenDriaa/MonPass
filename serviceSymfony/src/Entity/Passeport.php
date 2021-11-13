@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PasseportRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=PasseportRepository::class)
@@ -14,26 +15,31 @@ class Passeport
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("post:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("post:read")
      */
     private $idUser;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("post:read")
      */
     private $urlImage;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("post:read")
      */
     private $etat;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups("post:read")
      */
     private $date;
 

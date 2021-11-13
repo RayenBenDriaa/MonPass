@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Passeport{% endblock %}
+
+{% block body %}
+    <h1>Passeport</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ passeport.id }}</td>
+            </tr>
+            <tr>
+                <th>IdUser</th>
+                <td>{{ passeport.idUser }}</td>
+            </tr>
+            <tr>
+                <th>UrlImage</th>
+                <td>{{ passeport.urlImage }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ passeport.etat }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ passeport.date ? passeport.date|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('passeport_index') }}">back to list</a>
+
+    <a href="{{ path('passeport_edit', {'id': passeport.id}) }}">edit</a>
+
+    {{ include('passeport/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Passeport{% endblock %}
+
+{% block body %}
+    <h1>Create new Passeport</h1>
+
+    {{ include('passeport/_form.html.twig') }}
+
+    <a href="{{ path('passeport_index') }}">back to list</a>
+{% endblock %}

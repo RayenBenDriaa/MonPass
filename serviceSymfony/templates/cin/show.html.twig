@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cin{% endblock %}
+
+{% block body %}
+    <h1>Cin</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ cin.id }}</td>
+            </tr>
+            <tr>
+                <th>IdUser</th>
+                <td>{{ cin.idUser }}</td>
+            </tr>
+            <tr>
+                <th>UrlImage</th>
+                <td>{{ cin.urlImage }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ cin.etat }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ cin.date ? cin.date|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('cin_index') }}">back to list</a>
+
+    <a href="{{ path('cin_edit', {'id': cin.id}) }}">edit</a>
+
+    {{ include('cin/_delete_form.html.twig') }}
+{% endblock %}

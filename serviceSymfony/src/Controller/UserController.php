@@ -9,12 +9,60 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+
 
 /**
- * @Route("/user")
+ * @Route("/user/api")
  */
 class UserController extends AbstractController
 {
+     /**
+     * @Route("/addUserJSON", name="userJSON_new")
+     */
+    public function addUserJSON(Request $request, NormalizerInterface $Normalizer,UserRepository $repository,UserPasswordEncoderInterface $encoder): Response
+    {
+        
+            $user = new User();
+            
+           
+            
+            $user->setNom($request->get('nom'));
+            $user->setPrenom($request->get('prenom'));
+            $user->setEmail($request->get('email'));
+            $hash=$encoder->encodePassword($user,$request->get('password'));
+            $user->setPassword($hash);
+            $user->setNumtel($request->get('numtel'));
+            
+
+
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $jsonContent=$Normalizer->normalize($user,'json',['groups'=>'post:read']);
+            return new Response("user ajouter avec succés");
+        
+
+    }
+    /**
+     * @Route("/login", name="login")
+     */
+    public function login(Request $request,AuthenticationUtils $utils)
+    {   $error= $utils->getLastAuthenticationError();
+
+        $lastUsername = $utils->getLastUsername();
+        return $this->render('user/login.html.twig', [
+            'error' => $error,
+            'last_username' => $lastUsername
+        ]);
+
+    }
     /**
      * @Route("/", name="user_index", methods={"GET"})
      */
@@ -28,7 +76,7 @@ class UserController extends AbstractController
     /**
      * @Route("/new", name="user_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request,UserPasswordEncoderInterface $encoder): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -36,6 +84,8 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $hash=$encoder->encodePassword($user,$user->getPassword());
+            $user->setPassword($hash);
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -91,4 +141,5 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
     }
+     
 }

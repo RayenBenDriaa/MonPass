@@ -32,4 +32,4 @@ services:
 
     App\Service\FileUploader:
         arguments:
-            $targetDirectory: 'D:\Projets Symfony\MonPasse\monpassflutterproject\assets\uploadedImages'
+            $targetDirectory: 'C:\Users\xmr0j\Documents\Flutter Projects\monpassflutterproject\assets\uploadedImages'

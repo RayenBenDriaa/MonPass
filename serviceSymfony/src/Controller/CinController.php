@@ -6,18 +6,57 @@ use App\Entity\Cin;
 use App\Form\CinType;
 use App\Repository\CinRepository;
 use App\Service\FileUploader;
+use PhpParser\Node\Scalar\MagicConst\File;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Hshn\Base64EncodedFile\HttpFoundation\File\Base64EncodedFile;
+use Psr\Log\LoggerInterface;
 
 /**
  * @Route("/cin")
  */
 class CinController extends AbstractController
 {
+
+    /**
+     * @Route("/addCinJSON", name="cinJSON_new")
+     */
+    public function addCinJSON(Request $request, CinRepository $repository): Response
+    {
+        $cin = $repository->findOneBy(['idUser' => $request->get('idUser')]);
+        if($cin!=null)
+        {
+            return new Response("Vous avez déjà déposer ce document(CIN), veuillez attendre la validation par un administrateur.");
+        }
+        else
+        {
+
+            $cin = new Cin();
+            $timeDate = new \DateTime ();
+            $cin->setIdUser($_POST['idUser']);
+            $cin->setEtat("En attente");
+            $cin->setDate($timeDate);
+            $imageName= $cin->getIdUser()."CIN".$_POST['imageName'];
+            $image= base64_decode($_POST['image64']);
+            file_put_contents("C:\Users\xmr0j\Documents\Flutter Projects\monpassflutterproject\assets\uploadedImages\\".$imageName,$image);
+            $cin->setUrlImage($imageName);
+
+
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($cin);
+            $entityManager->flush();
+
+            //$jsonContent=$Normalizer->normalize($cin,'json',['groups'=>'post:read']);
+            return new Response("Carte d'identité nationale ajouter avec succés");
+        }
+
+    }
+
     /**
      * @Route("/", name="cin_index", methods={"GET"})
      */
@@ -51,41 +90,7 @@ class CinController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/addCinJSON", name="cinJSON_new")
-     */
-    public function addCinJSON(Request $request, NormalizerInterface $Normalizer,FileUploader $fileUploader, CinRepository $repository): Response
-    {
-        $cin = $repository->findOneBy(['idUser' => $request->get('idUser')]);
-        if($cin!=null)
-        {
-            return new Response("Vous avez déjà déposer ce document, veuillez attendre la validation par un administrateur.");
-        }
-        else
-        {
-            $cin = new Cin();
-            $timeDate = new \DateTime ();
-            $timeString= $timeDate->format('d/m/Y');
-            $cin->setIdUser($request->get('idUser'));
-            $cin->setEtat("En attente");
-            $cin->setDate($timeDate);
-            $filePath=$request->get('urlImage');
-            $fileName=basename($filePath);
-            $uploadedFile= new UploadedFile($filePath,$fileName, null, null, true);
-            $imageFileName=$fileUploader->upload($uploadedFile);
-            $cin->setUrlImage($imageFileName);
 
-
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($cin);
-            $entityManager->flush();
-
-            $jsonContent=$Normalizer->normalize($cin,'json',['groups'=>'post:read']);
-            return new Response("Carte d'identité nationale ajouter avec succés");
-        }
-
-    }
 
     /**
      * @Route("/showCinJSON", name="cinJSON_show")

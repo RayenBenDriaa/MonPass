@@ -55,26 +55,24 @@ class PasseportController extends AbstractController
     /**
      * @Route("/addPasseportJSON", name="passeportJSON_new")
      */
-    public function addPasseportJSON(Request $request, NormalizerInterface $Normalizer,FileUploader $fileUploader,PasseportRepository $repository): Response
+    public function addPasseportJSON(Request $request,PasseportRepository $repository): Response
     {
         $passeport = $repository->findOneBy(['idUser' => $request->get('idUser')]);
         if($passeport!=null)
         {
-            return new Response("Vous avez déjà déposer ce document, veuillez attendre la validation par un administrateur.");
+            return new Response("Vous avez déjà déposer ce document(Passeport), veuillez attendre la validation par un administrateur.");
         }
         else
         {
             $passeport = new Passeport();
             $timeDate = new \DateTime ();
-            $timeString= $timeDate->format('d/m/Y');
-            $passeport->setIdUser($request->get('idUser'));
+            $passeport->setIdUser($_POST['idUser']);
             $passeport->setEtat("En attente");
             $passeport->setDate($timeDate);
-            $filePath=$request->get('urlImage');
-            $fileName=basename($filePath);
-            $uploadedFile= new UploadedFile($filePath,$fileName, null, null, true);
-            $imageFileName=$fileUploader->upload($uploadedFile);
-            $passeport->setUrlImage($imageFileName);
+            $imageName= $passeport->getIdUser()."PASSEPORT".$_POST['imageName'];
+            $image= base64_decode($_POST['image64']);
+            file_put_contents("C:\Users\xmr0j\Documents\Flutter Projects\monpassflutterproject\assets\uploadedImages\\".$imageName,$image);
+            $passeport->setUrlImage($imageName);
 
 
 
@@ -82,7 +80,7 @@ class PasseportController extends AbstractController
             $entityManager->persist($passeport);
             $entityManager->flush();
 
-            $jsonContent=$Normalizer->normalize($passeport,'json',['groups'=>'post:read']);
+
             return new Response("Passeport ajouter avec succés");
         }
 

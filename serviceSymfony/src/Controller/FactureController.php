@@ -54,25 +54,24 @@ class FactureController extends AbstractController
     /**
      * @Route("/addFactureJSON", name="factureJSON_new")
      */
-    public function addFactureJSON(Request $request, NormalizerInterface $Normalizer,FileUploader $fileUploader,FactureRepository $repository): Response
+    public function addFactureJSON(Request $request,FactureRepository $repository): Response
     {
         $facture = $repository->findOneBy(['idUser' => $request->get('idUser')]);
         if($facture!=null)
         {
-            return new Response("Vous avez déjà déposer ce document, veuillez attendre la validation par un administrateur.");
+            return new Response("Vous avez déjà déposer ce document(Facture), veuillez attendre la validation par un administrateur.");
         }
         else
         {
             $facture = new Facture();
             $timeDate = new \DateTime ();
-            $facture->setIdUser($request->get('idUser'));
+            $facture->setIdUser($_POST['idUser']);
             $facture->setEtat("En attente");
             $facture->setDate($timeDate);
-            $filePath=$request->get('urlImage');
-            $fileName=basename($filePath);
-            $uploadedFile= new UploadedFile($filePath,$fileName, null, null, true);
-            $imageFileName=$fileUploader->upload($uploadedFile);
-            $facture->setUrlImage($imageFileName);
+            $imageName= $facture->getIdUser()."FACTURE".$_POST['imageName'];
+            $image= base64_decode($_POST['image64']);
+            file_put_contents("C:\Users\xmr0j\Documents\Flutter Projects\monpassflutterproject\assets\uploadedImages\\".$imageName,$image);
+            $facture->setUrlImage($imageName);
 
 
 
@@ -80,7 +79,6 @@ class FactureController extends AbstractController
             $entityManager->persist($facture);
             $entityManager->flush();
 
-            $jsonContent=$Normalizer->normalize($facture,'json',['groups'=>'post:read']);
             return new Response("Facture ajouter avec succés");
         }
 

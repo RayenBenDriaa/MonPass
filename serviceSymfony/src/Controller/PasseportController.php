@@ -87,12 +87,11 @@ class PasseportController extends AbstractController
     }
 
     /**
-     * @Route("/showPasseportJSON", name="passeportJSON_show")
+     * @Route("/showPasseportJSON/{id}", name="passeportJSON_show")
      */
-    public function showPasseportJSON(Request $request, NormalizerInterface $Normalizer, PasseportRepository $repository): Response
+    public function showPasseportJSON(int $id,Request $request, NormalizerInterface $Normalizer,PasseportRepository $repository): Response
     {
-        $passeport = $repository->findOneBy(['idUser' => $request->get('idUser')]);
-        $entityManager = $this->getDoctrine()->getManager();
+        $passeport = $repository->findOneBy(['idUser' => $id]);
         $jsonContent=$Normalizer->normalize($passeport,'json',['groups'=>'post:read']);
         return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
     }

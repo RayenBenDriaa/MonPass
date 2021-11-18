@@ -85,12 +85,11 @@ class FactureController extends AbstractController
     }
 
     /**
-     * @Route("/showFactureJSON", name="factureJSON_show")
+     * @Route("/showFactureJSON/{id}", name="factureJSON_show")
      */
-    public function showFactureJSON(Request $request, NormalizerInterface $Normalizer, FactureRepository $repository): Response
+    public function showFactureJSON(int $id,Request $request, NormalizerInterface $Normalizer, FactureRepository $repository): Response
     {
-        $facture = $repository->findOneBy(['idUser' => $request->get('idUser')]);
-        $entityManager = $this->getDoctrine()->getManager();
+        $facture=$repository->findOneBy(['idUser' => $id]);
         $jsonContent=$Normalizer->normalize($facture,'json',['groups'=>'post:read']);
         return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
     }

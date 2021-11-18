@@ -58,6 +58,16 @@ class CinController extends AbstractController
     }
 
     /**
+     * @Route("/showCinJSON/{id}", name="cinJSON_show")
+     */
+    public function showCinJSON(int $id,Request $request, NormalizerInterface $Normalizer, CinRepository $repository): Response
+    {
+        $cin = $repository->findOneBy(['idUser' => $id]);
+        $jsonContent=$Normalizer->normalize($cin,'json',['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+    }
+
+    /**
      * @Route("/", name="cin_index", methods={"GET"})
      */
     public function index(CinRepository $cinRepository): Response
@@ -92,16 +102,7 @@ class CinController extends AbstractController
 
 
 
-    /**
-     * @Route("/showCinJSON", name="cinJSON_show")
-     */
-    public function showCinJSON(Request $request, NormalizerInterface $Normalizer, CinRepository $repository): Response
-    {
-        $cin = $repository->findOneBy(['idUser' => $request->get('idUser')]);
-        $entityManager = $this->getDoctrine()->getManager();
-        $jsonContent=$Normalizer->normalize($cin,'json',['groups'=>'post:read']);
-        return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
-    }
+
 
     /**
      * @Route("/{id}", name="cin_show", methods={"GET"})

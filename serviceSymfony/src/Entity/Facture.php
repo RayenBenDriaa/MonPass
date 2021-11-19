@@ -43,6 +43,11 @@ class Facture
      */
     private $date;
 
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="facture", cascade={"persist", "remove"})
+     */
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -92,6 +97,28 @@ class Facture
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setFacture(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getFacture() !== $this) {
+            $user->setFacture($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }

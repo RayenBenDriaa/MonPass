@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Facture;
 use App\Form\FactureType;
 use App\Repository\FactureRepository;
+use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -54,7 +55,7 @@ class FactureController extends AbstractController
     /**
      * @Route("/addFactureJSON", name="factureJSON_new")
      */
-    public function addFactureJSON(Request $request,FactureRepository $repository): Response
+    public function addFactureJSON(Request $request,FactureRepository $repository,UserRepository $userRepository): Response
     {
         $facture = $repository->findOneBy(['idUser' => $request->get('idUser')]);
         if($facture!=null)
@@ -72,11 +73,15 @@ class FactureController extends AbstractController
             $image= base64_decode($_POST['image64']);
             file_put_contents("C:\Users\xmr0j\Documents\Flutter Projects\monpassflutterproject\assets\uploadedImages\\".$imageName,$image);
             $facture->setUrlImage($imageName);
+            $user=$userRepository->findOneBy(['id'=>$_POST['idUser']]);
+            $facture->setUser($user);
+            $user->setFacture($facture);
 
 
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($facture);
+            $entityManager->persist($user);
             $entityManager->flush();
 
             return new Response("Facture ajouter avec succés");

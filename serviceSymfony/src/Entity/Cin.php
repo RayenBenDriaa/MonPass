@@ -43,6 +43,11 @@ class Cin
      */
     private $date;
 
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="cin", cascade={"persist", "remove"})
+     */
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -92,6 +97,28 @@ class Cin
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setCin(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getCin() !== $this) {
+            $user->setCin($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }

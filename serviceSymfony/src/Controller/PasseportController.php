@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Passeport;
+use App\Entity\User;
 use App\Form\PasseportType;
 use App\Repository\PasseportRepository;
+use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -55,7 +57,7 @@ class PasseportController extends AbstractController
     /**
      * @Route("/addPasseportJSON", name="passeportJSON_new")
      */
-    public function addPasseportJSON(Request $request,PasseportRepository $repository): Response
+    public function addPasseportJSON(Request $request,PasseportRepository $repository, UserRepository $userRepository): Response
     {
         $passeport = $repository->findOneBy(['idUser' => $request->get('idUser')]);
         if($passeport!=null)
@@ -73,11 +75,16 @@ class PasseportController extends AbstractController
             $image= base64_decode($_POST['image64']);
             file_put_contents("C:\Users\xmr0j\Documents\Flutter Projects\monpassflutterproject\assets\uploadedImages\\".$imageName,$image);
             $passeport->setUrlImage($imageName);
+            $passeport->setUser($userRepository->findOneBy(['id'=>$_POST['idUser']]));
+            $user=$userRepository->findOneBy(['id'=>$_POST['idUser']]);
+            $passeport->setUser($user);
+            $user->setFacture($passeport);
 
 
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($passeport);
+            $entityManager->persist($user);
             $entityManager->flush();
 
 

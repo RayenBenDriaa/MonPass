@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,10 +18,56 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 
 /**
- * @Route("/user/api")
+ * @Route("/api")
  */
 class UserController extends AbstractController
 {
+
+    /**
+     * @Route("/getDocsBy/{id}", name="getDocsBy_id")
+     */
+    public function getDocsById(int $id,Request $request, NormalizerInterface $Normalizer,UserRepository $repository): Response
+    {
+        $imageFolder='C:\Users\xmr0j\Documents\Flutter Projects\monpassflutterproject\assets\uploadedImages\\';
+        $user = $repository->findOneBy(['id' => $id]);
+        if($user==null){
+            return new Response("User not found");
+        }
+        else
+        {
+            $imageCin="null";
+            if($user->getCin()!=null)
+            {
+                if($user->getCin()->getUrlImage()!=null){
+                    $imageCin=$imageFolder.$user->getCin()->getUrlImage();
+                }
+            }
+
+            $imagePasseport="null";
+            if($user->getPasseport()!=null)
+            {
+                if($user->getPasseport()->getUrlImage()!=null){
+                    $imagePasseport=$imageFolder.$user->getPasseport()->getUrlImage();
+                }
+            }
+
+            $imageFacture="null";
+            if($user->getFacture()!=null)
+            {
+                if($user->getFacture()->getUrlImage()!=null){
+                    $imageFacture=$imageFolder.$user->getFacture()->getUrlImage();
+                }
+            }
+
+            $tabInfo= array('imageCin'=>$imageCin,
+                'imagePasseport'=>$imagePasseport,
+                'imageFacture'=>$imageFacture);
+
+            $jsonContent=$Normalizer->normalize($tabInfo,'json',['groups'=>'post:read']);
+            return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+        }
+    }
+
      /**
      * @Route("/addUserJSON", name="userJSON_new")
      */

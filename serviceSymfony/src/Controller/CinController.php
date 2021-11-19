@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Cin;
 use App\Form\CinType;
 use App\Repository\CinRepository;
+use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use PhpParser\Node\Scalar\MagicConst\File;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +26,7 @@ class CinController extends AbstractController
     /**
      * @Route("/addCinJSON", name="cinJSON_new")
      */
-    public function addCinJSON(Request $request, CinRepository $repository): Response
+    public function addCinJSON(Request $request, CinRepository $repository, UserRepository $userRepository): Response
     {
         $cin = $repository->findOneBy(['idUser' => $request->get('idUser')]);
         if($cin!=null)
@@ -44,11 +45,16 @@ class CinController extends AbstractController
             $image= base64_decode($_POST['image64']);
             file_put_contents("C:\Users\xmr0j\Documents\Flutter Projects\monpassflutterproject\assets\uploadedImages\\".$imageName,$image);
             $cin->setUrlImage($imageName);
+            $cin->setUser($userRepository->findOneBy(['id'=>$_POST['idUser']]));
+            $user=$userRepository->findOneBy(['id'=>$_POST['idUser']]);
+            $cin->setUser($user);
+            $user->setFacture($cin);
 
 
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($cin);
+            $entityManager->persist($user);
             $entityManager->flush();
 
             //$jsonContent=$Normalizer->normalize($cin,'json',['groups'=>'post:read']);

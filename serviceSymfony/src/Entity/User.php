@@ -57,6 +57,22 @@ class User implements UserInterface
      */
     private $numtel;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Cin::class, inversedBy="user", cascade={"persist", "remove"})
+     */
+    private $cin;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Passeport::class, inversedBy="user", cascade={"persist", "remove"})
+     */
+    private $passeport;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Facture::class, inversedBy="user", cascade={"persist", "remove"})
+     */
+    private $facture;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -170,6 +186,42 @@ class User implements UserInterface
     public function setNumtel(?int $numtel): self
     {
         $this->numtel = $numtel;
+
+        return $this;
+    }
+
+    public function getCin(): ?Cin
+    {
+        return $this->cin;
+    }
+
+    public function setCin(?Cin $cin): self
+    {
+        $this->cin = $cin;
+
+        return $this;
+    }
+
+    public function getPasseport(): ?Passeport
+    {
+        return $this->passeport;
+    }
+
+    public function setPasseport(?Passeport $passeport): self
+    {
+        $this->passeport = $passeport;
+
+        return $this;
+    }
+
+    public function getFacture(): ?Facture
+    {
+        return $this->facture;
+    }
+
+    public function setFacture(?Facture $facture): self
+    {
+        $this->facture = $facture;
 
         return $this;
     }

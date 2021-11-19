@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Passeport;
+use App\Entity\User;
 use App\Form\PasseportType;
 use App\Repository\PasseportRepository;
+use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -55,46 +57,48 @@ class PasseportController extends AbstractController
     /**
      * @Route("/addPasseportJSON", name="passeportJSON_new")
      */
-    public function addPasseportJSON(Request $request, NormalizerInterface $Normalizer,FileUploader $fileUploader,PasseportRepository $repository): Response
+    public function addPasseportJSON(Request $request,PasseportRepository $repository, UserRepository $userRepository): Response
     {
         $passeport = $repository->findOneBy(['idUser' => $request->get('idUser')]);
         if($passeport!=null)
         {
-            return new Response("Vous avez déjà déposer ce document, veuillez attendre la validation par un administrateur.");
+            return new Response("Vous avez déjà déposer ce document(Passeport), veuillez attendre la validation par un administrateur.");
         }
         else
         {
             $passeport = new Passeport();
             $timeDate = new \DateTime ();
-            $timeString= $timeDate->format('d/m/Y');
-            $passeport->setIdUser($request->get('idUser'));
+            $passeport->setIdUser($_POST['idUser']);
             $passeport->setEtat("En attente");
             $passeport->setDate($timeDate);
-            $filePath=$request->get('urlImage');
-            $fileName=basename($filePath);
-            $uploadedFile= new UploadedFile($filePath,$fileName, null, null, true);
-            $imageFileName=$fileUploader->upload($uploadedFile);
-            $passeport->setUrlImage($imageFileName);
+            $imageName= $passeport->getIdUser()."PASSEPORT".$_POST['imageName'];
+            $image= base64_decode($_POST['image64']);
+            file_put_contents("C:\Users\xmr0j\Documents\Flutter Projects\monpassflutterproject\assets\uploadedImages\\".$imageName,$image);
+            $passeport->setUrlImage($imageName);
+            $passeport->setUser($userRepository->findOneBy(['id'=>$_POST['idUser']]));
+            $user=$userRepository->findOneBy(['id'=>$_POST['idUser']]);
+            $passeport->setUser($user);
+            $user->setFacture($passeport);
 
 
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($passeport);
+            $entityManager->persist($user);
             $entityManager->flush();
 
-            $jsonContent=$Normalizer->normalize($passeport,'json',['groups'=>'post:read']);
+
             return new Response("Passeport ajouter avec succés");
         }
 
     }
 
     /**
-     * @Route("/showPasseportJSON", name="passeportJSON_show")
+     * @Route("/showPasseportJSON/{id}", name="passeportJSON_show")
      */
-    public function showPasseportJSON(Request $request, NormalizerInterface $Normalizer, PasseportRepository $repository): Response
+    public function showPasseportJSON(int $id,Request $request, NormalizerInterface $Normalizer,PasseportRepository $repository): Response
     {
-        $passeport = $repository->findOneBy(['idUser' => $request->get('idUser')]);
-        $entityManager = $this->getDoctrine()->getManager();
+        $passeport = $repository->findOneBy(['idUser' => $id]);
         $jsonContent=$Normalizer->normalize($passeport,'json',['groups'=>'post:read']);
         return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
     }

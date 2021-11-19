@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Facture;
 use App\Form\FactureType;
 use App\Repository\FactureRepository;
+use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -54,45 +55,46 @@ class FactureController extends AbstractController
     /**
      * @Route("/addFactureJSON", name="factureJSON_new")
      */
-    public function addFactureJSON(Request $request, NormalizerInterface $Normalizer,FileUploader $fileUploader,FactureRepository $repository): Response
+    public function addFactureJSON(Request $request,FactureRepository $repository,UserRepository $userRepository): Response
     {
         $facture = $repository->findOneBy(['idUser' => $request->get('idUser')]);
         if($facture!=null)
         {
-            return new Response("Vous avez déjà déposer ce document, veuillez attendre la validation par un administrateur.");
+            return new Response("Vous avez déjà déposer ce document(Facture), veuillez attendre la validation par un administrateur.");
         }
         else
         {
             $facture = new Facture();
             $timeDate = new \DateTime ();
-            $facture->setIdUser($request->get('idUser'));
+            $facture->setIdUser($_POST['idUser']);
             $facture->setEtat("En attente");
             $facture->setDate($timeDate);
-            $filePath=$request->get('urlImage');
-            $fileName=basename($filePath);
-            $uploadedFile= new UploadedFile($filePath,$fileName, null, null, true);
-            $imageFileName=$fileUploader->upload($uploadedFile);
-            $facture->setUrlImage($imageFileName);
+            $imageName= $facture->getIdUser()."FACTURE".$_POST['imageName'];
+            $image= base64_decode($_POST['image64']);
+            file_put_contents("C:\Users\xmr0j\Documents\Flutter Projects\monpassflutterproject\assets\uploadedImages\\".$imageName,$image);
+            $facture->setUrlImage($imageName);
+            $user=$userRepository->findOneBy(['id'=>$_POST['idUser']]);
+            $facture->setUser($user);
+            $user->setFacture($facture);
 
 
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($facture);
+            $entityManager->persist($user);
             $entityManager->flush();
 
-            $jsonContent=$Normalizer->normalize($facture,'json',['groups'=>'post:read']);
             return new Response("Facture ajouter avec succés");
         }
 
     }
 
     /**
-     * @Route("/showFactureJSON", name="factureJSON_show")
+     * @Route("/showFactureJSON/{id}", name="factureJSON_show")
      */
-    public function showFactureJSON(Request $request, NormalizerInterface $Normalizer, FactureRepository $repository): Response
+    public function showFactureJSON(int $id,Request $request, NormalizerInterface $Normalizer, FactureRepository $repository): Response
     {
-        $facture = $repository->findOneBy(['idUser' => $request->get('idUser')]);
-        $entityManager = $this->getDoctrine()->getManager();
+        $facture=$repository->findOneBy(['idUser' => $id]);
         $jsonContent=$Normalizer->normalize($facture,'json',['groups'=>'post:read']);
         return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
     }

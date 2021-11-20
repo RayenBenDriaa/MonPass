@@ -147,7 +147,7 @@ class _SigninState extends State<Signin> {
                               "Content-Type": "application/json; charset=UTF-8"
                             };
 
-                            
+
 
                             http.get(Uri.http(_baseUrl, '/api/login/${_email}/${_password}') , )
                               .then((http.Response response) {

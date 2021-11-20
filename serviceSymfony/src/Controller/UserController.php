@@ -82,7 +82,7 @@ class UserController extends AbstractController
             $user->setPrenom($request->get('prenom'));
             $user->setEmail($request->get('email'));
            // $hash=$encoder->encodePassword($user,$request->get('password'));
-            $user->setPassword(get('password'));
+            $user->setPassword($request->get('password'));
             $user->setNumtel($request->get('numtel'));
             
 

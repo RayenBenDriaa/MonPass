@@ -81,8 +81,8 @@ class UserController extends AbstractController
             $user->setNom($request->get('nom'));
             $user->setPrenom($request->get('prenom'));
             $user->setEmail($request->get('email'));
-            $hash=$encoder->encodePassword($user,$request->get('password'));
-            $user->setPassword($hash);
+           // $hash=$encoder->encodePassword($user,$request->get('password'));
+            $user->setPassword(get('password'));
             $user->setNumtel($request->get('numtel'));
             
 
@@ -92,24 +92,29 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $jsonContent=$Normalizer->normalize($user,'json',['groups'=>'post:read']);
+         $jsonContent=$Normalizer->normalize($user,'json',['groups'=>'post:read']);
             return new Response("user ajouter avec succés");
-        
+     }
 
-    }
+
+
+
+
     /**
-     * @Route("/login", name="login")
+     * @Route("/login/{email}/{password}", name="login")
      */
-    public function login(Request $request,AuthenticationUtils $utils)
-    {   $error= $utils->getLastAuthenticationError();
-
-        $lastUsername = $utils->getLastUsername();
-        return $this->render('user/login.html.twig', [
-            'error' => $error,
-            'last_username' => $lastUsername
-        ]);
+    public function login(string $email,string $password, Request $request, NormalizerInterface $Normalizer,UserRepository $repository)
+    {   
+        $user=$repository->findOneBy(['email' => $email,'password'=>$password]);
+        $jsonContent=$Normalizer->normalize($user,'json',['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
 
     }
+
+
+
+
+
     /**
      * @Route("/", name="user_index", methods={"GET"})
      */

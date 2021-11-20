@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+
 
 class Signin extends StatefulWidget {
   const Signin({Key? key}) : super(key: key);
@@ -12,8 +15,38 @@ class _SigninState extends State<Signin> {
 
   late String? _email;
   late String? _password;
+  final String _baseUrl = "10.0.2.2:8000";
+  late Future<bool> fetchedDocs;
 
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
+  /*Future<bool> fetchUser() async {
+    http.Response response= await http.get(Uri.http(_baseUrl,"/api/login/rayenbd63s@gmail.com/12345678")).then((http.Response response) {
+      if(response.statusCode == 200) {
+        Navigator.pushReplacementNamed(context, "/acceuil");
+        return true;
+      } else if(response.statusCode == 401) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return const AlertDialog(
+                title: Text("Information"),
+                content: Text("Username et/ou mot de passe incorrect"),
+              );
+            });return 0;
+      }else {
+         showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return const AlertDialog(
+                title: Text("Information"),
+                content: Text("Une erreur s'est produite. Veuillez réessayer !"),
+              );
+            });
+         return 0;
+      }
+    });
+    return true;
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +131,54 @@ class _SigninState extends State<Signin> {
                     Container(
                         margin: const EdgeInsets.fromLTRB(100, 20, 100, 20),
                         child: ElevatedButton(
-                          onPressed: () { Navigator.pushNamed(context, "/accueil");  },
+                          onPressed: () {
+                            if(_keyForm.currentState!.validate()) {
+                              _keyForm.currentState!.save();
+
+
+                            }
+                            Map<String, dynamic> userData = {
+                              "username": _email,
+                              "password" : _password
+                            };
+
+
+                            Map<String, String> headers = {
+                              "Content-Type": "application/json; charset=UTF-8"
+                            };
+
+                            
+
+                            http.get(Uri.http(_baseUrl, '/api/login/${_email}/${_password}') , )
+                              .then((http.Response response) {
+                                if(response.body=="null" ) {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return const AlertDialog(
+                                      title: Text("Information"),
+                                      content: Text("Username et/ou mot de passe incorrect"),
+                                    );
+                                  });
+                            }
+                            else {
+                                  if (response.statusCode == 200) {
+                                    Navigator.pushNamed(context, "/accueil");
+                                  }
+                                  else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return const AlertDialog(
+                                            title: Text("Information"),
+                                            content: Text(
+                                                "Une erreur s'est produite. Veuillez réessayer !"),
+                                          );
+                                        });
+                                  }
+                                }});
+
+                              },
                           style:  ElevatedButton.styleFrom(
                             primary : Colors.green,
                           ),

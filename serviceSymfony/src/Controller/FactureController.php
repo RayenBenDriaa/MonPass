@@ -60,7 +60,7 @@ class FactureController extends AbstractController
         $facture = $repository->findOneBy(['idUser' => $request->get('idUser')]);
         if($facture!=null)
         {
-            return new Response("Vous avez déjà déposer ce document(Facture), veuillez attendre la validation par un administrateur.");
+            return new Response("\n -Vous avez déjà déposer ce document(Facture), veuillez attendre la validation par un administrateur.");
         }
         else
         {
@@ -84,7 +84,7 @@ class FactureController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return new Response("Facture ajouter avec succés");
+            return new Response("\n -Facture ajoutée avec succés");
         }
 
     }

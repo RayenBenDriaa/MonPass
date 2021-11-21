@@ -32,25 +32,34 @@ class _MonProfilState extends State<MonProfil> {
  //Selecteur de fichier pour bouton CIN
   Future pickergalleryCIN() async {
     final myfile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    setState(() {
-      _fileCIN = File(myfile!.path);
-    });
+    if(myfile!=null)
+      {
+        setState(() {
+          _fileCIN = File(myfile.path);
+        });
+      }
   }
 
   //Selecteur de fichier pour bouton Passeport
   Future pickergalleryPasseport() async {
     final myfile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    setState(() {
-      _filePasseport = File(myfile!.path);
-    });
+    if(myfile!=null)
+    {
+      setState(() {
+        _filePasseport = File(myfile.path);
+      });
+    }
   }
 
   //Selecteur de fichier pour bouton Facture
   Future pickergalleryFacture() async {
     final myfile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    setState(() {
-      _fileFacture = File(myfile!.path);
-    });
+    if(myfile!=null)
+    {
+      setState(() {
+        _fileFacture = File(myfile.path);
+      });
+    }
   }
 
 
@@ -323,21 +332,31 @@ class _MonProfilState extends State<MonProfil> {
                       //if(_keyForm.currentState!.validate()) {
                       if(true) {
                         _keyForm.currentState!.save();
+                        String cinTextNull="";
+                        String cinTextSucces="";
+                        String cinTextError="";
+                        String passeportTextNull="";
+                        String passeportTextSucces="";
+                        String passeportTextError="";
+                        String factureTextNull="";
+                        String factureTextSucces="";
+                        String factureTextError="";
 
-                        //verifier si le fichier n'est pas selectionner
+                        //verifier si les fichier ne sont pas selectionner
                         if(_fileCIN == null)
                           {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return const AlertDialog(
-                                    title: Text("Informations"),
-                                    content: Text("Vous n'avez pas sélectionner de CIN !"),
-                                  );
-                                }
-                            );
+                            cinTextNull="\n -Vous n'avez pas sélectionner de CIN !";
                           }
-                        else
+                        if (_filePasseport == null)
+                          {
+                            passeportTextNull="\n -Vous n'avez pas sélectionner de Passeport !";
+                          }
+                        if(_fileFacture == null)
+                          {
+                            factureTextNull="\n -Vous n'avez pas sélectionner de Facture !";
+                          }
+
+                        if(_fileCIN != null)
                           {
                             //encoder le fichier en base64 et l'envoyer dans une requête POST au service
                             String base64 =  base64Encode(_fileCIN.readAsBytesSync());
@@ -347,45 +366,16 @@ class _MonProfilState extends State<MonProfil> {
                             //Si il y a une reponse du service
                             if (response.statusCode==200 || response.statusCode==201)
                               {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return  AlertDialog(
-                                        title: const Text("Informations"),
-                                        content: Text(response.body),
-                                      );
-                                    }
-                                );
+                                cinTextSucces=response.body;
                               }
                             else
                               //s'il y a erreur
                               {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return const AlertDialog(
-                                        title: Text("Informations"),
-                                        content: Text("Une erreur a survenu !"),
-                                      );
-                                    }
-                                );
+                                cinTextError="\n -Une erreur a survenu lors de l'envoie de votre CIN!";
                               }
                           }
 
-                        //verifier si le fichier n'est pas selectionner
-                        if(_filePasseport == null)
-                        {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return const AlertDialog(
-                                  title: Text("Informations"),
-                                  content: Text("Vous n'avez pas sélectionner de Passeport !"),
-                                );
-                              }
-                          );
-                        }
-                        else
+                        if(_filePasseport != null)
                         {
                           //encoder le fichier en base64 et l'envoyer dans une requête POST au service
                           String base64 =  base64Encode(_filePasseport.readAsBytesSync());
@@ -395,46 +385,16 @@ class _MonProfilState extends State<MonProfil> {
                           //Si il y a une reponse du service
                           if (response.statusCode==200 || response.statusCode==201)
                           {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return  AlertDialog(
-                                    title: const Text("Informations"),
-                                    content: Text(response.body),
-                                  );
-                                }
-                            );
+                            passeportTextSucces=response.body;
                           }
                           else
                             //s'il y a erreur
-                              {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return const AlertDialog(
-                                    title: Text("Informations"),
-                                    content: Text("Une erreur a survenu !"),
-                                  );
-                                }
-                            );
-                          }
+                            {
+                              passeportTextError="\n -Une erreur a survenu lors de l'envoie de votre passeport!";
+                            }
                         }
 
-
-                        //verifier si le fichier n'est pas selectionner
-                        if(_fileFacture == null)
-                        {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return const AlertDialog(
-                                  title: Text("Informations"),
-                                  content: Text("Vous n'avez pas sélectionner de Facture !"),
-                                );
-                              }
-                          );
-                        }
-                        else
+                        if(_fileFacture != null)
                         {
                           //encoder le fichier en base64 et l'envoyer dans une requête POST au service
                           String base64 =  base64Encode(_fileFacture.readAsBytesSync());
@@ -444,31 +404,29 @@ class _MonProfilState extends State<MonProfil> {
                           //Si il y a une reponse du service
                           if (response.statusCode==200 || response.statusCode==201)
                           {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return  AlertDialog(
-                                    title: const Text("Informations"),
-                                    content: Text(response.body),
-                                  );
-                                }
-                            );
+                            factureTextSucces=response.body;
                           }
                           else
                             //s'il y a erreur
-                              {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return const AlertDialog(
-                                    title: Text("Informations"),
-                                    content: Text("Une erreur a survenu !"),
-                                  );
-                                }
-                            );
-                          }
+                            {
+                              factureTextError="\n -Une erreur a survenu lors de l'envoie de votre facture!";
+                            }
                         }
-                        
+
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return  AlertDialog(
+                                title: Text("Informations"),
+                                content: Text(cinTextNull+cinTextError+cinTextSucces
+                                +passeportTextNull+passeportTextError+passeportTextSucces
+                                +factureTextNull+factureTextError+factureTextSucces),
+                              );
+                            }
+                        );
+                        _fileCIN=null;
+                        _fileFacture=null;
+                        _filePasseport=null;
 
 
                       }

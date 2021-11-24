@@ -88,12 +88,37 @@ class UserController extends AbstractController
 
 
 
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->getDoctrine()->flush();
             $entityManager->persist($user);
             $entityManager->flush();
+           
 
          $jsonContent=$Normalizer->normalize($user,'json',['groups'=>'post:read']);
             return new Response("user ajouter avec succés");
+     }
+        /**
+     * @Route("/EditUserJSON/{email}", name="editJSON_new")
+     */
+    public function EditUserJSON(string $email,Request $request, NormalizerInterface $Normalizer,UserRepository $repository,UserPasswordEncoderInterface $encoder): Response
+    {
+        
+           $user=$repository->findOneBy(['email' => $email]);
+            
+           
+           $user->setPassword($request->get('password'));
+           
+           // $hash=$encoder->encodePassword($user,$request->get('password'));
+        
+            
+            
+
+
+
+            $entityManager = $this->getDoctrine()->getManager()->flush();
+            
+
+         $jsonContent=$Normalizer->normalize($user,'json',['groups'=>'post:read']);
+            return new Response("user modifer  avec succés");
      }
 
 

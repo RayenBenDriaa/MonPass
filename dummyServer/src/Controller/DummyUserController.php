@@ -6,13 +6,15 @@ use App\Entity\DummyUser;
 use App\Form\DummyUserType;
 use App\Repository\DummyUserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
- * @Route("/dummy/user")
+ * @Route("/")
  */
 class DummyUserController extends AbstractController
 {
@@ -29,7 +31,7 @@ class DummyUserController extends AbstractController
     /**
      * @Route("/new", name="dummy_user_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,HttpClientInterface $client,LoggerInterface $logger): Response
     {
         $dummyUser = new DummyUser();
         $form = $this->createForm(DummyUserType::class, $dummyUser);
@@ -39,6 +41,18 @@ class DummyUserController extends AbstractController
             $entityManager->persist($dummyUser);
             $entityManager->flush();
 
+
+            $response = $client->request('POST', 'http://127.0.0.1:8000/requested/data/addRdJSON', [
+                'body' => ['fromWho' => 'dummyClient',
+                    'ofWho' => 'rayenbd63s@gmail.com',
+                    'cin' => 'yes',
+                    'passeport' => 'no',
+                    'facture' => 'no',]
+            ]);
+            $statusCode = $response->getContent();
+            $logger->info('code :'.$statusCode);
+
+
             return $this->redirectToRoute('dummy_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -46,6 +60,17 @@ class DummyUserController extends AbstractController
             'dummy_user' => $dummyUser,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/editJSON", name="dummy_userJSON_edit", methods={"GET", "POST"})
+     */
+    public function editJSON(Request $request, EntityManagerInterface $entityManager,DummyUserRepository $repository): Response
+    {
+        $dummyUser=$repository->findOneBy(['email' => $_POST['email']]);
+        $dummyUser->setCin($_POST["cin"]);
+        $entityManager->flush();
+        return new Response("\n -Edit user avec succés");
     }
 
     /**

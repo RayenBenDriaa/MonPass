@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @Route("/requested/data")
@@ -32,7 +33,8 @@ class RequestedDataController extends AbstractController
     public function addRdJSON(Request $request, RequestedDataRepository $repository): Response
     {
         $rd = $repository->findOneBy(['fromWho' => $request->get('fromWho')
-            ,'ofWho' => $request->get('ofWho')]);
+            ,'ofWho' => $request->get('ofWho')
+            ,'approval'=>'no']);
         if($rd!=null)
         {
             return new Response("\n Une requéte de donnée a déjà été faite, veuillez patienter.");
@@ -42,10 +44,13 @@ class RequestedDataController extends AbstractController
 
             $rd = new RequestedData();
             $timeDate = new \DateTime ();
-            $rd->setFromWho($_POST['fromWho']);
-            $rd->setApproval("non");
+            $rd->setFromWho($request->get('fromWho'));
+            $rd->setApproval("no");
             $rd->setDate($timeDate);
-            $rd->setOfWho($_POST['ofWho']);
+            $rd->setOfWho($request->get('ofWho'));
+            $rd->setCin($request->get('cin'));
+            $rd->setPasseport($request->get('passeport'));
+            $rd->setFacture($request->get('facture'));
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($rd);
@@ -55,6 +60,27 @@ class RequestedDataController extends AbstractController
             return new Response("\n -Requete de donnée envoyé avec succés");
         }
 
+    }
+
+    /**
+     * @Route("/showRdJSON/{email}", name="rdJSON_show")
+     */
+    public function showRdJSON(String $email,Request $request, NormalizerInterface $Normalizer, RequestedDataRepository $repository): Response
+    {
+        $rd = $repository->findOneBy(['ofWho' => $email]);
+        $jsonContent=$Normalizer->normalize($rd,'json',['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+    }
+
+    /**
+     * @Route("/editRdJSON/{id}", name="rdJSON_edit")
+     */
+    public function editRdJSON(int $id,Request $request, RequestedDataRepository $repository, EntityManagerInterface $entityManager): Response
+    {
+        $rd = $repository->findOneBy(['id' => $id]);
+        $rd->setApproval("yes");
+        $entityManager->flush();
+        return new Response("\n -Edit request data avec succés");
     }
 
     /**

@@ -62,7 +62,7 @@ class PasseportController extends AbstractController
         $passeport = $repository->findOneBy(['idUser' => $request->get('idUser')]);
         if($passeport!=null)
         {
-            return new Response("Vous avez déjà déposer ce document(Passeport), veuillez attendre la validation par un administrateur.");
+            return new Response("\n -Vous avez déjà déposer ce document(Passeport), veuillez attendre la validation par un administrateur.");
         }
         else
         {
@@ -78,7 +78,7 @@ class PasseportController extends AbstractController
             $passeport->setUser($userRepository->findOneBy(['id'=>$_POST['idUser']]));
             $user=$userRepository->findOneBy(['id'=>$_POST['idUser']]);
             $passeport->setUser($user);
-            $user->setFacture($passeport);
+            $user->setPasseport($passeport);
 
 
 
@@ -88,7 +88,7 @@ class PasseportController extends AbstractController
             $entityManager->flush();
 
 
-            return new Response("Passeport ajouter avec succés");
+            return new Response("\n -Passeport ajouté avec succés");
         }
 
     }

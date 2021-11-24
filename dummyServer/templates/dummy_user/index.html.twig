@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DummyUser index{% endblock %}
+
+{% block body %}
+    <h1>DummyUser index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Cin</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for dummy_user in dummy_users %}
+            <tr>
+                <td>{{ dummy_user.id }}</td>
+                <td>{{ dummy_user.email }}</td>
+                <td>{{ dummy_user.cin }}</td>
+                <td>
+                    <a href="{{ path('dummy_user_show', {'id': dummy_user.id}) }}">show</a>
+                    <a href="{{ path('dummy_user_edit', {'id': dummy_user.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('dummy_user_new') }}">Create new</a>
+{% endblock %}

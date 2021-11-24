@@ -167,39 +167,39 @@ class _SignupState extends State<Signup> {
                                   margin: const EdgeInsets.fromLTRB(100, 20, 100, 20),
                                   child: ElevatedButton(
                                     onPressed: () {
-                                    if(_keyForm.currentState!.validate()) {
-                                      _keyForm.currentState!.save();
+                                      if(_keyForm.currentState!.validate()) {
+                                        _keyForm.currentState!.save();
 
-                                      Map<String, dynamic> userData = {
-                                        "nom": _nom,
-                                        "password": _password,
-                                        "email": _email,
-                                        "prenom": _prenom,
-                                        "numtel": _numtel
-                                      };
-                                      Map<String, String> headers = {
-                                        "Content-Type": "application/json; charset=UTF-8"
-                                      };
+                                        Map<String, dynamic> userData = {
+                                          "nom": _nom,
+                                          "password": _password,
+                                          "email": _email,
+                                          "prenom": _prenom,
+                                          "numtel": _numtel
+                                        };
+                                        Map<String, String> headers = {
+                                          "Content-Type": "application/json; charset=UTF-8"
+                                        };
 
-                                      ;
-                                      http.post(Uri.http(_baseUrl, '/api/addUserJSON', userData), headers: headers, )
-                                          .then((http.Response response) {
-                                        if(response.statusCode == 200) {
-                                          Navigator.pushReplacementNamed(context, "/");
-                                        }
-                                        else {
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return const AlertDialog(
-                                                  title: Text("Information"),
-                                                  content: Text("Une erreur s'est produite. Veuillez réessayer !"),
-                                                );
-                                              });
-                                        }
-                                      });
+                                        ;
+                                        http.post(Uri.http(_baseUrl, '/api/addUserJSON', userData), headers: headers, )
+                                            .then((http.Response response) {
+                                          if(response.statusCode == 200) {
+                                            Navigator.pushReplacementNamed(context, "/");
+                                          }
+                                          else {
+                                            showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return const AlertDialog(
+                                                    title: Text("Information"),
+                                                    content: Text("Une erreur s'est produite. Veuillez réessayer !"),
+                                                  );
+                                                });
+                                          }
+                                        });
 
-                                    }
+                                      }
 
 
                                     },
@@ -234,7 +234,7 @@ class _SignupState extends State<Signup> {
   }
 }
 
- /*
+/*
 
 typedef void TextCallBack(String? value);
 

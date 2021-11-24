@@ -31,7 +31,7 @@ class CinController extends AbstractController
         $cin = $repository->findOneBy(['idUser' => $request->get('idUser')]);
         if($cin!=null)
         {
-            return new Response("Vous avez déjà déposer ce document(CIN), veuillez attendre la validation par un administrateur.");
+            return new Response("\n -Vous avez déjà déposer ce document(CIN), veuillez attendre la validation par un administrateur.");
         }
         else
         {
@@ -48,7 +48,7 @@ class CinController extends AbstractController
             $cin->setUser($userRepository->findOneBy(['id'=>$_POST['idUser']]));
             $user=$userRepository->findOneBy(['id'=>$_POST['idUser']]);
             $cin->setUser($user);
-            $user->setFacture($cin);
+            $user->setCin($cin);
 
 
 
@@ -58,7 +58,7 @@ class CinController extends AbstractController
             $entityManager->flush();
 
             //$jsonContent=$Normalizer->normalize($cin,'json',['groups'=>'post:read']);
-            return new Response("Carte d'identité nationale ajouter avec succés");
+            return new Response("\n -Carte d'identité nationale ajoutée avec succés");
         }
 
     }

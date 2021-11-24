@@ -68,48 +68,78 @@ class UserController extends AbstractController
         }
     }
 
-     /**
+    /**
      * @Route("/addUserJSON", name="userJSON_new")
      */
     public function addUserJSON(Request $request, NormalizerInterface $Normalizer,UserRepository $repository,UserPasswordEncoderInterface $encoder): Response
     {
-        
-            $user = new User();
-            
-           
-            
-            $user->setNom($request->get('nom'));
-            $user->setPrenom($request->get('prenom'));
-            $user->setEmail($request->get('email'));
-            $hash=$encoder->encodePassword($user,$request->get('password'));
-            $user->setPassword($hash);
-            $user->setNumtel($request->get('numtel'));
-            
+
+        $user = new User();
 
 
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
+        $user->setNom($request->get('nom'));
+        $user->setPrenom($request->get('prenom'));
+        $user->setEmail($request->get('email'));
+        // $hash=$encoder->encodePassword($user,$request->get('password'));
+        $user->setPassword($request->get('password'));
+        $user->setNumtel($request->get('numtel'));
 
-            $jsonContent=$Normalizer->normalize($user,'json',['groups'=>'post:read']);
-            return new Response("user ajouter avec succés");
-        
 
+
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+
+        $jsonContent=$Normalizer->normalize($user,'json',['groups'=>'post:read']);
+        return new Response("user ajouter avec succés");
     }
     /**
-     * @Route("/login", name="login")
+     * @Route("/EditUserJSON/{email}", name="editJSON_new")
      */
-    public function login(Request $request,AuthenticationUtils $utils)
-    {   $error= $utils->getLastAuthenticationError();
+    public function EditUserJSON(string $email,Request $request, NormalizerInterface $Normalizer,UserRepository $repository,UserPasswordEncoderInterface $encoder): Response
+    {
 
-        $lastUsername = $utils->getLastUsername();
-        return $this->render('user/login.html.twig', [
-            'error' => $error,
-            'last_username' => $lastUsername
-        ]);
+        $user=$repository->findOneBy(['email' => $email]);
+
+
+        $user->setPassword($request->get('password'));
+
+        // $hash=$encoder->encodePassword($user,$request->get('password'));
+
+
+
+
+
+
+        $entityManager = $this->getDoctrine()->getManager()->flush();
+
+
+        $jsonContent=$Normalizer->normalize($user,'json',['groups'=>'post:read']);
+        return new Response("user modifer  avec succés");
+    }
+
+
+
+
+
+    /**
+     * @Route("/login/{email}/{password}", name="login")
+     */
+    public function login(string $email,string $password, Request $request, NormalizerInterface $Normalizer,UserRepository $repository)
+    {
+        $user=$repository->findOneBy(['email' => $email,'password'=>$password]);
+        $jsonContent=$Normalizer->normalize($user,'json',['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
 
     }
+
+
+
+
+
     /**
      * @Route("/", name="user_index", methods={"GET"})
      */
@@ -188,5 +218,6 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
     }
-     
+
+
 }

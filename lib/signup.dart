@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+import 'package:http/http.dart' as http;
 
 class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
@@ -9,12 +10,13 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
-  late String? _username;
+  late String? _nom;
   late String? _email;
   late String? _password;
-  late String? _birth;
-  late String? _address;
+  late String? _prenom;
+  late String? _numtel;
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
+  final String _baseUrl = "10.0.2.2:8000";
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +104,7 @@ class _SignupState extends State<Signup> {
                                   decoration: const InputDecoration(
                                       border: OutlineInputBorder(), labelText: "Nom"),
                                   onSaved: (String? value) {
-                                    _address = value;
+                                    _nom = value;
                                   },
                                   validator: (value) {
                                     if(value == null || value.isEmpty) {
@@ -124,7 +126,7 @@ class _SignupState extends State<Signup> {
                                   decoration: const InputDecoration(
                                       border: OutlineInputBorder(), labelText: "Prenom"),
                                   onSaved: (String? value) {
-                                    _address = value;
+                                    _prenom = value;
                                   },
                                   validator: (value) {
                                     if(value == null || value.isEmpty) {
@@ -146,7 +148,7 @@ class _SignupState extends State<Signup> {
                                   decoration: const InputDecoration(
                                       border: OutlineInputBorder(), labelText: "telephone"),
                                   onSaved: (String? value) {
-                                    _address = value;
+                                    _numtel = value;
                                   },
                                   validator: (value) {
                                     if(value == null || value.isEmpty) {
@@ -164,7 +166,43 @@ class _SignupState extends State<Signup> {
                               Container(
                                   margin: const EdgeInsets.fromLTRB(100, 20, 100, 20),
                                   child: ElevatedButton(
-                                    onPressed: () { Navigator.pushNamed(context, "/accueil");  },
+                                    onPressed: () {
+                                      if(_keyForm.currentState!.validate()) {
+                                        _keyForm.currentState!.save();
+
+                                        Map<String, dynamic> userData = {
+                                          "nom": _nom,
+                                          "password": _password,
+                                          "email": _email,
+                                          "prenom": _prenom,
+                                          "numtel": _numtel
+                                        };
+                                        Map<String, String> headers = {
+                                          "Content-Type": "application/json; charset=UTF-8"
+                                        };
+
+                                        ;
+                                        http.post(Uri.http(_baseUrl, '/api/addUserJSON', userData), headers: headers, )
+                                            .then((http.Response response) {
+                                          if(response.statusCode == 200) {
+                                            Navigator.pushReplacementNamed(context, "/");
+                                          }
+                                          else {
+                                            showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return const AlertDialog(
+                                                    title: Text("Information"),
+                                                    content: Text("Une erreur s'est produite. Veuillez réessayer !"),
+                                                  );
+                                                });
+                                          }
+                                        });
+
+                                      }
+
+
+                                    },
                                     style:  ElevatedButton.styleFrom(
                                       primary : Colors.green,
                                     ),
@@ -196,7 +234,7 @@ class _SignupState extends State<Signup> {
   }
 }
 
- /*
+/*
 
 typedef void TextCallBack(String? value);
 

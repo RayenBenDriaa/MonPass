@@ -24,20 +24,24 @@ class _MonProfilState extends State<MonProfil> {
 
 
 
+
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
+  //variable to use to compare password and confirm password
+  final TextEditingController _pass = TextEditingController();
+  final TextEditingController _confirmPass = TextEditingController();
 
   final String _baseUrl = "10.0.2.2:8000";
 
 
- //Selecteur de fichier pour bouton CIN
+  //Selecteur de fichier pour bouton CIN
   Future pickergalleryCIN() async {
     final myfile = await ImagePicker().pickImage(source: ImageSource.gallery);
     if(myfile!=null)
-      {
-        setState(() {
-          _fileCIN = File(myfile.path);
-        });
-      }
+    {
+      setState(() {
+        _fileCIN = File(myfile.path);
+      });
+    }
   }
 
   //Selecteur de fichier pour bouton Passeport
@@ -172,7 +176,7 @@ class _MonProfilState extends State<MonProfil> {
         ),
         backgroundColor: Colors.transparent,
         body: Form(
-            key: _keyForm,
+          key: _keyForm,
           child: ListView(
             children: [
               Container(
@@ -184,8 +188,8 @@ class _MonProfilState extends State<MonProfil> {
                       child: TextFormField(
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Email",
+                          border: OutlineInputBorder(),
+                          labelText: "Email",
                           fillColor: Colors.white,
                         ),
                         onSaved: (String? value) {
@@ -208,6 +212,8 @@ class _MonProfilState extends State<MonProfil> {
                     Container(
                       margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                       child: TextFormField(
+                        controller: _pass,
+
                         obscureText: true,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(), labelText: "Mot de passe"),
@@ -230,6 +236,7 @@ class _MonProfilState extends State<MonProfil> {
                     Container(
                       margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                       child: TextFormField(
+                        controller: _confirmPass,
                         obscureText: true,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(), labelText: "Repeter le mot de passe"),
@@ -242,6 +249,8 @@ class _MonProfilState extends State<MonProfil> {
                           }
                           else if(value.length < 5) {
                             return "Le mot de passe doit avoir au moins 5 caractères";
+                          }else if(value != _pass.text){
+                            return "password not Matching";
                           }
                           else {
                             return null;
@@ -252,20 +261,20 @@ class _MonProfilState extends State<MonProfil> {
                     Container(
                       margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                       child: OutlinedButton(
-                          onPressed: pickergalleryCIN,
-                          child: Container(
-                            margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Row(
-                              children: [
-                                const Text("Carte d'identité nationale",textScaleFactor: 1.1,),
-                                Expanded(
-                                  child: Container(
-                                  ),
+                        onPressed: pickergalleryCIN,
+                        child: Container(
+                          margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          child: Row(
+                            children: [
+                              const Text("Carte d'identité nationale",textScaleFactor: 1.1,),
+                              Expanded(
+                                child: Container(
                                 ),
-                                const Icon(Icons.upload_rounded),
-                              ],
-                            ),
+                              ),
+                              const Icon(Icons.upload_rounded),
+                            ],
                           ),
+                        ),
                         style: OutlinedButton.styleFrom(
                           backgroundColor: Colors.white,
                           primary: Colors.black,
@@ -344,36 +353,36 @@ class _MonProfilState extends State<MonProfil> {
 
                         //verifier si les fichier ne sont pas selectionner
                         if(_fileCIN == null)
-                          {
-                            cinTextNull="\n -Vous n'avez pas sélectionner de CIN !";
-                          }
+                        {
+                          cinTextNull="\n -Vous n'avez pas sélectionner de CIN !";
+                        }
                         if (_filePasseport == null)
-                          {
-                            passeportTextNull="\n -Vous n'avez pas sélectionner de Passeport !";
-                          }
+                        {
+                          passeportTextNull="\n -Vous n'avez pas sélectionner de Passeport !";
+                        }
                         if(_fileFacture == null)
-                          {
-                            factureTextNull="\n -Vous n'avez pas sélectionner de Facture !";
-                          }
+                        {
+                          factureTextNull="\n -Vous n'avez pas sélectionner de Facture !";
+                        }
 
                         if(_fileCIN != null)
+                        {
+                          //encoder le fichier en base64 et l'envoyer dans une requête POST au service
+                          String base64 =  base64Encode(_fileCIN.readAsBytesSync());
+                          String imageName= _fileCIN.path.split("/").last;
+                          var data = {"imageName" : imageName, "image64" : base64, "idUser" : "1"};
+                          var response = await http.post(Uri.http(_baseUrl, "/cin/addCinJSON"), body: data);
+                          //Si il y a une reponse du service
+                          if (response.statusCode==200 || response.statusCode==201)
                           {
-                            //encoder le fichier en base64 et l'envoyer dans une requête POST au service
-                            String base64 =  base64Encode(_fileCIN.readAsBytesSync());
-                            String imageName= _fileCIN.path.split("/").last;
-                            var data = {"imageName" : imageName, "image64" : base64, "idUser" : "1"};
-                            var response = await http.post(Uri.http(_baseUrl, "/cin/addCinJSON"), body: data);
-                            //Si il y a une reponse du service
-                            if (response.statusCode==200 || response.statusCode==201)
-                              {
-                                cinTextSucces=response.body;
-                              }
-                            else
-                              //s'il y a erreur
-                              {
-                                cinTextError="\n -Une erreur a survenu lors de l'envoie de votre CIN!";
-                              }
+                            cinTextSucces=response.body;
                           }
+                          else
+                            //s'il y a erreur
+                              {
+                            cinTextError="\n -Une erreur a survenu lors de l'envoie de votre CIN!";
+                          }
+                        }
 
                         if(_filePasseport != null)
                         {
@@ -389,9 +398,9 @@ class _MonProfilState extends State<MonProfil> {
                           }
                           else
                             //s'il y a erreur
-                            {
-                              passeportTextError="\n -Une erreur a survenu lors de l'envoie de votre passeport!";
-                            }
+                              {
+                            passeportTextError="\n -Une erreur a survenu lors de l'envoie de votre passeport!";
+                          }
                         }
 
                         if(_fileFacture != null)
@@ -408,9 +417,9 @@ class _MonProfilState extends State<MonProfil> {
                           }
                           else
                             //s'il y a erreur
-                            {
-                              factureTextError="\n -Une erreur a survenu lors de l'envoie de votre facture!";
-                            }
+                              {
+                            factureTextError="\n -Une erreur a survenu lors de l'envoie de votre facture!";
+                          }
                         }
 
                         showDialog(
@@ -419,8 +428,8 @@ class _MonProfilState extends State<MonProfil> {
                               return  AlertDialog(
                                 title: Text("Informations"),
                                 content: Text(cinTextNull+cinTextError+cinTextSucces
-                                +passeportTextNull+passeportTextError+passeportTextSucces
-                                +factureTextNull+factureTextError+factureTextSucces),
+                                    +passeportTextNull+passeportTextError+passeportTextSucces
+                                    +factureTextNull+factureTextError+factureTextSucces),
                               );
                             }
                         );
@@ -428,6 +437,39 @@ class _MonProfilState extends State<MonProfil> {
                         _fileFacture=null;
                         _filePasseport=null;
 
+
+
+                      }
+                      if(_keyForm.currentState!.validate()) {
+                        _keyForm.currentState!.save();
+
+                        Map<String, dynamic> userData = {
+
+                          "password": _password,
+
+
+                        };
+                        Map<String, String> headers = {
+                          "Content-Type": "application/json; charset=UTF-8"
+                        };
+
+                        ;
+                        http.post(Uri.http(_baseUrl, '/api/EditUserJSON/${_email}', userData), headers: headers, )
+                            .then((http.Response response) {
+                          if(response.statusCode == 200) {
+                            Navigator.pushReplacementNamed(context, "/");
+                          }
+                          else {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const AlertDialog(
+                                    title: Text("Information"),
+                                    content: Text("Une erreur s'est produite. Veuillez réessayer !"),
+                                  );
+                                });
+                          }
+                        });
 
                       }
                     },

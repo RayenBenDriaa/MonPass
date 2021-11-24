@@ -28,6 +28,7 @@ class _MonProfilState extends State<MonProfil> {
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
   //variable to use to compare password and confirm password
   final TextEditingController _pass = TextEditingController();
+  final TextEditingController _confirmPass = TextEditingController();
 
   final String _baseUrl = "10.0.2.2:8000";
 
@@ -235,6 +236,7 @@ class _MonProfilState extends State<MonProfil> {
                     Container(
                       margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                       child: TextFormField(
+                        controller: _confirmPass,
                         obscureText: true,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(), labelText: "Repeter le mot de passe"),

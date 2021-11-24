@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}RequestedData index{% endblock %}
+
+{% block body %}
+    <h1>RequestedData index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>FromWho</th>
+                <th>OfWho</th>
+                <th>Approval</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for requested_datum in requested_datas %}
+            <tr>
+                <td>{{ requested_datum.id }}</td>
+                <td>{{ requested_datum.fromWho }}</td>
+                <td>{{ requested_datum.ofWho }}</td>
+                <td>{{ requested_datum.approval }}</td>
+                <td>
+                    <a href="{{ path('requested_data_show', {'id': requested_datum.id}) }}">show</a>
+                    <a href="{{ path('requested_data_edit', {'id': requested_datum.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('requested_data_new') }}">Create new</a>
+{% endblock %}

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mon_pass/backOffice/validation_cin.dart';
-import 'package:mon_pass/frontOffice/accueil.dart';
-import 'package:mon_pass/backOffice/back_office.dart';
-import 'package:mon_pass/frontOffice/mon_profil.dart';
-import 'package:mon_pass/frontOffice/signin_with.dart';
-import 'package:mon_pass/signin.dart';
-import 'package:mon_pass/signup.dart';
+import 'backOffice/stats.dart';
+import 'backOffice/validation_cin.dart';
+import 'frontOffice/accueil.dart';
+import 'backOffice/back_office.dart';
+import 'frontOffice/mon_profil.dart';
+import 'frontOffice/signin_with.dart';
+import 'package:mon_pass/View/signin.dart';
+import 'package:mon_pass/View/signup.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -37,6 +39,9 @@ class MyApp extends StatelessWidget {
         },
         "/back": (BuildContext context) {
           return const BackOffice();
+        },
+        "/back/stats": (BuildContext context) {
+          return const Stats();
         },
         "/signinWith": (BuildContext context) {
           return const SigninWith();

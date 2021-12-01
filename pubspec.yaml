@@ -36,7 +36,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   image_picker: ^0.8.2
   http: ^0.13.4
+  shared_preferences: ^2.0.8
   dio: ^4.0.1
+  syncfusion_flutter_charts: ^19.3.56
+
 
 dev_dependencies:
   flutter_test:

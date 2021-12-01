@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mon_pass/Model/document.dart';
 import 'dart:convert';
 
-import 'document.dart';
+
 import 'document_info.dart';
 
 class ValidationCin extends StatefulWidget {
@@ -22,7 +23,7 @@ class _ValidationCinState extends State<ValidationCin> {
   late Future<bool> fetchedData;
 
   Future<bool> fetchData() async {
-    http.Response response= await http.get(Uri.http(_baseUrl, "/cin/getAllCinJSON/"));
+    http.Response response= await http.get(Uri.http(_baseUrl, "/cin/getAllCinJSON"));
     List<dynamic> docsFromSever = json.decode(response.body);
     print("________");
     for (int i=0; i<docsFromSever.length; i++)

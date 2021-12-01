@@ -4,6 +4,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class MonProfil extends StatefulWidget {
   const MonProfil({Key? key}) : super(key: key);
@@ -21,6 +23,22 @@ class _MonProfilState extends State<MonProfil> {
   late String? _password;
   late String? _repeatPassword;
   late String _pathImage;
+  late SharedPreferences prefs;
+  late Future<bool> userinfo;
+
+  Future<bool> getUserInfo() async {
+    prefs = await SharedPreferences.getInstance();
+
+    _email = prefs.getString("email")!;
+
+
+    return true;
+  }
+  @override
+  void initState() {
+    userinfo = getUserInfo();
+    super.initState();
+  }
 
 
 
@@ -183,32 +201,6 @@ class _MonProfilState extends State<MonProfil> {
                 margin: EdgeInsets.fromLTRB(15, 30, 15, 0),
                 child: Column(
                   children: [
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                      child: TextFormField(
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: "Email",
-                          fillColor: Colors.white,
-                        ),
-                        onSaved: (String? value) {
-                          _email = value;
-                        },
-                        validator: (String? value) {
-                          String pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-                          if(value == null || value.isEmpty) {
-                            return "L'adresse email ne doit pas etre vide";
-                          }
-                          else if(!RegExp(pattern).hasMatch(value)) {
-                            return "L'adresse email est incorrecte";
-                          }
-                          else {
-                            return null;
-                          }
-                        },
-                      ),
-                    ),
                     Container(
                       margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                       child: TextFormField(

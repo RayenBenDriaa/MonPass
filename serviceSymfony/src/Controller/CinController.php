@@ -79,7 +79,7 @@ class CinController extends AbstractController
      */
     public function getAllCinJSON(CinRepository $cinRepository, NormalizerInterface $Normalizer, UserRepository $userRepository): Response
     {
-        $cins=$cinRepository->findAll();
+        $cins=$cinRepository->findBy(['etat'=>"En attente"]);
         foreach ($cins as $cin){
             if ($cin->getUser()==null)
             {

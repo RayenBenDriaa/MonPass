@@ -180,6 +180,20 @@ class _AccueilState extends State<Accueil> {
                       ListTile(
                         title: Row(
                           children: const [
+                            Icon(Icons.addchart_rounded),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text("Statistique",textScaleFactor: 1.2),
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.pushNamed(context, "/stats");
+                        },
+                      ),
+                      ListTile(
+                        title: Row(
+                          children: const [
                             Icon(Icons.exit_to_app),
                             SizedBox(
                               width: 10,
@@ -191,6 +205,7 @@ class _AccueilState extends State<Accueil> {
                           Navigator.pushNamed(context, "/back");
                         },
                       ),
+
                     ],
                   ),
                 ),

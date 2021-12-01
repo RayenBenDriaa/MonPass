@@ -7,6 +7,8 @@ import 'package:mon_pass/signin.dart';
 import 'package:mon_pass/signup.dart';
 import 'package:mon_pass/splash.dart';
 
+import 'frontOffice/stats.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -44,6 +46,10 @@ class MyApp extends StatelessWidget {
         "/back": (BuildContext context) {
           return const BackOffice();
         },
+        "/stats": (BuildContext context) {
+          return const Stats();
+        },
+
       },
     );
   }

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 
 class MonProfil extends StatefulWidget {
@@ -21,6 +23,22 @@ class _MonProfilState extends State<MonProfil> {
   late String? _password;
   late String? _repeatPassword;
   late String _pathImage;
+  late SharedPreferences prefs;
+  late Future<bool> userinfo;
+
+  Future<bool> getUserInfo() async {
+    prefs = await SharedPreferences.getInstance();
+
+    _email = prefs.getString("email")!;
+
+
+    return true;
+  }
+  @override
+  void initState() {
+    userinfo = getUserInfo();
+    super.initState();
+  }
 
 
 
@@ -183,7 +201,7 @@ class _MonProfilState extends State<MonProfil> {
                 margin: EdgeInsets.fromLTRB(15, 30, 15, 0),
                 child: Column(
                   children: [
-                    Container(
+                   /* Container(
                       margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                       child: TextFormField(
                         keyboardType: TextInputType.emailAddress,
@@ -208,7 +226,7 @@ class _MonProfilState extends State<MonProfil> {
                           }
                         },
                       ),
-                    ),
+                    ),*/
                     Container(
                       margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                       child: TextFormField(
@@ -436,6 +454,7 @@ class _MonProfilState extends State<MonProfil> {
                         _fileCIN=null;
                         _fileFacture=null;
                         _filePasseport=null;
+
 
 
 

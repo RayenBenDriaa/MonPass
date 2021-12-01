@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 
@@ -150,7 +151,7 @@ class _SigninState extends State<Signin> {
 
 
                                       http.get(Uri.http(_baseUrl, '/api/login/${_email}/${_password}') , )
-                                          .then((http.Response response) {
+                                          .then((http.Response response) async {
                                         if(response.body=="null" ) {
                                           showDialog(
                                               context: context,
@@ -163,6 +164,11 @@ class _SigninState extends State<Signin> {
                                         }
                                         else {
                                           if (response.statusCode == 200) {
+                                            Map<String, dynamic> userFromServer = json.decode(response.body);
+                                            //saving email to shared prefs
+
+                                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                                            prefs.setString("email", userFromServer["email"]);
                                             Navigator.pushNamed(context, "/accueil");
                                           }
                                           else {

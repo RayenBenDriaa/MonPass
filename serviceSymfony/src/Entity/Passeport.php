@@ -45,6 +45,7 @@ class Passeport
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, mappedBy="passeport", cascade={"persist", "remove"})
+     * @Groups("post:read")
      */
     private $user;
 

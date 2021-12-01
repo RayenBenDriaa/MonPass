@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mon_pass/View/backOffice/validation_passeport.dart';
 import 'backOffice/stats.dart';
 import 'backOffice/validation_cin.dart';
 import 'frontOffice/accueil.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       title: 'Mon Passe',
       routes: {
         "/": (BuildContext context) {
-          return const ValidationCin();
+          return const ValidationPasseport();
         },
         "/signin": (BuildContext context) {
           return const Signin();
@@ -42,6 +43,9 @@ class MyApp extends StatelessWidget {
         },
         "/back/stats": (BuildContext context) {
           return const Stats();
+        },
+        "/back/cin": (BuildContext context) {
+          return const ValidationCin();
         },
         "/signinWith": (BuildContext context) {
           return const SigninWith();

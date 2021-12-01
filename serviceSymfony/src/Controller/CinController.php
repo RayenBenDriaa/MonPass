@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Cin;
+use App\Entity\User;
 use App\Form\CinType;
 use App\Repository\CinRepository;
 use App\Repository\UserRepository;
@@ -48,13 +49,13 @@ class CinController extends AbstractController
             $cin->setUser($userRepository->findOneBy(['id'=>$_POST['idUser']]));
             $user=$userRepository->findOneBy(['id'=>$_POST['idUser']]);
             $cin->setUser($user);
-            $user->setCin($cin);
+            //$user->setCin($cin);
 
 
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($cin);
-            $entityManager->persist($user);
+            //$entityManager->persist($user);
             $entityManager->flush();
 
             //$jsonContent=$Normalizer->normalize($cin,'json',['groups'=>'post:read']);
@@ -71,6 +72,47 @@ class CinController extends AbstractController
         $cin = $repository->findOneBy(['idUser' => $id]);
         $jsonContent=$Normalizer->normalize($cin,'json',['groups'=>'post:read']);
         return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+    }
+
+    /**
+     * @Route("/getAllCinJSON", name="getAllCinJSON_index")
+     */
+    public function getAllCinJSON(CinRepository $cinRepository, NormalizerInterface $Normalizer, UserRepository $userRepository): Response
+    {
+        $cins=$cinRepository->findAll();
+        foreach ($cins as $cin){
+            if ($cin->getUser()==null)
+            {
+                $cin->setUser($userRepository->findOneBy(['id'=>$cin->getIdUser()]));
+            }
+        }
+        $jsonContent=$Normalizer->normalize($cins,'json',['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+    }
+    /**
+     * @Route("/editCinJSON/{id}", name="cinJSON_edit")
+     */
+    public function editCinJSON(int $id,Request $request, UserRepository $userRepository, CinRepository $repository): Response
+    {
+        $cin = $repository->findOneBy(['idUser' => $id]);
+        $user=$userRepository->findOneBy(['id'=>$cin->getIdUser()]);
+        $user->setCin($cin);
+        $cin->setEtat("Validé");
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+        return new Response("Cin modifié avec succés");
+    }
+
+    /**
+     * @Route("/deleteCinJSON/{id}", name="cinJSON_delete")
+     */
+    public function deleteCinJSON(int $id,Request $request, CinRepository $repository): Response
+    {
+        $cin = $repository->findOneBy(['idUser' => $id]);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($cin);
+        $entityManager->flush();
+        return new Response("Cin supprimé avec succés");
     }
 
     /**

@@ -45,6 +45,7 @@ class Cin
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, mappedBy="cin", cascade={"persist", "remove"})
+     * @Groups("post:read")
      */
     private $user;
 

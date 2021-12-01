@@ -100,6 +100,47 @@ class FactureController extends AbstractController
     }
 
     /**
+     * @Route("/getAllFacturetJSON", name="getAllFactureJSON_index")
+     */
+    public function getAllFactureJSON(FactureRepository $factureRepository, NormalizerInterface $Normalizer, UserRepository $userRepository): Response
+    {
+        $factures=$factureRepository->findBy(['etat'=>"En attente"]);
+        foreach ($factures as $facture){
+            if ($facture->getUser()==null)
+            {
+                $facture->setUser($userRepository->findOneBy(['id'=>$facture->getIdUser()]));
+            }
+        }
+        $jsonContent=$Normalizer->normalize($factures,'json',['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+    }
+    /**
+     * @Route("/editFactureJSON/{id}", name="factureJSON_edit")
+     */
+    public function editFactureJSON(int $id,Request $request, UserRepository $userRepository, FactureRepository $repository): Response
+    {
+        $facture = $repository->findOneBy(['idUser' => $id]);
+        $user=$userRepository->findOneBy(['id'=>$facture->getIdUser()]);
+        $user->setFacture($facture);
+        $facture->setEtat("Validé");
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+        return new Response("Facture modifié avec succés");
+    }
+
+    /**
+     * @Route("/deleteFactureJSON/{id}", name="factureJSON_delete")
+     */
+    public function deleteFactureJSON(int $id,Request $request, FactureRepository $repository): Response
+    {
+        $facture = $repository->findOneBy(['idUser' => $id]);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($facture);
+        $entityManager->flush();
+        return new Response("Facture supprimé avec succés");
+    }
+
+    /**
      * @Route("/{id}", name="facture_show", methods={"GET"})
      */
     public function show(Facture $facture): Response

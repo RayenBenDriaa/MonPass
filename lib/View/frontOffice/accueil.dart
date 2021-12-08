@@ -210,15 +210,15 @@ class _AccueilState extends State<Accueil> {
                       ListTile(
                         title: Row(
                           children: const [
-                            Icon(Icons.addchart_rounded),
+                            Icon(Icons.help_outline),
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Statistique",textScaleFactor: 1.2),
+                            Text("Mes réclamations", textScaleFactor: 1.2),
                           ],
                         ),
                         onTap: () {
-                          Navigator.pushNamed(context, "/back/stats");
+                          Navigator.pushNamed(context, "/reclamationFront");
                         },
                       ),
                       ListTile(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mon_pass/View/backOffice/validation_facture.dart';
 import 'package:mon_pass/View/backOffice/validation_passeport.dart';
 import 'backOffice/reclamationBack.dart';
+import 'package:mon_pass/View/frontOffice/reclamation_front.dart';
 import 'backOffice/stats.dart';
 import 'backOffice/validation_cin.dart';
 import 'frontOffice/accueil.dart';
@@ -39,6 +40,9 @@ class MyApp extends StatelessWidget {
         },
         "/profil": (BuildContext context) {
           return const MonProfil();
+        },
+        "/reclamationFront": (BuildContext context) {
+          return const ReclamationFront();
         },
         "/back": (BuildContext context) {
           return const BackOffice();

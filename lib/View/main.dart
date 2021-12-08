@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mon_pass/View/backOffice/validation_facture.dart';
 import 'package:mon_pass/View/backOffice/validation_passeport.dart';
+import 'backOffice/reclamationBack.dart';
 import 'backOffice/stats.dart';
 import 'backOffice/validation_cin.dart';
 import 'frontOffice/accueil.dart';
@@ -56,6 +57,9 @@ class MyApp extends StatelessWidget {
         },
         "/signinWith": (BuildContext context) {
           return const SigninWith();
+        },
+        "/back/reclamationBack": (BuildContext context) {
+          return const ReclamationBack();
         },
       },
     );

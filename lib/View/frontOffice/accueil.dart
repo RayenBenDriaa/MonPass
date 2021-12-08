@@ -218,7 +218,7 @@ class _AccueilState extends State<Accueil> {
                           ],
                         ),
                         onTap: () {
-                          Navigator.pushNamed(context, "/stats");
+                          Navigator.pushNamed(context, "/back/stats");
                         },
                       ),
                       ListTile(

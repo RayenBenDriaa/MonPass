@@ -38,6 +38,20 @@ class _BackOfficeState extends State<BackOffice> {
               ListTile(
                 title: Row(
                   children: const [
+                    Icon(Icons.attach_email_outlined),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("Reclamations",textScaleFactor: 1.2),
+                  ],
+                ),
+                onTap: () {
+                  Navigator.pushNamed(context, "/back/reclamationBack");
+                },
+              ),
+              ListTile(
+                title: Row(
+                  children: const [
                     Icon(Icons.exit_to_app),
                     SizedBox(
                       width: 10,

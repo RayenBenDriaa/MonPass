@@ -75,7 +75,7 @@ class FactureController extends AbstractController
             $facture->setUrlImage($imageName);
             $user=$userRepository->findOneBy(['id'=>$_POST['idUser']]);
             $facture->setUser($user);
-            $user->setFacture($facture);
+            //$user->setFacture($facture);
 
 
 
@@ -131,11 +131,13 @@ class FactureController extends AbstractController
     /**
      * @Route("/deleteFactureJSON/{id}", name="factureJSON_delete")
      */
-    public function deleteFactureJSON(int $id,Request $request, FactureRepository $repository): Response
+    public function deleteFactureJSON(int $id,Request $request, FactureRepository $repository,UserRepository $userRepository): Response
     {
         $facture = $repository->findOneBy(['idUser' => $id]);
+        $user=$userRepository->findOneBy(['id'=>$facture->getIdUser()]);
+        $user->setFacture($facture);
+        $facture->setEtat("Refusé");
         $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($facture);
         $entityManager->flush();
         return new Response("Facture supprimé avec succés");
     }

@@ -106,11 +106,13 @@ class CinController extends AbstractController
     /**
      * @Route("/deleteCinJSON/{id}", name="cinJSON_delete")
      */
-    public function deleteCinJSON(int $id,Request $request, CinRepository $repository): Response
+    public function deleteCinJSON(int $id,Request $request, CinRepository $repository, UserRepository $userRepository): Response
     {
         $cin = $repository->findOneBy(['idUser' => $id]);
+        $user=$userRepository->findOneBy(['id'=>$cin->getIdUser()]);
+        $user->setCin($cin);
+        $cin->setEtat("Refusé");
         $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($cin);
         $entityManager->flush();
         return new Response("Cin supprimé avec succés");
     }

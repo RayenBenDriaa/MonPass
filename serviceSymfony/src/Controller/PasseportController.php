@@ -78,7 +78,7 @@ class PasseportController extends AbstractController
             $passeport->setUser($userRepository->findOneBy(['id'=>$_POST['idUser']]));
             $user=$userRepository->findOneBy(['id'=>$_POST['idUser']]);
             $passeport->setUser($user);
-            $user->setPasseport($passeport);
+            //$user->setPasseport($passeport);
 
 
 
@@ -135,11 +135,13 @@ class PasseportController extends AbstractController
     /**
      * @Route("/deletePasseportJSON/{id}", name="passeportJSON_delete")
      */
-    public function deletePasseportJSON(int $id,Request $request, PasseportRepository $repository): Response
+    public function deletePasseportJSON(int $id,Request $request, PasseportRepository $repository,UserRepository $userRepository): Response
     {
         $passeport = $repository->findOneBy(['idUser' => $id]);
+        $user=$userRepository->findOneBy(['id'=>$passeport->getIdUser()]);
+        $user->setPasseport($passeport);
+        $passeport->setEtat("Refusé");
         $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($passeport);
         $entityManager->flush();
         return new Response("Passeport supprimé avec succés");
     }

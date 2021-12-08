@@ -49,7 +49,15 @@ class _AccueilState extends State<Accueil> {
           }
         else
           {
-            colorCin=Colors.greenAccent;
+            if(etatCin=="Refusé")
+              {
+                colorCin=Colors.redAccent;
+              }
+            else
+              {
+                colorCin=Colors.greenAccent;
+              }
+
           }
         dateCin="Déposé depuis le "+dataCIN["date"].toString().substring(0,10);
       }
@@ -77,7 +85,14 @@ class _AccueilState extends State<Accueil> {
       }
       else
       {
-        colorPasseport=Colors.greenAccent;
+        if(etatPasseport=="Refusé")
+        {
+          colorPasseport=Colors.redAccent;
+        }
+        else
+        {
+          colorPasseport=Colors.greenAccent;
+        }
       }
       datePasseport="Déposé depuis le "+dataPasseport["date"].toString().substring(0,10);
     }
@@ -104,7 +119,14 @@ class _AccueilState extends State<Accueil> {
       }
       else
       {
-        colorFacture=Colors.greenAccent;
+        if(etatFacture=="Refusé")
+        {
+          colorFacture=Colors.redAccent;
+        }
+        else
+        {
+          colorFacture=Colors.greenAccent;
+        }
       }
       dateFacture="Déposé depuis le "+dataFacture["date"].toString().substring(0,10);
     }

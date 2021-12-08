@@ -14,6 +14,8 @@ class ReclamationBack extends StatefulWidget {
 
 class _ReclamationBackState extends State<ReclamationBack> {
   late Future<bool> fetchedReclamation;
+  late String _enCours;
+  late String  _traiter;
 
   final List<Reclamation> _reclamations = [];
 
@@ -153,6 +155,18 @@ class _ReclamationBackState extends State<ReclamationBack> {
                           //enveloppe/adapte sa taille à celle du contenu
                           itemCount: _reclamations.length,
                           itemBuilder: (BuildContext context, int index) {
+                            if(_reclamations[index].traite==0){
+                              _traiter="non";
+
+                            }
+                            else{
+                              _traiter="oui";
+                            }
+                            if (_reclamations[index].enCours==0){
+                              _enCours="non";
+
+                            }else
+                              {_enCours="oui";}
 
                             return Card(
                               margin: EdgeInsets.fromLTRB(5, 10, 5, 10),
@@ -219,12 +233,12 @@ class _ReclamationBackState extends State<ReclamationBack> {
                                       child:
                                       Row(
                                         children: [
-                                          Text("Traité " +_reclamations[index].traite.toString(),
+                                          Text("Traité :   " +_traiter,
                                               textScaleFactor: 1),
                                           Expanded(
                                             child: Container(),
                                           ),
-                                          Text("En cours " +_reclamations[index].enCours.toString(),
+                                          Text("En cours :   " +_enCours,
                                               textScaleFactor: 1),
                                         ],
                                       ),

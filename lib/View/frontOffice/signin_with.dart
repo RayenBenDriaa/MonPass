@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class SigninWith extends StatefulWidget {
   const SigninWith({Key? key}) : super(key: key);
 
@@ -16,14 +18,23 @@ class _SigninWithState extends State<SigninWith> {
   bool requestData=false;
   bool sendData=false;
 
+  late String id;
+  late String email;
+  late String nomPrenom;
+
   final String _baseUrl = "10.0.2.2:8000";
 
   late Future<bool> fetchedData;
 
   Future<bool> fetchData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    id=prefs.getString("id")!;
+    nomPrenom=prefs.getString("nomPrenom")!;
+    email=prefs.getString("email")!;
+
     //requete GET pour obtenir l'entité CIN d'un user
-    http.Response responseDocs= await http.get(Uri.http(_baseUrl, "/api/getDocsBy/"+"1"));
-    http.Response responseRd= await http.get(Uri.http(_baseUrl, "/requested/data/showRdJSON/"+"rayenbd63s@gmail.com"));
+    http.Response responseDocs= await http.get(Uri.http(_baseUrl, "/api/getDocsBy/"+id));
+    http.Response responseRd= await http.get(Uri.http(_baseUrl, "/requested/data/showRdJSON/"+email));
     //http.Response responseRdEdit = await http.post(Uri.http(_baseUrl, "/requested/data/editRdJSON/"+"3"));
     print("\n");
     print(responseDocs.body);
@@ -57,7 +68,7 @@ class _SigninWithState extends State<SigninWith> {
         {
           imageFacture=dataDocs["imageFacture"];
         }
-        var dataDocsPost = {"email" : "rayenbd63s@gmail.com","cin" : imageCin,"passeport" : imagePasseport, "facture" :imageFacture};
+        var dataDocsPost = {"email" : email,"cin" : imageCin,"passeport" : imagePasseport, "facture" :imageFacture};
         http.Response responseDocsEdit = await http.post(Uri.http("10.0.2.2:8001", "/editJSON"), body: dataDocsPost);
         if (responseDocsEdit.statusCode==200 || responseDocsEdit.statusCode==201)
         {

@@ -19,6 +19,8 @@ class _MonProfilState extends State<MonProfil> {
   var _filePasseport;
   var _fileFacture;
   //late File _fileFacture;
+  late String id;
+  late String nomPrenom;
   late String? _email;
   late String? _password;
   late String? _repeatPassword;
@@ -28,7 +30,8 @@ class _MonProfilState extends State<MonProfil> {
 
   Future<bool> getUserInfo() async {
     prefs = await SharedPreferences.getInstance();
-
+    id = prefs.getString("id")!;
+    nomPrenom=prefs.getString("nomPrenom")!;
     _email = prefs.getString("email")!;
 
 
@@ -101,12 +104,12 @@ class _MonProfilState extends State<MonProfil> {
             // Important: Remove any padding from the ListView.
             padding: EdgeInsets.zero,
             children: [
-              const DrawerHeader(
+               DrawerHeader(
                 // entête menu hamburger
                 decoration: BoxDecoration(
                   color: Colors.green,
                 ),
-                child: Text('Foulen Ben Foulen',
+                child: Text(nomPrenom,
                   textScaleFactor: 2,
                   style: TextStyle(
                     color: Colors.white,
@@ -362,7 +365,7 @@ class _MonProfilState extends State<MonProfil> {
                           //encoder le fichier en base64 et l'envoyer dans une requête POST au service
                           String base64 =  base64Encode(_fileCIN.readAsBytesSync());
                           String imageName= _fileCIN.path.split("/").last;
-                          var data = {"imageName" : imageName, "image64" : base64, "idUser" : "1"};
+                          var data = {"imageName" : imageName, "image64" : base64, "idUser" : id};
                           var response = await http.post(Uri.http(_baseUrl, "/cin/addCinJSON"), body: data);
                           //Si il y a une reponse du service
                           if (response.statusCode==200 || response.statusCode==201)
@@ -381,7 +384,7 @@ class _MonProfilState extends State<MonProfil> {
                           //encoder le fichier en base64 et l'envoyer dans une requête POST au service
                           String base64 =  base64Encode(_filePasseport.readAsBytesSync());
                           String imageName= _filePasseport.path.split("/").last;
-                          var data = {"imageName" : imageName, "image64" : base64, "idUser" : "1"};
+                          var data = {"imageName" : imageName, "image64" : base64, "idUser" : id};
                           var response = await http.post(Uri.http(_baseUrl, "/passeport/addPasseportJSON"), body: data);
                           //Si il y a une reponse du service
                           if (response.statusCode==200 || response.statusCode==201)
@@ -400,7 +403,7 @@ class _MonProfilState extends State<MonProfil> {
                           //encoder le fichier en base64 et l'envoyer dans une requête POST au service
                           String base64 =  base64Encode(_fileFacture.readAsBytesSync());
                           String imageName= _fileFacture.path.split("/").last;
-                          var data = {"imageName" : imageName, "image64" : base64, "idUser" : "1"};
+                          var data = {"imageName" : imageName, "image64" : base64, "idUser" : id};
                           var response = await http.post(Uri.http(_baseUrl, "/facture/addFactureJSON"), body: data);
                           //Si il y a une reponse du service
                           if (response.statusCode==200 || response.statusCode==201)
@@ -428,10 +431,8 @@ class _MonProfilState extends State<MonProfil> {
                         _fileCIN=null;
                         _fileFacture=null;
                         _filePasseport=null;
-
-
-
                       }
+
                       if(_keyForm.currentState!.validate()) {
                         _keyForm.currentState!.save();
 

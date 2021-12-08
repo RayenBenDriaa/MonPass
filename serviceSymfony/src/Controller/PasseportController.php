@@ -78,7 +78,7 @@ class PasseportController extends AbstractController
             $passeport->setUser($userRepository->findOneBy(['id'=>$_POST['idUser']]));
             $user=$userRepository->findOneBy(['id'=>$_POST['idUser']]);
             $passeport->setUser($user);
-            $user->setPasseport($passeport);
+            //$user->setPasseport($passeport);
 
 
 
@@ -101,6 +101,49 @@ class PasseportController extends AbstractController
         $passeport = $repository->findOneBy(['idUser' => $id]);
         $jsonContent=$Normalizer->normalize($passeport,'json',['groups'=>'post:read']);
         return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+    }
+
+    /**
+     * @Route("/getAllPasseportJSON", name="getAllPasseportJSON_index")
+     */
+    public function getAllPasseportJSON(PasseportRepository $passeportRepository, NormalizerInterface $Normalizer, UserRepository $userRepository): Response
+    {
+        $passeports=$passeportRepository->findBy(['etat'=>"En attente"]);
+        foreach ($passeports as $passeport){
+            if ($passeport->getUser()==null)
+            {
+                $passeport->setUser($userRepository->findOneBy(['id'=>$passeport->getIdUser()]));
+            }
+        }
+        $jsonContent=$Normalizer->normalize($passeports,'json',['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+    }
+    /**
+     * @Route("/editPasseportJSON/{id}", name="passeportJSON_edit")
+     */
+    public function editPasseportJSON(int $id,Request $request, UserRepository $userRepository, PasseportRepository $repository): Response
+    {
+        $passeport = $repository->findOneBy(['idUser' => $id]);
+        $user=$userRepository->findOneBy(['id'=>$passeport->getIdUser()]);
+        $user->setPasseport($passeport);
+        $passeport->setEtat("Validé");
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+        return new Response("Passeport modifié avec succés");
+    }
+
+    /**
+     * @Route("/deletePasseportJSON/{id}", name="passeportJSON_delete")
+     */
+    public function deletePasseportJSON(int $id,Request $request, PasseportRepository $repository,UserRepository $userRepository): Response
+    {
+        $passeport = $repository->findOneBy(['idUser' => $id]);
+        $user=$userRepository->findOneBy(['id'=>$passeport->getIdUser()]);
+        $user->setPasseport($passeport);
+        $passeport->setEtat("Refusé");
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+        return new Response("Passeport supprimé avec succés");
     }
 
     /**

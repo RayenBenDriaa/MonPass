@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Typereclamation{% endblock %}
+
+{% block body %}
+    <h1>Typereclamation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ typereclamation.id }}</td>
+            </tr>
+            <tr>
+                <th>Typereclamation</th>
+                <td>{{ typereclamation.typereclamation }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('typereclamation_index') }}">back to list</a>
+
+    <a href="{{ path('typereclamation_edit', {'id': typereclamation.id}) }}">edit</a>
+
+    {{ include('typereclamation/_delete_form.html.twig') }}
+{% endblock %}

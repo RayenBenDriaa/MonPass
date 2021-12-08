@@ -169,6 +169,8 @@ class _SigninState extends State<Signin> {
 
                                             SharedPreferences prefs = await SharedPreferences.getInstance();
                                             prefs.setString("email", userFromServer["email"]);
+                                            prefs.setString("id", userFromServer["id"].toString());
+                                            prefs.setString("nomPrenom", userFromServer["prenom"]+" "+userFromServer["Nom"]);
                                             Navigator.pushNamed(context, "/accueil");
                                           }
                                           else {
@@ -216,24 +218,3 @@ class _SigninState extends State<Signin> {
   }
 }
 
-/*typedef void TextCallBack(String? value);
-
-class TextFieldUser extends StatelessWidget {
-  final String label;
-
-  TextFieldUser({
-    required this.label,
-    required this.onSaved,
-    Key? key,
-  }) : super(key: key);
-  TextCallBack onSaved;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-        decoration:
-        InputDecoration(border: OutlineInputBorder(), labelText: label),
-        onSaved: (value) => onSaved(value));
-  }
-}
-*/

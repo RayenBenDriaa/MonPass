@@ -75,7 +75,7 @@ class FactureController extends AbstractController
             $facture->setUrlImage($imageName);
             $user=$userRepository->findOneBy(['id'=>$_POST['idUser']]);
             $facture->setUser($user);
-            $user->setFacture($facture);
+            //$user->setFacture($facture);
 
 
 
@@ -97,6 +97,49 @@ class FactureController extends AbstractController
         $facture=$repository->findOneBy(['idUser' => $id]);
         $jsonContent=$Normalizer->normalize($facture,'json',['groups'=>'post:read']);
         return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+    }
+
+    /**
+     * @Route("/getAllFacturetJSON", name="getAllFactureJSON_index")
+     */
+    public function getAllFactureJSON(FactureRepository $factureRepository, NormalizerInterface $Normalizer, UserRepository $userRepository): Response
+    {
+        $factures=$factureRepository->findBy(['etat'=>"En attente"]);
+        foreach ($factures as $facture){
+            if ($facture->getUser()==null)
+            {
+                $facture->setUser($userRepository->findOneBy(['id'=>$facture->getIdUser()]));
+            }
+        }
+        $jsonContent=$Normalizer->normalize($factures,'json',['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+    }
+    /**
+     * @Route("/editFactureJSON/{id}", name="factureJSON_edit")
+     */
+    public function editFactureJSON(int $id,Request $request, UserRepository $userRepository, FactureRepository $repository): Response
+    {
+        $facture = $repository->findOneBy(['idUser' => $id]);
+        $user=$userRepository->findOneBy(['id'=>$facture->getIdUser()]);
+        $user->setFacture($facture);
+        $facture->setEtat("Validé");
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+        return new Response("Facture modifié avec succés");
+    }
+
+    /**
+     * @Route("/deleteFactureJSON/{id}", name="factureJSON_delete")
+     */
+    public function deleteFactureJSON(int $id,Request $request, FactureRepository $repository,UserRepository $userRepository): Response
+    {
+        $facture = $repository->findOneBy(['idUser' => $id]);
+        $user=$userRepository->findOneBy(['id'=>$facture->getIdUser()]);
+        $user->setFacture($facture);
+        $facture->setEtat("Refusé");
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+        return new Response("Facture supprimé avec succés");
     }
 
     /**

@@ -45,6 +45,7 @@ class Facture
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, mappedBy="facture", cascade={"persist", "remove"})
+     * @Groups("post:read")
      */
     private $user;
 

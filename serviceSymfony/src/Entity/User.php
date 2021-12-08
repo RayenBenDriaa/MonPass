@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -71,6 +73,16 @@ class User implements UserInterface
      * @ORM\OneToOne(targetEntity=Facture::class, inversedBy="user", cascade={"persist", "remove"})
      */
     private $facture;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Reclamation::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $reclamations;
+
+    public function __construct()
+    {
+        $this->reclamations = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -222,6 +234,36 @@ class User implements UserInterface
     public function setFacture(?Facture $facture): self
     {
         $this->facture = $facture;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Reclamation[]
+     */
+    public function getReclamations(): Collection
+    {
+        return $this->reclamations;
+    }
+
+    public function addReclamation(Reclamation $reclamation): self
+    {
+        if (!$this->reclamations->contains($reclamation)) {
+            $this->reclamations[] = $reclamation;
+            $reclamation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReclamation(Reclamation $reclamation): self
+    {
+        if ($this->reclamations->removeElement($reclamation)) {
+            // set the owning side to null (unless already changed)
+            if ($reclamation->getUser() === $this) {
+                $reclamation->setUser(null);
+            }
+        }
 
         return $this;
     }

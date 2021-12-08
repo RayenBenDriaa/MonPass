@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class Accueil extends StatefulWidget {
    const Accueil({Key? key}) : super(key: key);
 
@@ -10,6 +12,9 @@ class Accueil extends StatefulWidget {
 }
 
 class _AccueilState extends State<Accueil> {
+
+  late String id;
+  late String nomPrenom;
 
   late String etatCin;
   late String dateCin;
@@ -26,8 +31,11 @@ class _AccueilState extends State<Accueil> {
   late Future<bool> fetchedDocs;
 
   Future<bool> fetchDocs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    id=prefs.getString("id")!;
+    nomPrenom=prefs.getString("nomPrenom")!;
     //requete GET pour obtenir l'entité CIN d'un user
-    http.Response response= await http.get(Uri.http(_baseUrl, "/cin/showCinJSON/"+"1"));
+    http.Response response= await http.get(Uri.http(_baseUrl, "/cin/showCinJSON/"+id));
     //Si la réponse n'est pas vide
     if(response.body!="null")
       {
@@ -41,7 +49,15 @@ class _AccueilState extends State<Accueil> {
           }
         else
           {
-            colorCin=Colors.greenAccent;
+            if(etatCin=="Refusé")
+              {
+                colorCin=Colors.redAccent;
+              }
+            else
+              {
+                colorCin=Colors.greenAccent;
+              }
+
           }
         dateCin="Déposé depuis le "+dataCIN["date"].toString().substring(0,10);
       }
@@ -55,7 +71,7 @@ class _AccueilState extends State<Accueil> {
 
 
     //requete GET pour obtenir l'entité Passeport d'un user
-    http.Response responsePasseport= await http.get(Uri.http(_baseUrl, "/passeport/showPasseportJSON/"+"1"));
+    http.Response responsePasseport= await http.get(Uri.http(_baseUrl, "/passeport/showPasseportJSON/"+id));
     //Si la réponse n'est pas vide
     if(responsePasseport.body!="null")
     {
@@ -69,7 +85,14 @@ class _AccueilState extends State<Accueil> {
       }
       else
       {
-        colorPasseport=Colors.greenAccent;
+        if(etatPasseport=="Refusé")
+        {
+          colorPasseport=Colors.redAccent;
+        }
+        else
+        {
+          colorPasseport=Colors.greenAccent;
+        }
       }
       datePasseport="Déposé depuis le "+dataPasseport["date"].toString().substring(0,10);
     }
@@ -82,7 +105,7 @@ class _AccueilState extends State<Accueil> {
     }
 
     //requete GET pour obtenir l'entité Passeport d'un user
-    http.Response responseFacture= await http.get(Uri.http(_baseUrl, "/facture/showFactureJSON/"+"1"));
+    http.Response responseFacture= await http.get(Uri.http(_baseUrl, "/facture/showFactureJSON/"+id));
     //Si la réponse n'est pas vide
     if(responseFacture.body!="null")
     {
@@ -96,7 +119,14 @@ class _AccueilState extends State<Accueil> {
       }
       else
       {
-        colorFacture=Colors.greenAccent;
+        if(etatFacture=="Refusé")
+        {
+          colorFacture=Colors.redAccent;
+        }
+        else
+        {
+          colorFacture=Colors.greenAccent;
+        }
       }
       dateFacture="Déposé depuis le "+dataFacture["date"].toString().substring(0,10);
     }
@@ -138,11 +168,11 @@ class _AccueilState extends State<Accueil> {
                     // Important: Remove any padding from the ListView.
                     padding: EdgeInsets.zero,
                     children: [
-                      const DrawerHeader(
+                       DrawerHeader(
                         decoration: BoxDecoration(
                           color: Colors.green,
                         ),
-                        child: Text('Foulen Ben Foulen',
+                        child: Text(nomPrenom,
                           textScaleFactor: 2,
                           style: TextStyle(
                             color: Colors.white,

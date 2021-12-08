@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Reclamation;
 use App\Entity\Typereclamation;
+use App\Entity\User;
 use App\Form\ReclamationType;
 use App\Repository\ReclamationRepository;
 use App\Repository\TypereclamationRepository;
@@ -38,6 +39,20 @@ class ReclamationController extends AbstractController
     }
 
     /**
+     * @Route("/getReclamationsJSONBy/{id}", name="getReclamationsJSONById")
+     */
+    public function getReclamationsJSONById(int $id,UserRepository $userRepository,NormalizerInterface $Normalizer): Response
+    {
+        $user=$userRepository->findOneBy(['id'=>$id]);
+        $reclamations = $this->getDoctrine()
+            ->getRepository(Reclamation::class)
+            ->findBy(['user'=>$user]);
+
+        $jsonContent=$Normalizer->normalize($reclamations,'json',['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+    }
+
+    /**
      * @Route("/deleteReclamationsJSON/{id}", name="deleteReclamationsJSON")
      */
     public function deleteReclamationsJSON(Request $request,NormalizerInterface $Normalizer,$id): Response
@@ -64,7 +79,7 @@ class ReclamationController extends AbstractController
         $reclamation->setDatereclamation($timeDate);
         $reclamation->setEncours(0);
         $reclamation->setTraite(0);
-        $reclamation->setTypeReclamation($typereclamationRepository->findOneBy(['id'=>$request->get('idTypeReclamation')]));
+        $reclamation->setTypeReclamation($typereclamationRepository->findOneBy(['typereclamation'=>$request->get('typeReclamation')]));
 
 
         $entityManager = $this->getDoctrine()->getManager();

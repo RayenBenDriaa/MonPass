@@ -151,6 +151,20 @@ class _MonProfilState extends State<MonProfil> {
                       ListTile(
                         title: Row(
                           children: const [
+                            Icon(Icons.help_outline),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text("Mes réclamations", textScaleFactor: 1.2),
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.pushNamed(context, "/reclamationFront");
+                        },
+                      ),
+                      ListTile(
+                        title: Row(
+                          children: const [
                             Icon(Icons.exit_to_app),
                             SizedBox(
                               width: 10,

@@ -16,6 +16,7 @@ class _ReclamationBackState extends State<ReclamationBack> {
   late Future<bool> fetchedReclamation;
   late String _enCours;
   late String  _traiter;
+  late String _etat;
 
   final List<Reclamation> _reclamations = [];
 
@@ -155,18 +156,17 @@ class _ReclamationBackState extends State<ReclamationBack> {
                           //enveloppe/adapte sa taille à celle du contenu
                           itemCount: _reclamations.length,
                           itemBuilder: (BuildContext context, int index) {
-                            if(_reclamations[index].traite==0){
+                            if(_reclamations[index].traite==0 && _reclamations[index].enCours==0){
                               _traiter="non";
+                              _etat=" Reclamation non traité";
 
                             }
-                            else{
+                            else if (_reclamations[index].traite==0 && _reclamations[index].enCours==1){
                               _traiter="oui";
+                              _etat="Traitement en cours";
                             }
-                            if (_reclamations[index].enCours==0){
-                              _enCours="non";
-
-                            }else
-                              {_enCours="oui";}
+                            else
+                              {_etat="Reclamation traiter";}
 
                             return Card(
                               margin: EdgeInsets.fromLTRB(5, 10, 5, 10),
@@ -233,13 +233,12 @@ class _ReclamationBackState extends State<ReclamationBack> {
                                       child:
                                       Row(
                                         children: [
-                                          Text("Traité :   " +_traiter,
+                                          Text("Etat :   " +_etat,
                                               textScaleFactor: 1),
                                           Expanded(
                                             child: Container(),
                                           ),
-                                          Text("En cours :   " +_enCours,
-                                              textScaleFactor: 1),
+
                                         ],
                                       ),
                                     )

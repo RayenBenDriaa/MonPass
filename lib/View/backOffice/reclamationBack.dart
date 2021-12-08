@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:mon_pass/Model/reclamation.dart';
 import 'package:mon_pass/View/backOffice/reclamation_info.dart';
 
-
 class ReclamationBack extends StatefulWidget {
   const ReclamationBack({Key? key}) : super(key: key);
 
@@ -21,8 +20,8 @@ class _ReclamationBackState extends State<ReclamationBack> {
   final String _baseUrl = "10.0.2.2:8000";
 
   Future<bool> fetchReclamations() async {
-    http.Response response = await http.get(
-        Uri.http(_baseUrl, "/reclamation/getReclamationsJSON"));
+    http.Response response =
+        await http.get(Uri.http(_baseUrl, "/reclamation/getReclamationsJSON"));
 
     List<dynamic> ReclamationsFromServer = json.decode(response.body);
 
@@ -46,17 +45,202 @@ class _ReclamationBackState extends State<ReclamationBack> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: fetchedReclamation,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if(snapshot.hasData) {
-          return Column(
-            children: [
+        if (snapshot.hasData) {
+          return Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/Bubbles.jpg'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Scaffold(
+                  drawer: Drawer(
+                    child: ListView(
+                      // Important: Remove any padding from the ListView.
+                      padding: EdgeInsets.zero,
+                      children: [
+                        DrawerHeader(
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                          ),
+                          child: Text(
+                            "Admin",
+                            textScaleFactor: 2,
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        ListTile(
+                          title: Row(
+                            children: const [
+                              Icon(Icons.attach_email_outlined),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Reclamations", textScaleFactor: 1.2),
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, "/back/reclamationBack");
+                          },
+                        ),
+                        ListTile(
+                          title: Row(
+                            children: const [
+                              Icon(Icons.exit_to_app),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Se déconnecter", textScaleFactor: 1.2),
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, "/");
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  appBar: AppBar(
+                    //title: const Text("Mon Passe"),
+                    backgroundColor: Colors.green,
+                    toolbarHeight: 80,
+                    flexibleSpace: SafeArea(
+                      child: Container(
+                        height: 80,
+                        margin: const EdgeInsets.fromLTRB(60, 20, 20, 20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "Réclamations",
+                              textScaleFactor: 1.5,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                height: 100,
+                              ),
+                            ),
+                            const Icon(
+                              Icons.attach_email_outlined,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  backgroundColor: Colors.transparent,
+                  body: Column(
+                    children: [
+                      Flexible(
+                        // pouvoir scroller
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          //Direction du scroll
+                          shrinkWrap: true,
+                          //enveloppe/adapte sa taille à celle du contenu
+                          itemCount: _reclamations.length,
+                          itemBuilder: (BuildContext context, int index) {
 
-              Expanded(
+                            return Card(
+                              margin: EdgeInsets.fromLTRB(5, 10, 5, 10),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(20, 20, 20, 5),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                            _reclamations[index]
+                                                    .user["prenom"] +
+                                                " " +
+                                                _reclamations[index]
+                                                    .user["Nom"],
+                                            textScaleFactor: 1.5),
+                                        Expanded(
+                                          child: Container(),
+                                        ),
+                                        Text(_reclamations[index].date,
+                                            textScaleFactor: 1),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(12, 0, 12, 5),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                            _reclamations[index]
+                                                    .typeReclamation[
+                                                "typereclamation"],
+                                            textScaleFactor: 1.2),
+                                        const SizedBox(
+                                          height: 8,
+                                        ),
+                                        Text(
+                                            _reclamations[index]
+                                                .descriptionReclamation,
+                                            textScaleFactor: 1),
+                                      ],
+                                    ),
+
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+
+                                      http.get(Uri.http(_baseUrl, "/reclamation/editReclamationJSON/${_reclamations[index].id}"));
+                                      Navigator.pushNamed(context, "/back/reclamationBack");
+
+
+                                    }, // Handle your callback
+                                    child: new Container(
+                                      margin: EdgeInsets.fromLTRB(20, 20, 20, 5),
+                                      child:
+                                      Row(
+                                        children: [
+                                          Text("Traité " +_reclamations[index].traite.toString(),
+                                              textScaleFactor: 1),
+                                          Expanded(
+                                            child: Container(),
+                                          ),
+                                          Text("En cours " +_reclamations[index].enCours.toString(),
+                                              textScaleFactor: 1),
+                                        ],
+                                      ),
+                                    )
+                                  )
+
+                                ],
+                              ),
+
+
+                            );
+                          },
+                        ),
+                      ),
+
+                      /*  Expanded(
                   child: ListView.builder(
                     itemCount: _reclamations.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -65,11 +249,10 @@ class _ReclamationBackState extends State<ReclamationBack> {
                     },
                   )
 
-              )
-            ],
-          );
-        }
-        else {
+              )*/
+                    ],
+                  )));
+        } else {
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -107,10 +290,3 @@ class _ReclamationBackState extends State<ReclamationBack> {
       },
     );
   }*/
-
-
-
-
-
-
-

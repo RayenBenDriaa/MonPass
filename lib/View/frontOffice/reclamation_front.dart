@@ -28,10 +28,12 @@ class _ReclamationFrontState extends State<ReclamationFront> {
 
   Future<bool> fetchData() async {
 
+    //recuperer la session utilisateur
     SharedPreferences prefs = await SharedPreferences.getInstance();
     id =prefs.getString("id")!;
     nomPrenom =prefs.getString("nomPrenom")!;
 
+    //Recuperer les reclamation du user connecté
     http.Response response = await http
         .get(Uri.http(_baseUrl, "/reclamation/getReclamationsJSONBy/" + id));
     List<dynamic> docsFromSever = json.decode(response.body);
@@ -54,6 +56,8 @@ class _ReclamationFrontState extends State<ReclamationFront> {
       //     int.parse(docsFromSever[i]["encours"].toString()),
       //     int.parse(docsFromSever[i]["traite"].toString()));
       // print(doc);
+
+      //ajouter dans la liste les reclamations récupéré par la BD
       _reclamations.add(Reclamation(
           int.parse(docsFromSever[i]["id"].toString()),
           docsFromSever[i]["user"],
@@ -69,12 +73,15 @@ class _ReclamationFrontState extends State<ReclamationFront> {
     print(_reclamations);
     //print("________");
 
+    //recuperer les types de réclamations à partir de la base de donnée
     http.Response responseTypeReclamation = await http
         .get(Uri.http(_baseUrl, "/typereclamation/getTypeJSON"));
     List<dynamic> TypeReclamationFromSever = json.decode(responseTypeReclamation.body);
     for (int i = 0; i < TypeReclamationFromSever.length; i++) {
+      //insérer dans une liste de string les types de réclamations
       _typeReclamations.add(TypeReclamationFromSever[i]["typereclamation"]);
     }
+    //assigner la valeur par défaut et la valeur de retour de la dropdown list
     dropdownValue=_typeReclamations[0];
 
     return true;
@@ -223,6 +230,7 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                               SizedBox(
                                 width: 10,
                               ),
+                              //liste déroulante
                               DropdownButton<String>(
                                 value: dropdownValue,
                                 icon: const Icon(Icons.arrow_downward),
@@ -235,9 +243,11 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                                 ),
                                 onChanged: (String? newValue) {
                                   setState(() {
+                                    //quand la valeur de liste change elle sera assigné au dropdownValue
                                     dropdownValue = newValue!;
                                   });
                                 },
+                                //insérer les élements de la list déroulante à partir de la liste récuperer dans le futur
                                 items: _typeReclamations.map<DropdownMenuItem<String>>((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
@@ -265,6 +275,7 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                                         _description = value;
                                       },
                                       validator: (value) {
+                                        //contrôle de saisi
                                         if (value == null || value.isEmpty) {
                                           return "La description ne doit pas etre vide";
                                         }
@@ -291,15 +302,19 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                                 onPressed: () async {
                                   if (_keyForm.currentState!.validate()) {
                                     _keyForm.currentState!.save();
+                                    //préparation du body de la requete
                                     var data = {"idUser" : id, "description" : _description, "typeReclamation" : dropdownValue};
+                                    //envoie de la requete
                                     var response = await http.post(Uri.http(_baseUrl, "/reclamation/addReclamationsJSON"), body: data);
                                     //Si il y a une reponse du service
                                     if (response.statusCode==200 || response.statusCode==201)
                                     {
+                                      //actualiser la page
                                       Navigator.pushNamed(context, "/reclamationFront");
                                     }
                                     else
                                       {
+                                        //message d'avertissement
                                         showDialog(
                                             context: context,
                                             builder: (BuildContext context) {
@@ -341,6 +356,7 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                                     child: Row(
                                       children: [
                                         Text(
+                                          // le nom et prenom de la personne qui a envoyé la réclamation
                                             _reclamations[index].user["prenom"] +
                                                 " " +
                                                 _reclamations[index].user["Nom"],
@@ -362,6 +378,7 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
+                                          //afficher le type de la réclamation
                                             _reclamations[index]
                                                 .typeReclamation["typereclamation"],
                                             textScaleFactor: 1.2),
@@ -369,6 +386,7 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                                           height: 8,
                                         ),
                                         Text(
+                                          //afficher la description de la reclamation
                                             _reclamations[index].descriptionReclamation,
                                             textScaleFactor: 1),
                                       ],

@@ -18,17 +18,40 @@ class _ReclamationBackState extends State<ReclamationBack> {
   late String  _traiter;
   late String _etat;
 
+
   final List<Reclamation> _reclamations = [];
 
   final String _baseUrl = "10.0.2.2:8000";
 
   Future<bool> fetchReclamations() async {
+    IconData icone;
+    Color couleur;
+
     http.Response response =
         await http.get(Uri.http(_baseUrl, "/reclamation/getReclamationsJSON"));
 
     List<dynamic> ReclamationsFromServer = json.decode(response.body);
 
     for (int i = 0; i < ReclamationsFromServer.length; i++) {
+      if(int.parse(ReclamationsFromServer[i]["encours"].toString())==0 && int.parse(ReclamationsFromServer[i]["traite"].toString())==0)
+      {
+        icone= Icons.cancel_outlined;
+        couleur = Colors.red;
+      }
+      else
+      {
+        if(int.parse(ReclamationsFromServer[i]["encours"].toString())==1 && int.parse(ReclamationsFromServer[i]["traite"].toString())==0)
+        {
+          icone=Icons.access_time;
+          couleur = Colors.orange;
+        }
+        else
+        {
+          icone=Icons.check;
+          couleur=Colors.green;
+        }
+      }
+
       _reclamations.add(Reclamation(
           int.parse(ReclamationsFromServer[i]["id"].toString()),
           ReclamationsFromServer[i]["user"],
@@ -36,7 +59,7 @@ class _ReclamationBackState extends State<ReclamationBack> {
           ReclamationsFromServer[i]["descriptionReclamation"],
           ReclamationsFromServer[i]["dateReclamation"].substring(0, 10),
           int.parse(ReclamationsFromServer[i]["encours"].toString()),
-          int.parse(ReclamationsFromServer[i]["traite"].toString())));
+          int.parse(ReclamationsFromServer[i]["traite"].toString()),icone,couleur));
     }
 
     return true;
@@ -105,7 +128,7 @@ class _ReclamationBackState extends State<ReclamationBack> {
                             ],
                           ),
                           onTap: () {
-                            Navigator.pushNamed(context, "/");
+
                           },
                         ),
                       ],
@@ -192,6 +215,7 @@ class _ReclamationBackState extends State<ReclamationBack> {
                                         ),
                                         Text(_reclamations[index].date,
                                             textScaleFactor: 1),
+
                                       ],
                                     ),
                                   ),
@@ -235,6 +259,8 @@ class _ReclamationBackState extends State<ReclamationBack> {
                                         children: [
                                           Text("Etat :   " +_etat,
                                               textScaleFactor: 1),
+                                          Icon( _reclamations[index].icone
+                                            , color:_reclamations[index].couleur ,),
                                           Expanded(
                                             child: Container(),
                                           ),
@@ -266,8 +292,50 @@ class _ReclamationBackState extends State<ReclamationBack> {
                     ],
                   )));
         } else {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return  Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/Bubbles.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Scaffold(
+              appBar: AppBar(
+                //title: const Text("Mon Passe"),
+                backgroundColor: Colors.green,
+                toolbarHeight: 80,
+                flexibleSpace: SafeArea(
+                  child: Container(
+                    height: 80,
+                    margin: const EdgeInsets.fromLTRB(60, 20, 20, 20),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Reclamations",
+                          textScaleFactor: 1.5,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 100,
+                          ),
+                        ),
+                        const Icon(
+                          Icons.help_outline,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              body: Center(child: CircularProgressIndicator()),
+              backgroundColor: Colors.transparent,
+            ),
           );
         }
       },

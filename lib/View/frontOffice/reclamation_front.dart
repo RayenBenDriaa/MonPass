@@ -217,188 +217,73 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                   ),
                 ),
                 backgroundColor: Colors.transparent,
-                body: Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                body: ListView.builder(
+                  scrollDirection: Axis.vertical, //Direction du scroll
+                  shrinkWrap: true, //enveloppe/adapte sa taille à celle du contenu
+                  itemCount: _reclamations.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    //return DocumentInfo(_documents[index].url_image,_documents[index].date,_documents[index].user);
+                    //final item = _documents[index].toString();
+                    return Card(
+                      margin: EdgeInsets.fromLTRB(5, 10, 5, 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Text("Type de la réclamation :",textScaleFactor: 1.5,),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              //liste déroulante
-                              DropdownButton<String>(
-                                value: dropdownValue,
-                                icon: const Icon(Icons.arrow_downward),
-                                iconSize: 24,
-                                elevation: 16,
-                                style: const TextStyle(color: Colors.green),
-                                underline: Container(
-                                  height: 2,
-                                  color: Colors.greenAccent,
+                          Container(
+                            margin: EdgeInsets.fromLTRB(20, 20, 20, 5),
+                            child: Row(
+                              children: [
+                                Text(
+                                  // le nom et prenom de la personne qui a envoyé la réclamation
+                                    _reclamations[index].user["prenom"] +
+                                        " " +
+                                        _reclamations[index].user["Nom"],
+                                    textScaleFactor: 1.5),
+                                Expanded(
+                                  child: Container(),
                                 ),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    //quand la valeur de liste change elle sera assigné au dropdownValue
-                                    dropdownValue = newValue!;
-                                  });
-                                },
-                                //insérer les élements de la list déroulante à partir de la liste récuperer dans le futur
-                                items: _typeReclamations.map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                              )
-                            ],
+                                Text(_reclamations[index].date,
+                                    textScaleFactor: 1),
+                              ],
+                            ),
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Description :",textScaleFactor: 1.5,),
-                              Form(
-                                  key: _keyForm,
-                                  child: Container(
-                                    width: 390,
-                                    height: 80,
-                                    child: TextFormField(
-                                      maxLines: 4,
-                                      decoration: const InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          hintText: "Description"),
-                                      onSaved: (String? value) {
-                                        _description = value;
-                                      },
-                                      validator: (value) {
-                                        //contrôle de saisi
-                                        if (value == null || value.isEmpty) {
-                                          return "La description ne doit pas etre vide";
-                                        }
-                                        else if (value.length < 10) {
-                                          return "La description doit avoir au moins 10 caractères";
-                                        }
-                                        else {
-                                          return null;
-                                        }
-                                      },
-                                    ),
-                                  )
-                              )
-                            ],
+                          const SizedBox(
+                            height: 10,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                child: const Text("Envoyer"),
-                                style:  ElevatedButton.styleFrom(
-                                  primary : Colors.green,
+                          Container(
+                            margin: EdgeInsets.fromLTRB(12, 0, 12, 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  //afficher le type de la réclamation
+                                    _reclamations[index]
+                                        .typeReclamation["typereclamation"],
+                                    textScaleFactor: 1.2),
+                                const SizedBox(
+                                  height: 8,
                                 ),
-                                onPressed: () async {
-                                  if (_keyForm.currentState!.validate()) {
-                                    _keyForm.currentState!.save();
-                                    //préparation du body de la requete
-                                    var data = {"idUser" : id, "description" : _description, "typeReclamation" : dropdownValue};
-                                    //envoie de la requete
-                                    var response = await http.post(Uri.http(_baseUrl, "/reclamation/addReclamationsJSON"), body: data);
-                                    //Si il y a une reponse du service
-                                    if (response.statusCode==200 || response.statusCode==201)
-                                    {
-                                      //actualiser la page
-                                      Navigator.pushNamed(context, "/reclamationFront");
-                                    }
-                                    else
-                                      {
-                                        //message d'avertissement
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return const AlertDialog(
-                                                title: Text("Informationn"),
-                                                content: Text("Une erreur s'est produite, réessayer plus tard !"),
-                                              );
-                                            }
-                                        );
-                                      }
-
-                                  }
-                                },
-                              )
-                            ],
-                          )
+                                Text(
+                                  //afficher la description de la reclamation
+                                    _reclamations[index].descriptionReclamation,
+                                    textScaleFactor: 1),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-
-                    ),
-                    Flexible( // pouvoir scroller
-                        child: ListView.builder(
-                          scrollDirection: Axis.vertical, //Direction du scroll
-                          shrinkWrap: true, //enveloppe/adapte sa taille à celle du contenu
-                          itemCount: _reclamations.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            //return DocumentInfo(_documents[index].url_image,_documents[index].date,_documents[index].user);
-                            //final item = _documents[index].toString();
-                            return Card(
-                              margin: EdgeInsets.fromLTRB(5, 10, 5, 10),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.fromLTRB(20, 20, 20, 5),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          // le nom et prenom de la personne qui a envoyé la réclamation
-                                            _reclamations[index].user["prenom"] +
-                                                " " +
-                                                _reclamations[index].user["Nom"],
-                                            textScaleFactor: 1.5),
-                                        Expanded(
-                                          child: Container(),
-                                        ),
-                                        Text(_reclamations[index].date,
-                                            textScaleFactor: 1),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.fromLTRB(12, 0, 12, 5),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          //afficher le type de la réclamation
-                                            _reclamations[index]
-                                                .typeReclamation["typereclamation"],
-                                            textScaleFactor: 1.2),
-                                        const SizedBox(
-                                          height: 8,
-                                        ),
-                                        Text(
-                                          //afficher la description de la reclamation
-                                            _reclamations[index].descriptionReclamation,
-                                            textScaleFactor: 1),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                  ],
+                    );
+                  },
+                ),
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/ajouterReclamation");
+                  },
+                  backgroundColor: Colors.green,
+                  child: const Icon(Icons.add),
                 ),
               ),
             );

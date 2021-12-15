@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mon_pass/View/backOffice/validation_facture.dart';
 import 'package:mon_pass/View/backOffice/validation_passeport.dart';
+import 'package:mon_pass/View/frontOffice/ajouter_reclamation.dart';
 import 'package:mon_pass/View/frontOffice/reclamation_front.dart';
 import 'backOffice/reclamationBack.dart';
 import 'backOffice/stats.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
       title: 'Mon Passe',
       routes: {
         "/": (BuildContext context) {
-          return const Signin();
+          return const ReclamationFront();
         },
         "/signin": (BuildContext context) {
           return const Signin();
@@ -43,6 +44,9 @@ class MyApp extends StatelessWidget {
         },
         "/reclamationFront": (BuildContext context) {
           return const ReclamationFront();
+        },
+        "/ajouterReclamation": (BuildContext context) {
+          return const AjouterReclamation();
         },
         "/back": (BuildContext context) {
           return const BackOffice();

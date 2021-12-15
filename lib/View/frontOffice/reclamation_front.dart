@@ -26,12 +26,16 @@ class _ReclamationFrontState extends State<ReclamationFront> {
   late String nomPrenom;
   late String dropdownValue;
 
-  Future<bool> fetchData() async {
+  bool _expanded = false;
 
+  Future<bool> fetchData() async {
     //recuperer la session utilisateur
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    id =prefs.getString("id")!;
-    nomPrenom =prefs.getString("nomPrenom")!;
+    id = prefs.getString("id")!;
+    nomPrenom = prefs.getString("nomPrenom")!;
+
+    IconData icone;
+    Color couleur;
 
     //Recuperer les reclamation du user connecté
     http.Response response = await http
@@ -58,6 +62,24 @@ class _ReclamationFrontState extends State<ReclamationFront> {
       // print(doc);
 
       //ajouter dans la liste les reclamations récupéré par la BD
+      if(int.parse(docsFromSever[i]["encours"].toString())==0 && int.parse(docsFromSever[i]["traite"].toString())==0)
+        {
+          icone= Icons.cancel_outlined;
+          couleur = Colors.red;
+        }
+      else
+        {
+          if(int.parse(docsFromSever[i]["encours"].toString())==1 && int.parse(docsFromSever[i]["traite"].toString())==0)
+            {
+              icone=Icons.access_time;
+              couleur = Colors.orange;
+            }
+          else
+            {
+              icone=Icons.check;
+              couleur=Colors.green;
+            }
+        }
       _reclamations.add(Reclamation(
           int.parse(docsFromSever[i]["id"].toString()),
           docsFromSever[i]["user"],
@@ -65,7 +87,9 @@ class _ReclamationFrontState extends State<ReclamationFront> {
           docsFromSever[i]["descriptionReclamation"],
           docsFromSever[i]["dateReclamation"].substring(0, 10),
           int.parse(docsFromSever[i]["encours"].toString()),
-          int.parse(docsFromSever[i]["traite"].toString())));
+          int.parse(docsFromSever[i]["traite"].toString()),
+          icone,
+          couleur));
 
       //print(_reclamations);
     }
@@ -74,15 +98,16 @@ class _ReclamationFrontState extends State<ReclamationFront> {
     //print("________");
 
     //recuperer les types de réclamations à partir de la base de donnée
-    http.Response responseTypeReclamation = await http
-        .get(Uri.http(_baseUrl, "/typereclamation/getTypeJSON"));
-    List<dynamic> TypeReclamationFromSever = json.decode(responseTypeReclamation.body);
+    http.Response responseTypeReclamation =
+        await http.get(Uri.http(_baseUrl, "/typereclamation/getTypeJSON"));
+    List<dynamic> TypeReclamationFromSever =
+        json.decode(responseTypeReclamation.body);
     for (int i = 0; i < TypeReclamationFromSever.length; i++) {
       //insérer dans une liste de string les types de réclamations
       _typeReclamations.add(TypeReclamationFromSever[i]["typereclamation"]);
     }
     //assigner la valeur par défaut et la valeur de retour de la dropdown list
-    dropdownValue=_typeReclamations[0];
+    dropdownValue = _typeReclamations[0];
 
     return true;
   }
@@ -217,63 +242,152 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                   ),
                 ),
                 backgroundColor: Colors.transparent,
-                body: ListView.builder(
-                  scrollDirection: Axis.vertical, //Direction du scroll
-                  shrinkWrap: true, //enveloppe/adapte sa taille à celle du contenu
+                body:
+
+                    // ListView(
+                    //   children: [
+                    //     Container(
+                    //       margin: EdgeInsets.all(10),
+                    //       color: Colors.green,
+                    //       child: ExpansionPanelList(
+                    //         animationDuration: Duration(milliseconds: 500),
+                    //         children: [
+                    //           ExpansionPanel(
+                    //             headerBuilder: (context, isExpanded) {
+                    //               return ListTile(
+                    //                 title: Text(
+                    //                   'Click To Expand',
+                    //                   style: TextStyle(color: Colors.black),
+                    //                 ),
+                    //               );
+                    //             },
+                    //             body: ListTile(
+                    //               title: Text('Description text',
+                    //                   style: TextStyle(color: Colors.black)),
+                    //             ),
+                    //             isExpanded: _expanded,
+                    //             canTapOnHeader: true,
+                    //           ),
+                    //         ],
+                    //         dividerColor: Colors.grey,
+                    //         expansionCallback: (panelIndex, isExpanded) {
+                    //           _expanded = !_expanded;
+                    //           setState(() {});
+                    //         },
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+
+                    // Container(
+                    //   child: Card(
+                    //     margin: EdgeInsets.fromLTRB(5, 10, 5, 10),
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(15.0),
+                    //     ),
+                    //     child: Column(
+                    //       crossAxisAlignment: CrossAxisAlignment.start,
+                    //       children: [
+                    //         Container(
+                    //           margin: EdgeInsets.fromLTRB(20, 20, 20, 5),
+                    //           child: Row(
+                    //             children: [
+                    //               Text(
+                    //                 // le nom et prenom de la personne qui a envoyé la réclamation
+                    //                   _reclamations[index].user["prenom"] +
+                    //                       " " +
+                    //                       _reclamations[index].user["Nom"],
+                    //                   textScaleFactor: 1.5),
+                    //               Expanded(
+                    //                 child: Container(),
+                    //               ),
+                    //               Text(_reclamations[index].date,
+                    //                   textScaleFactor: 1),
+                    //             ],
+                    //           ),
+                    //         ),
+                    //         const SizedBox(
+                    //           height: 10,
+                    //         ),
+                    //         Container(
+                    //           margin: EdgeInsets.fromLTRB(12, 0, 12, 5),
+                    //           child: Column(
+                    //             crossAxisAlignment: CrossAxisAlignment.start,
+                    //             children: [
+                    //               Text(
+                    //                 //afficher le type de la réclamation
+                    //                   _reclamations[index]
+                    //                       .typeReclamation["typereclamation"],
+                    //                   textScaleFactor: 1.2),
+                    //               const SizedBox(
+                    //                 height: 8,
+                    //               ),
+                    //               Text(
+                    //                 //afficher la description de la reclamation
+                    //                   _reclamations[index].descriptionReclamation,
+                    //                   textScaleFactor: 1),
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // )
+
+                    ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  //Direction du scroll
+                  shrinkWrap: true,
+                  //enveloppe/adapte sa taille à celle du contenu
                   itemCount: _reclamations.length,
                   itemBuilder: (BuildContext context, int index) {
-                    //return DocumentInfo(_documents[index].url_image,_documents[index].date,_documents[index].user);
-                    //final item = _documents[index].toString();
-                    return Card(
-                      margin: EdgeInsets.fromLTRB(5, 10, 5, 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    return Container(
+                      margin: EdgeInsets.all(10),
+                      color: Colors.green,
+                      child: ExpansionPanelList(
+                        animationDuration: Duration(milliseconds: 500),
                         children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(20, 20, 20, 5),
-                            child: Row(
-                              children: [
-                                Text(
-                                  // le nom et prenom de la personne qui a envoyé la réclamation
-                                    _reclamations[index].user["prenom"] +
-                                        " " +
-                                        _reclamations[index].user["Nom"],
-                                    textScaleFactor: 1.5),
-                                Expanded(
-                                  child: Container(),
-                                ),
-                                Text(_reclamations[index].date,
-                                    textScaleFactor: 1),
-                              ],
+                          ExpansionPanel(
+                            headerBuilder: (context, isExpanded) {
+                              return Row(
+                                children: [
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Text(
+                                      //afficher le type de la réclamation
+                                      _reclamations[index]
+                                          .typeReclamation["typereclamation"],
+                                      textScaleFactor: 1.5),
+                                  Expanded(
+                                    child: Container(),
+                                  ),
+                                  Text(_reclamations[index].date,
+                                      textScaleFactor: 1),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Icon( _reclamations[index].icone
+                                  , color:_reclamations[index].couleur ,),
+                                ],
+                              );
+                            },
+                            body: ListTile(
+                              title: Text(
+                                                //afficher la description de la reclamation
+                                                  _reclamations[index].descriptionReclamation,
+                                                  textScaleFactor: 1),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(12, 0, 12, 5),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  //afficher le type de la réclamation
-                                    _reclamations[index]
-                                        .typeReclamation["typereclamation"],
-                                    textScaleFactor: 1.2),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                Text(
-                                  //afficher la description de la reclamation
-                                    _reclamations[index].descriptionReclamation,
-                                    textScaleFactor: 1),
-                              ],
-                            ),
+                            isExpanded: _reclamations[index].isExpanded,
+                            canTapOnHeader: true,
                           ),
                         ],
+                        dividerColor: Colors.grey,
+                        expansionCallback: (panelIndex, isExpanded) {
+                          _reclamations[index].isExpanded =
+                              !_reclamations[index].isExpanded;
+                          setState(() {});
+                        },
                       ),
                     );
                   },
@@ -336,4 +450,25 @@ class _ReclamationFrontState extends State<ReclamationFront> {
           }
         });
   }
+}
+
+class Item {
+  Item({
+    required this.expandedValue,
+    required this.headerValue,
+    this.isExpanded = false,
+  });
+
+  String expandedValue;
+  String headerValue;
+  bool isExpanded;
+}
+
+List<Item> generateItems(int numberOfItems) {
+  return List<Item>.generate(numberOfItems, (int index) {
+    return Item(
+      headerValue: 'Panel $index',
+      expandedValue: 'This is item number $index',
+    );
+  });
 }

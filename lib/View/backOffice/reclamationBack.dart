@@ -23,12 +23,33 @@ class _ReclamationBackState extends State<ReclamationBack> {
   final String _baseUrl = "10.0.2.2:8000";
 
   Future<bool> fetchReclamations() async {
+    IconData icone;
+    Color couleur;
+
     http.Response response =
     await http.get(Uri.http(_baseUrl, "/reclamation/getReclamationsJSON"));
 
     List<dynamic> ReclamationsFromServer = json.decode(response.body);
 
     for (int i = 0; i < ReclamationsFromServer.length; i++) {
+      if(int.parse(ReclamationsFromServer[i]["encours"].toString())==0 && int.parse(ReclamationsFromServer[i]["traite"].toString())==0)
+      {
+        icone= Icons.cancel_outlined;
+        couleur = Colors.red;
+      }
+      else
+      {
+        if(int.parse(ReclamationsFromServer[i]["encours"].toString())==1 && int.parse(ReclamationsFromServer[i]["traite"].toString())==0)
+        {
+          icone=Icons.access_time;
+          couleur = Colors.orange;
+        }
+        else
+        {
+          icone=Icons.check;
+          couleur=Colors.green;
+        }
+      }
       _reclamations.add(Reclamation(
           int.parse(ReclamationsFromServer[i]["id"].toString()),
           ReclamationsFromServer[i]["user"],
@@ -36,7 +57,7 @@ class _ReclamationBackState extends State<ReclamationBack> {
           ReclamationsFromServer[i]["descriptionReclamation"],
           ReclamationsFromServer[i]["dateReclamation"].substring(0, 10),
           int.parse(ReclamationsFromServer[i]["encours"].toString()),
-          int.parse(ReclamationsFromServer[i]["traite"].toString())));
+          int.parse(ReclamationsFromServer[i]["traite"].toString()),icone,couleur));
     }
 
     return true;

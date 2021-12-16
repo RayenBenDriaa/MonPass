@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mon_pass/Model/document.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 
@@ -167,9 +168,12 @@ class _ValidationPasseportState extends State<ValidationPasseport> {
                             Text("Se déconnecter",textScaleFactor: 1.2),
                           ],
                         ),
-                        onTap: () {
-                          Navigator.pushNamed(context, "/");
+                        onTap: () async {
+                          Navigator.pushNamed(context, "/signin");
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          prefs.clear();
                         },
+
                       ),
                     ],
                   ),

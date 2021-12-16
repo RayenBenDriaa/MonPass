@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mon_pass/Model/reclamation.dart';
 import 'package:mon_pass/View/backOffice/reclamation_info.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReclamationBack extends StatefulWidget {
   const ReclamationBack({Key? key}) : super(key: key);
@@ -17,6 +18,7 @@ class _ReclamationBackState extends State<ReclamationBack> {
   late String _enCours;
   late String  _traiter;
   late String _etat;
+
 
   final List<Reclamation> _reclamations = [];
 
@@ -50,6 +52,7 @@ class _ReclamationBackState extends State<ReclamationBack> {
           couleur=Colors.green;
         }
       }
+
       _reclamations.add(Reclamation(
           int.parse(ReclamationsFromServer[i]["id"].toString()),
           ReclamationsFromServer[i]["user"],
@@ -103,62 +106,6 @@ class _ReclamationBackState extends State<ReclamationBack> {
                         ListTile(
                           title: Row(
                             children: const [
-                              Icon(Icons.addchart_rounded),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text("Statistique",textScaleFactor: 1.2),
-                            ],
-                          ),
-                          onTap: () {
-                            Navigator.pushNamed(context, "/back/stats");
-                          },
-                        ),
-                        ListTile(
-                          title: Row(
-                            children: const [
-                              Icon(Icons.insert_drive_file),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text("Carte d'identité national",textScaleFactor: 1.2),
-                            ],
-                          ),
-                          onTap: () {
-                            Navigator.pushNamed(context, "/back/cin");
-                          },
-                        ),
-                        ListTile(
-                          title: Row(
-                            children: const [
-                              Icon(Icons.insert_drive_file),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text("Passeport",textScaleFactor: 1.2),
-                            ],
-                          ),
-                          onTap: () {
-                            Navigator.pushNamed(context, "/back/passeport");
-                          },
-                        ),
-                        ListTile(
-                          title: Row(
-                            children: const [
-                              Icon(Icons.insert_drive_file),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text("Facture",textScaleFactor: 1.2),
-                            ],
-                          ),
-                          onTap: () {
-                            Navigator.pushNamed(context, "/back/facture");
-                          },
-                        ),
-                        ListTile(
-                          title: Row(
-                            children: const [
                               Icon(Icons.attach_email_outlined),
                               SizedBox(
                                 width: 10,
@@ -181,9 +128,12 @@ class _ReclamationBackState extends State<ReclamationBack> {
                               Text("Se déconnecter", textScaleFactor: 1.2),
                             ],
                           ),
-                          onTap: () {
-                            Navigator.pushNamed(context, "/");
+                          onTap: () async {
+                            Navigator.pushNamed(context, "/signin");
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            prefs.clear();
                           },
+
                         ),
                       ],
                     ),
@@ -243,7 +193,7 @@ class _ReclamationBackState extends State<ReclamationBack> {
                               _etat="Traitement en cours";
                             }
                             else
-                            {_etat="Reclamation traité";}
+                            {_etat="Reclamation traiter";}
 
                             return Card(
                               margin: EdgeInsets.fromLTRB(5, 10, 5, 10),
@@ -269,6 +219,7 @@ class _ReclamationBackState extends State<ReclamationBack> {
                                         ),
                                         Text(_reclamations[index].date,
                                             textScaleFactor: 1),
+
                                       ],
                                     ),
                                   ),
@@ -312,6 +263,8 @@ class _ReclamationBackState extends State<ReclamationBack> {
                                           children: [
                                             Text("Etat :   " +_etat,
                                                 textScaleFactor: 1),
+                                            Icon( _reclamations[index].icone
+                                              , color:_reclamations[index].couleur ,),
                                             Expanded(
                                               child: Container(),
                                             ),
@@ -343,40 +296,53 @@ class _ReclamationBackState extends State<ReclamationBack> {
                     ],
                   )));
         } else {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return  Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/Bubbles.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Scaffold(
+              appBar: AppBar(
+                //title: const Text("Mon Passe"),
+                backgroundColor: Colors.green,
+                toolbarHeight: 80,
+                flexibleSpace: SafeArea(
+                  child: Container(
+                    height: 80,
+                    margin: const EdgeInsets.fromLTRB(60, 20, 20, 20),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Reclamations",
+                          textScaleFactor: 1.5,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 100,
+                          ),
+                        ),
+                        const Icon(
+                          Icons.help_outline,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              body: Center(child: CircularProgressIndicator()),
+              backgroundColor: Colors.transparent,
+            ),
           );
         }
       },
     );
   }
 }
-
-/*
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: fetchedReclamation,
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if(snapshot.hasData) {
-          return GridView.builder(
-            itemCount: _reclamations.length,
-            itemBuilder: (BuildContext context, int index) {
-              return MyReclaInfo(_reclamations[index].id, _reclamations[index].date);
-            },
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 5,
-                mainAxisSpacing: 5,
-                mainAxisExtent: 130
-            ),
-          );
-        }
-        else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
-    );
-  }*/

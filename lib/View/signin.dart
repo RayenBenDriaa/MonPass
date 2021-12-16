@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,6 +18,7 @@ class _SigninState extends State<Signin> {
   late String? _email;
   late String? _password;
   final String _baseUrl = "10.0.2.2:8000";
+  late String role;
   late Future<bool> fetchedDocs;
 
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
@@ -171,7 +173,20 @@ class _SigninState extends State<Signin> {
                                             prefs.setString("email", userFromServer["email"]);
                                             prefs.setString("id", userFromServer["id"].toString());
                                             prefs.setString("nomPrenom", userFromServer["prenom"]+" "+userFromServer["Nom"]);
-                                            Navigator.pushNamed(context, "/accueil");
+                                            prefs.setString("role", userFromServer["roles"].toString());
+                                            role=prefs.getString("role")!;
+                                            print(role);
+                                            debugPrint(role);
+                                            if(role=="[ROLE_USER]"){
+                                              Navigator.pushNamed(context,"/accueil");
+                                            }else{
+                                              Navigator.pushNamed(context, "/back/stats");
+
+                                            }
+
+
+
+
                                           }
                                           else {
                                             showDialog(
@@ -217,4 +232,3 @@ class _SigninState extends State<Signin> {
     );
   }
 }
-

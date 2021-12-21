@@ -80,7 +80,7 @@ class _ValidationPasseportState extends State<ValidationPasseport> {
                         decoration: BoxDecoration(
                           color: Colors.green,
                         ),
-                        child: Text('Foulen Ben Foulen',
+                        child: Text('Admin',
                           textScaleFactor: 2,
                           style: TextStyle(
                             color: Colors.white,

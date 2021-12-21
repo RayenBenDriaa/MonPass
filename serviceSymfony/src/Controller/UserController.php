@@ -137,7 +137,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/editAdmin/{id}", name="login")
+     * @Route("/editAdmin/{id}", name="editToAdmin")
      */
     public function editToAdmin(int $id,UserRepository $repository,NormalizerInterface $Normalizer)
     {

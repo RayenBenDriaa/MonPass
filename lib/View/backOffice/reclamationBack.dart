@@ -106,6 +106,62 @@ class _ReclamationBackState extends State<ReclamationBack> {
                         ListTile(
                           title: Row(
                             children: const [
+                              Icon(Icons.addchart_rounded),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Statistique",textScaleFactor: 1.2),
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, "/back/stats");
+                          },
+                        ),
+                        ListTile(
+                          title: Row(
+                            children: const [
+                              Icon(Icons.insert_drive_file),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Carte d'identité national",textScaleFactor: 1.2),
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, "/back/cin");
+                          },
+                        ),
+                        ListTile(
+                          title: Row(
+                            children: const [
+                              Icon(Icons.insert_drive_file),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Passeport",textScaleFactor: 1.2),
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, "/back/passeport");
+                          },
+                        ),
+                        ListTile(
+                          title: Row(
+                            children: const [
+                              Icon(Icons.insert_drive_file),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Facture",textScaleFactor: 1.2),
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, "/back/facture");
+                          },
+                        ),
+                        ListTile(
+                          title: Row(
+                            children: const [
                               Icon(Icons.attach_email_outlined),
                               SizedBox(
                                 width: 10,
@@ -125,7 +181,7 @@ class _ReclamationBackState extends State<ReclamationBack> {
                               SizedBox(
                                 width: 10,
                               ),
-                              Text("Se déconnecter", textScaleFactor: 1.2),
+                              Text("Se déconnecter",textScaleFactor: 1.2),
                             ],
                           ),
                           onTap: () async {

@@ -13,6 +13,8 @@ import 'frontOffice/signin_with.dart';
 import 'package:mon_pass/View/signin.dart';
 import 'package:mon_pass/View/signup.dart';
 
+import 'introduction_animation/introduction_animation_screen.dart';
+
 
 
 
@@ -30,7 +32,7 @@ class MyApp extends StatelessWidget {
       title: 'Mon Passe',
       routes: {
         "/": (BuildContext context) {
-          return  Signin();
+          return  IntroductionAnimationScreen();
         },
         "/signin": (BuildContext context) {
           return const Signin();

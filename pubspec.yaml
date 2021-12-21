@@ -39,6 +39,7 @@ dependencies:
   shared_preferences: ^2.0.8
   dio: ^4.0.1
   syncfusion_flutter_charts: ^19.3.56
+  animations: ^2.0.0
 
 
 dev_dependencies:
@@ -73,6 +74,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/images/introduction_animation/
     - assets/uploadedImages/
   #   - images/a_dot_ham.jpeg
 

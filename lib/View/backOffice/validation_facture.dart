@@ -80,7 +80,7 @@ class _ValidationFactureState extends State<ValidationFacture> {
                         decoration: BoxDecoration(
                           color: Colors.green,
                         ),
-                        child: Text('Foulen Ben Foulen',
+                        child: Text('Admin',
                           textScaleFactor: 2,
                           style: TextStyle(
                             color: Colors.white,

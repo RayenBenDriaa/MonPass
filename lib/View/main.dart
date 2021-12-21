@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mon_pass/View/backOffice/validation_facture.dart';
 import 'package:mon_pass/View/backOffice/validation_passeport.dart';
-import 'backOffice/reclamationBack.dart';
+import 'package:mon_pass/View/frontOffice/ajouter_reclamation.dart';
 import 'package:mon_pass/View/frontOffice/reclamation_front.dart';
+import 'backOffice/reclamationBack.dart';
 import 'backOffice/stats.dart';
 import 'backOffice/validation_cin.dart';
 import 'frontOffice/accueil.dart';
@@ -11,6 +13,10 @@ import 'frontOffice/mon_profil.dart';
 import 'frontOffice/signin_with.dart';
 import 'package:mon_pass/View/signin.dart';
 import 'package:mon_pass/View/signup.dart';
+
+import 'introduction_animation/introduction_animation_screen.dart';
+
+
 
 
 void main() {
@@ -24,10 +30,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        textTheme: GoogleFonts.latoTextTheme(
+          Theme.of(context).textTheme,
+        ),
+      ),
       title: 'Mon Passe',
       routes: {
         "/": (BuildContext context) {
-          return const Signin();
+          return  Signin();
         },
         "/signin": (BuildContext context) {
           return const Signin();
@@ -44,6 +55,12 @@ class MyApp extends StatelessWidget {
         "/reclamationFront": (BuildContext context) {
           return const ReclamationFront();
         },
+        "/ajouterReclamation": (BuildContext context) {
+          return const AjouterReclamation();
+        },
+        "/introductionAnimationScreen": (BuildContext context) {
+          return  IntroductionAnimationScreen();
+        },
         "/back": (BuildContext context) {
           return const BackOffice();
         },
@@ -58,6 +75,9 @@ class MyApp extends StatelessWidget {
         },
         "/back/facture": (BuildContext context) {
           return const ValidationFacture();
+        },
+        "/back/reclamationBack": (BuildContext context) {
+          return const ReclamationBack();
         },
         "/signinWith": (BuildContext context) {
           return const SigninWith();

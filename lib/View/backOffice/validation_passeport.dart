@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mon_pass/Model/document.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 
@@ -79,7 +80,7 @@ class _ValidationPasseportState extends State<ValidationPasseport> {
                         decoration: BoxDecoration(
                           color: Colors.green,
                         ),
-                        child: Text('Foulen Ben Foulen',
+                        child: Text('Admin',
                           textScaleFactor: 2,
                           style: TextStyle(
                             color: Colors.white,
@@ -145,6 +146,21 @@ class _ValidationPasseportState extends State<ValidationPasseport> {
                       ListTile(
                         title: Row(
                           children: const [
+                            Icon(Icons.attach_email_outlined),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text("Reclamations", textScaleFactor: 1.2),
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, "/back/reclamationBack");
+                        },
+                      ),
+                      ListTile(
+                        title: Row(
+                          children: const [
                             Icon(Icons.exit_to_app),
                             SizedBox(
                               width: 10,
@@ -152,9 +168,12 @@ class _ValidationPasseportState extends State<ValidationPasseport> {
                             Text("Se déconnecter",textScaleFactor: 1.2),
                           ],
                         ),
-                        onTap: () {
-                          Navigator.pushNamed(context, "/");
+                        onTap: () async {
+                          Navigator.pushNamed(context, "/signin");
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          prefs.clear();
                         },
+
                       ),
                     ],
                   ),

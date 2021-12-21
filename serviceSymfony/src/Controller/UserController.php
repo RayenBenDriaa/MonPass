@@ -136,6 +136,19 @@ class UserController extends AbstractController
 
     }
 
+    /**
+     * @Route("/editAdmin/{id}", name="editToAdmin")
+     */
+    public function editToAdmin(int $id,UserRepository $repository,NormalizerInterface $Normalizer)
+    {
+        $user=$repository->findOneBy(['id' => $id]);
+        $user->setRoles(["ROLE_ADMIN"]);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+        $jsonContent=$Normalizer->normalize($user,'json',['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+    }
+
 
 
 

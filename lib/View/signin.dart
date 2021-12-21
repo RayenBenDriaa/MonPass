@@ -17,7 +17,7 @@ class _SigninState extends State<Signin> {
 
   late String? _email;
   late String? _password;
-  final String _baseUrl = "192.168.1.15:8000";
+  final String _baseUrl = "10.0.2.2:8000";
   late String role;
   late Future<bool> fetchedDocs;
 
@@ -177,11 +177,12 @@ class _SigninState extends State<Signin> {
                                             role=prefs.getString("role")!;
                                             print(role);
                                             debugPrint(role);
-                                            if(role=="[ROLE_ADMIN]"){
-                                              Navigator.pushNamed(context, "/back/stats");
+                                            if(role=="[ROLE_USER]"){
+                                              Navigator.pushNamed(context,"/accueil");
 
                                             }else{
-                                              Navigator.pushNamed(context,"/accueil");
+
+                                              Navigator.pushNamed(context, "/back/stats");
                                             }
 
 
@@ -232,4 +233,3 @@ class _SigninState extends State<Signin> {
     );
   }
 }
-

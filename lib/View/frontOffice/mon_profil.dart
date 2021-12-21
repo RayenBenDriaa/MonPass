@@ -172,9 +172,12 @@ class _MonProfilState extends State<MonProfil> {
                             Text("Se déconnecter",textScaleFactor: 1.2),
                           ],
                         ),
-                        onTap: () {
-                          Navigator.pushNamed(context, "/back");
+                        onTap: () async {
+                          Navigator.pushNamed(context, "/signin");
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          prefs.clear();
                         },
+
                       ),
                     ],
                   ),

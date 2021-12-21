@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mon_pass/Model/reclamation.dart';
 import 'package:mon_pass/View/backOffice/reclamation_info.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReclamationBack extends StatefulWidget {
   const ReclamationBack({Key? key}) : super(key: key);
@@ -28,7 +29,7 @@ class _ReclamationBackState extends State<ReclamationBack> {
     Color couleur;
 
     http.Response response =
-        await http.get(Uri.http(_baseUrl, "/reclamation/getReclamationsJSON"));
+    await http.get(Uri.http(_baseUrl, "/reclamation/getReclamationsJSON"));
 
     List<dynamic> ReclamationsFromServer = json.decode(response.body);
 
@@ -105,6 +106,62 @@ class _ReclamationBackState extends State<ReclamationBack> {
                         ListTile(
                           title: Row(
                             children: const [
+                              Icon(Icons.addchart_rounded),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Statistique",textScaleFactor: 1.2),
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, "/back/stats");
+                          },
+                        ),
+                        ListTile(
+                          title: Row(
+                            children: const [
+                              Icon(Icons.insert_drive_file),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Carte d'identité national",textScaleFactor: 1.2),
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, "/back/cin");
+                          },
+                        ),
+                        ListTile(
+                          title: Row(
+                            children: const [
+                              Icon(Icons.insert_drive_file),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Passeport",textScaleFactor: 1.2),
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, "/back/passeport");
+                          },
+                        ),
+                        ListTile(
+                          title: Row(
+                            children: const [
+                              Icon(Icons.insert_drive_file),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Facture",textScaleFactor: 1.2),
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, "/back/facture");
+                          },
+                        ),
+                        ListTile(
+                          title: Row(
+                            children: const [
                               Icon(Icons.attach_email_outlined),
                               SizedBox(
                                 width: 10,
@@ -124,12 +181,15 @@ class _ReclamationBackState extends State<ReclamationBack> {
                               SizedBox(
                                 width: 10,
                               ),
-                              Text("Se déconnecter", textScaleFactor: 1.2),
+                              Text("Se déconnecter",textScaleFactor: 1.2),
                             ],
                           ),
-                          onTap: () {
-
+                          onTap: () async {
+                            Navigator.pushNamed(context, "/signin");
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            prefs.clear();
                           },
+
                         ),
                       ],
                     ),
@@ -189,7 +249,7 @@ class _ReclamationBackState extends State<ReclamationBack> {
                               _etat="Traitement en cours";
                             }
                             else
-                              {_etat="Reclamation traiter";}
+                            {_etat="Reclamation traiter";}
 
                             return Card(
                               margin: EdgeInsets.fromLTRB(5, 10, 5, 10),
@@ -205,7 +265,7 @@ class _ReclamationBackState extends State<ReclamationBack> {
                                       children: [
                                         Text(
                                             _reclamations[index]
-                                                    .user["prenom"] +
+                                                .user["prenom"] +
                                                 " " +
                                                 _reclamations[index]
                                                     .user["Nom"],
@@ -226,12 +286,12 @@ class _ReclamationBackState extends State<ReclamationBack> {
                                     margin: EdgeInsets.fromLTRB(12, 0, 12, 5),
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                             _reclamations[index]
-                                                    .typeReclamation[
-                                                "typereclamation"],
+                                                .typeReclamation[
+                                            "typereclamation"],
                                             textScaleFactor: 1.2),
                                         const SizedBox(
                                           height: 8,
@@ -245,29 +305,29 @@ class _ReclamationBackState extends State<ReclamationBack> {
 
                                   ),
                                   InkWell(
-                                    onTap: () {
+                                      onTap: () {
 
-                                      http.get(Uri.http(_baseUrl, "/reclamation/editReclamationJSON/${_reclamations[index].id}"));
-                                      Navigator.pushNamed(context, "/back/reclamationBack");
+                                        http.get(Uri.http(_baseUrl, "/reclamation/editReclamationJSON/${_reclamations[index].id}"));
+                                        Navigator.pushNamed(context, "/back/reclamationBack");
 
 
-                                    }, // Handle your callback
-                                    child: new Container(
-                                      margin: EdgeInsets.fromLTRB(20, 20, 20, 5),
-                                      child:
-                                      Row(
-                                        children: [
-                                          Text("Etat :   " +_etat,
-                                              textScaleFactor: 1),
-                                          Icon( _reclamations[index].icone
-                                            , color:_reclamations[index].couleur ,),
-                                          Expanded(
-                                            child: Container(),
-                                          ),
+                                      }, // Handle your callback
+                                      child: new Container(
+                                        margin: EdgeInsets.fromLTRB(20, 20, 20, 5),
+                                        child:
+                                        Row(
+                                          children: [
+                                            Text("Etat :   " +_etat,
+                                                textScaleFactor: 1),
+                                            Icon( _reclamations[index].icone
+                                              , color:_reclamations[index].couleur ,),
+                                            Expanded(
+                                              child: Container(),
+                                            ),
 
-                                        ],
-                                      ),
-                                    )
+                                          ],
+                                        ),
+                                      )
                                   )
 
                                 ],
@@ -342,32 +402,3 @@ class _ReclamationBackState extends State<ReclamationBack> {
     );
   }
 }
-
-/*
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: fetchedReclamation,
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if(snapshot.hasData) {
-          return GridView.builder(
-            itemCount: _reclamations.length,
-            itemBuilder: (BuildContext context, int index) {
-              return MyReclaInfo(_reclamations[index].id, _reclamations[index].date);
-            },
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 5,
-                mainAxisSpacing: 5,
-                mainAxisExtent: 130
-            ),
-          );
-        }
-        else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
-    );
-  }*/

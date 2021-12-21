@@ -26,7 +26,7 @@ class _AccueilState extends State<Accueil> {
   late String dateFacture;
   late MaterialAccentColor colorFacture;
 
-  final String _baseUrl = "10.0.2.2:8000";
+  final String _baseUrl = "192.168.1.15:8000";
 
   late Future<bool> fetchedDocs;
 
@@ -234,7 +234,7 @@ class _AccueilState extends State<Accueil> {
                         onTap: () async {
                           Navigator.pushNamed(context, "/signin");
                           SharedPreferences prefs = await SharedPreferences.getInstance();
-                           prefs.clear();
+                           await prefs.clear();
                         },
                       ),
 
@@ -307,10 +307,11 @@ class _AccueilState extends State<Accueil> {
                                   margin: EdgeInsets.fromLTRB(20, 20, 20, 5),
                                   child: Row(
                                     children: [
-                                      const Text("Carte d'identité nationale", textScaleFactor: 1.5),
-                                      Expanded(
-                                        child: Container(
-                                        ),
+
+                                           //const Text("Carte d'identité       nationale", textScaleFactor: 1.5),
+                                  Expanded(
+                                      child: Text("Carte d'identité nationale", textScaleFactor: 1.5)
+
                                       ),
                                       const Image(image: AssetImage("assets/images/id-card.jpg")),
                                     ],

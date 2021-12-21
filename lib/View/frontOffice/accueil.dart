@@ -158,7 +158,7 @@ class _AccueilState extends State<Accueil> {
             return Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/Bubbles.jpg'),
+                  image: AssetImage('assets/images/Bubbles.png'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -170,7 +170,7 @@ class _AccueilState extends State<Accueil> {
                     children: [
                        DrawerHeader(
                         decoration: BoxDecoration(
-                          color: Colors.green,
+                          color: Color(0xff00a67c),
                         ),
                         child: Text(nomPrenom,
                           textScaleFactor: 2,
@@ -243,7 +243,7 @@ class _AccueilState extends State<Accueil> {
                 ),
                 appBar: AppBar(
                   //title: const Text("Mon Passe"),
-                  backgroundColor: Colors.green,
+                  backgroundColor: Color(0xff00a67c),
                   toolbarHeight: 80,
                   flexibleSpace: SafeArea(
                     child: Container(
@@ -289,12 +289,12 @@ class _AccueilState extends State<Accueil> {
                               SizedBox(
                                 width: 35,
                               ),
-                              Text("Mes documents",
-                                textScaleFactor: 1.5,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              )
+                              // Text("Mes documents",
+                              //   textScaleFactor: 1.5,
+                              //   style: TextStyle(
+                              //     fontWeight: FontWeight.w500,
+                              //   ),
+                              // )
                             ],
                           ),
                           Card(
@@ -304,15 +304,18 @@ class _AccueilState extends State<Accueil> {
                             child: Column(
                               children: [
                                 Container(
+
                                   margin: EdgeInsets.fromLTRB(20, 20, 20, 5),
                                   child: Row(
                                     children: [
-                                      const Text("Carte d'identité nationale", textScaleFactor: 1.5),
+                                      const Text("Carte d'identité nationale",
+                                        textScaleFactor: 1.5,
+                                      ),
                                       Expanded(
                                         child: Container(
                                         ),
                                       ),
-                                      const Image(image: AssetImage("assets/images/id-card.jpg")),
+                                      const Image(image: AssetImage("assets/images/driving-license.png")),
                                     ],
                                   ),
                                 ),
@@ -366,7 +369,7 @@ class _AccueilState extends State<Accueil> {
                                         child: Container(
                                         ),
                                       ),
-                                      const Image(image: AssetImage("assets/images/passport.jpg")),
+                                      const Image(image: AssetImage("assets/images/passport.png")),
                                     ],
                                   ),
                                 ),
@@ -420,7 +423,7 @@ class _AccueilState extends State<Accueil> {
                                         child: Container(
                                         ),
                                       ),
-                                      const Image(image: AssetImage("assets/images/facture.jpg")),
+                                      const Image(image: AssetImage("assets/images/invoice.png")),
                                     ],
                                   ),
                                 ),
@@ -469,7 +472,7 @@ class _AccueilState extends State<Accueil> {
             return Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/Bubbles.jpg'),
+                  image: AssetImage('assets/images/Bubbles.png'),
                   fit: BoxFit.cover,
                 ),
               ),

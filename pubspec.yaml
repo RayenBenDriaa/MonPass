@@ -40,6 +40,7 @@ dependencies:
   dio: ^4.0.1
   syncfusion_flutter_charts: ^19.3.56
   animations: ^2.0.0
+  google_fonts: ^2.1.0
 
 
 dev_dependencies:
@@ -89,11 +90,15 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+    - family: Lato
+      fonts:
+       - asset: assets/fonts/Lato/Lato-Light.ttf
+         weight: 300
+       - asset: assets/fonts/Lato/Lato-Regular.ttf
+         weight: 400
+       - asset: assets/fonts/Lato/Lato-Bold.ttf
+         weight: 700
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mon_pass/View/backOffice/validation_facture.dart';
 import 'package:mon_pass/View/backOffice/validation_passeport.dart';
 import 'package:mon_pass/View/frontOffice/ajouter_reclamation.dart';
@@ -29,10 +30,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        textTheme: GoogleFonts.latoTextTheme(
+          Theme.of(context).textTheme,
+        ),
+      ),
       title: 'Mon Passe',
       routes: {
         "/": (BuildContext context) {
-          return  IntroductionAnimationScreen();
+          return  Signin();
         },
         "/signin": (BuildContext context) {
           return const Signin();
@@ -51,6 +57,9 @@ class MyApp extends StatelessWidget {
         },
         "/ajouterReclamation": (BuildContext context) {
           return const AjouterReclamation();
+        },
+        "/introductionAnimationScreen": (BuildContext context) {
+          return  IntroductionAnimationScreen();
         },
         "/back": (BuildContext context) {
           return const BackOffice();

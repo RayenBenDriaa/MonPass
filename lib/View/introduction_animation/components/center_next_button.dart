@@ -74,7 +74,7 @@ class CenterNextButton extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(
                         8 + 32 * (1 - _signUpMoveAnimation.value)),
-                    color: Color(0xff132137),
+                    color: Color(0xff00a67c),
                   ),
                   child: PageTransitionSwitcher(
                     duration: Duration(milliseconds: 480),
@@ -103,7 +103,7 @@ class CenterNextButton extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Sign Up',
+                                    "S'inscrire",
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 18,
@@ -138,15 +138,15 @@ class CenterNextButton extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Already have an account? ',
+                    'Vous avez déja un compte ? ',
                     style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 14,
+                      color: Color(0xffF4F4ED),
+                      fontSize: 16,
                       fontWeight: FontWeight.normal,
                     ),
                   ),
                   Text(
-                    'Login',
+                    'Se connecter',
                     style: TextStyle(
                       color: Color(0xff132137),
                       fontSize: 16,

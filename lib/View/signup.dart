@@ -24,7 +24,7 @@ class _SignupState extends State<Signup> {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/images/Bubbles.jpg'),
+          image: AssetImage('assets/images/Bubbles.png'),
           fit: BoxFit.cover,
         ),
       ),
@@ -204,7 +204,7 @@ class _SignupState extends State<Signup> {
 
                                     },
                                     style:  ElevatedButton.styleFrom(
-                                      primary : Colors.green,
+                                      primary : Color(0xff00a67c),
                                     ),
                                     child: const Text("Enregistrer ",textScaleFactor: 1.1,),
 
@@ -216,7 +216,7 @@ class _SignupState extends State<Signup> {
                               Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children:  [
-                                  const Text("Vous avez déja un  compte ?"),
+                                  const Text("Vous avez déja un compte ?"),
                                   const SizedBox(
                                     width: 8,
                                   ),

@@ -97,7 +97,7 @@ class CareView extends StatelessWidget {
                 child: SlideTransition(
                   position: _relaxSecondHalfAnimation,
                   child: Text(
-                    "Care",
+                    "Profil",
                     style:
                         TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
                   ),
@@ -107,8 +107,9 @@ class CareView extends StatelessWidget {
                 padding:
                     EdgeInsets.only(left: 64, right: 64, bottom: 16, top: 16),
                 child: Text(
-                  "Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore",
+                  "En allant dans le menu à gauche vous pourrez accéder à votre profil et ajouter vos documents pour qu'ils soient valdier par nos administrateurs. ",
                   textAlign: TextAlign.center,
+                  textScaleFactor: 1.2,
                 ),
               ),
             ],

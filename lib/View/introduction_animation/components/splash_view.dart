@@ -41,15 +41,17 @@ class _SplashViewState extends State<SplashView> {
             Padding(
               padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
               child: Text(
-                "Clearhead",
+                "Mon passe",
                 style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
               ),
             ),
             Padding(
               padding: EdgeInsets.only(left: 64, right: 64),
               child: Text(
-                "Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore",
+                "Mon passe est un porte document numérique qui vous permettra "
+                    "de vous connecter à des sites demandant la validation de votre identité en deux clics. ",
                 textAlign: TextAlign.center,
+                textScaleFactor: 1.2,
               ),
             ),
             SizedBox(
@@ -72,10 +74,10 @@ class _SplashViewState extends State<SplashView> {
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(38.0),
-                    color: Color(0xff132137),
+                    color: Color(0xff00a67c),
                   ),
                   child: Text(
-                    "Let's begin",
+                    "Commençons",
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.white,

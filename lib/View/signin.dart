@@ -58,7 +58,7 @@ class _SigninState extends State<Signin> {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/images/Bubbles.jpg'),
+          image: AssetImage('assets/images/Bubbles.png'),
           fit: BoxFit.cover,
         ),
       ),
@@ -204,7 +204,7 @@ class _SigninState extends State<Signin> {
 
                                     },
                                     style:  ElevatedButton.styleFrom(
-                                      primary : Colors.green,
+                                      primary : Color(0xff00a67c),
                                     ),
                                     child: const Text("Se connecter",textScaleFactor: 1.1,),
 

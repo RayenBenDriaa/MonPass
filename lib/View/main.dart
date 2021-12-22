@@ -9,10 +9,12 @@ import 'backOffice/stats.dart';
 import 'backOffice/validation_cin.dart';
 import 'frontOffice/accueil.dart';
 import 'backOffice/back_office.dart';
+import 'frontOffice/avatar.dart';
 import 'frontOffice/mon_profil.dart';
 import 'frontOffice/signin_with.dart';
 import 'package:mon_pass/View/signin.dart';
 import 'package:mon_pass/View/signup.dart';
+
 
 import 'introduction_animation/introduction_animation_screen.dart';
 
@@ -38,7 +40,7 @@ class MyApp extends StatelessWidget {
       title: 'Mon Passe',
       routes: {
         "/": (BuildContext context) {
-          return  Signin();
+          return IntroductionAnimationScreen();
         },
         "/signin": (BuildContext context) {
           return const Signin();
@@ -82,8 +84,8 @@ class MyApp extends StatelessWidget {
         "/signinWith": (BuildContext context) {
           return const SigninWith();
         },
-        "/back/reclamationBack": (BuildContext context) {
-          return const ReclamationBack();
+        "/avatar": (BuildContext context) {
+          return Avatar();
         },
       },
     );

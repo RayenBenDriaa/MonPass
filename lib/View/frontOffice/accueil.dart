@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Accueil extends StatefulWidget {
-   const Accueil({Key? key}) : super(key: key);
+  const Accueil({Key? key}) : super(key: key);
 
   @override
   State<Accueil> createState() => _AccueilState();
@@ -26,7 +26,7 @@ class _AccueilState extends State<Accueil> {
   late String dateFacture;
   late MaterialAccentColor colorFacture;
 
-  final String _baseUrl = "192.168.1.15:8000";
+  final String _baseUrl = "10.0.2.2:8000";
 
   late Future<bool> fetchedDocs;
 
@@ -38,36 +38,36 @@ class _AccueilState extends State<Accueil> {
     http.Response response= await http.get(Uri.http(_baseUrl, "/cin/showCinJSON/"+id));
     //Si la réponse n'est pas vide
     if(response.body!="null")
+    {
+      //assigner la réponse à une MAP
+      Map<String,dynamic> dataCIN = json.decode(response.body);
+      //assigner les variable etat, date et couleurs à leurs valeurs correspandtes
+      etatCin=dataCIN["etat"];
+      if(etatCin=="En attente")
       {
-        //assigner la réponse à une MAP
-        Map<String,dynamic> dataCIN = json.decode(response.body);
-        //assigner les variable etat, date et couleurs à leurs valeurs correspandtes
-        etatCin=dataCIN["etat"];
-        if(etatCin=="En attente")
-          {
-            colorCin=Colors.orangeAccent;
-          }
+        colorCin=Colors.orangeAccent;
+      }
+      else
+      {
+        if(etatCin=="Refusé")
+        {
+          colorCin=Colors.redAccent;
+        }
         else
-          {
-            if(etatCin=="Refusé")
-              {
-                colorCin=Colors.redAccent;
-              }
-            else
-              {
-                colorCin=Colors.greenAccent;
-              }
+        {
+          colorCin=Colors.greenAccent;
+        }
 
-          }
-        dateCin="Déposé depuis le "+dataCIN["date"].toString().substring(0,10);
       }
+      dateCin="Déposé depuis le "+dataCIN["date"].toString().substring(0,10);
+    }
     else
-      {
-        //si l'entité n'existe pas, mettre le document en tant que non déposé
-        etatCin="Non déposée";
-        colorCin=Colors.redAccent;
-        dateCin="";
-      }
+    {
+      //si l'entité n'existe pas, mettre le document en tant que non déposé
+      etatCin="Non déposée";
+      colorCin=Colors.redAccent;
+      dateCin="";
+    }
 
 
     //requete GET pour obtenir l'entité Passeport d'un user
@@ -152,7 +152,7 @@ class _AccueilState extends State<Accueil> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: fetchedDocs,
+        future: fetchedDocs,
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if(snapshot.hasData) {
             return Container(
@@ -168,7 +168,7 @@ class _AccueilState extends State<Accueil> {
                     // Important: Remove any padding from the ListView.
                     padding: EdgeInsets.zero,
                     children: [
-                       DrawerHeader(
+                      DrawerHeader(
                         decoration: BoxDecoration(
                           color: Color(0xff00a67c),
                         ),
@@ -234,15 +234,10 @@ class _AccueilState extends State<Accueil> {
                         onTap: () async {
                           Navigator.pushNamed(context, "/signin");
                           SharedPreferences prefs = await SharedPreferences.getInstance();
-<<<<<<< HEAD
-                           await prefs.clear();
-=======
                           prefs.clear();
->>>>>>> 462ed4a08c94bf91bff6717a6a844021b7591507
                         },
 
                       ),
-
                     ],
                   ),
                 ),
@@ -313,20 +308,12 @@ class _AccueilState extends State<Accueil> {
                                   margin: EdgeInsets.fromLTRB(20, 20, 20, 5),
                                   child: Row(
                                     children: [
-<<<<<<< HEAD
-
-                                           //const Text("Carte d'identité       nationale", textScaleFactor: 1.5),
-                                  Expanded(
-                                      child: Text("Carte d'identité nationale", textScaleFactor: 1.5)
-
-=======
                                       const Text("Carte d'identité nationale",
                                         textScaleFactor: 1.5,
                                       ),
                                       Expanded(
                                         child: Container(
                                         ),
->>>>>>> 462ed4a08c94bf91bff6717a6a844021b7591507
                                       ),
                                       const Image(image: AssetImage("assets/images/driving-license.png")),
                                     ],

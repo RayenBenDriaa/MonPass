@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 
 class MonProfil extends StatefulWidget {
@@ -224,6 +224,7 @@ class _MonProfilState extends State<MonProfil> {
                         margin: EdgeInsets.fromLTRB(15, 30, 15, 0),
                         child: Column(
                           children: [
+
                             Container(
                               margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                               child: TextFormField(
@@ -488,10 +489,25 @@ class _MonProfilState extends State<MonProfil> {
                             },
                           )
                       ),
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(100, 20, 100, 0),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Color(0xff00a67c),
+                          ),
+                          child: const Text(
+                            "My Avatar ",
+                            textScaleFactor: 1.1,
+                          ),
+                          onPressed: () =>
+                              {Navigator.pushNamed(context, "/avatar")},
+                        ))
+
 
                     ],
                   ),
                 ),
+
               ),
             );
           }

@@ -1,11 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttermoji/fluttermoji.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'avatar.dart';
 
 
 class MonProfil extends StatefulWidget {
@@ -114,10 +117,22 @@ class _MonProfilState extends State<MonProfil> {
                         decoration: BoxDecoration(
                           color: Color(0xff00a67c),
                         ),
-                        child: Text(nomPrenom,
-                          textScaleFactor: 2,
-                          style: TextStyle(
-                            color: Colors.white,
+                        child: Container(
+                          child: Column(
+                            children: [
+                              FluttermojiCircleAvatar(
+                                backgroundColor: Color(0xfff4f4ed),
+                                radius: 45,
+                              ),
+                              Text(
+                                nomPrenom,
+                                textScaleFactor: 2,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+
+                            ],
                           ),
                         ),
                       ),
@@ -285,6 +300,44 @@ class _MonProfilState extends State<MonProfil> {
                                     return null;
                                   }
                                 },
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                                  foregroundColor : MaterialStateProperty.all(Color(0xff111113)) ,
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () =>
+                                {Navigator.push(context,
+                                    new MaterialPageRoute(builder: (context) => NewPage()))},
+                                child: Container(
+                                  height: 40,
+                                  margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                  child: Row(
+                                    children: [
+                                      const Text("Customiser mon avatar",textScaleFactor: 1.2,),
+                                      Expanded(
+                                        child: Container(
+                                        ),
+                                      ),
+                                      const Icon(Icons.supervised_user_circle,
+                                        size: 30,
+                                        color: Color(0xff00a67c),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // style: OutlinedButton.styleFrom(
+                                //   backgroundColor: Colors.white,
+                                //   primary: Colors.black,
+                                // ),
                               ),
                             ),
                             Container(
@@ -550,7 +603,7 @@ class _MonProfilState extends State<MonProfil> {
               child:  Scaffold(
                 appBar: AppBar(
                   //title: const Text("Mon Passe"),
-                  backgroundColor: Colors.green,
+                  backgroundColor: Color(0xff00a67c),
                   toolbarHeight: 80,
                   flexibleSpace: SafeArea(
                     child: Container(

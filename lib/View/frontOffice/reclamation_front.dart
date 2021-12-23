@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttermoji/fluttermoji.dart';
 import 'package:http/http.dart' as http;
 import 'package:mon_pass/Model/reclamation.dart';
 import 'dart:convert';
@@ -145,10 +146,22 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                         decoration: BoxDecoration(
                           color: Color(0xff00a67c),
                         ),
-                        child: Text(nomPrenom,
-                          textScaleFactor: 2,
-                          style: TextStyle(
-                            color: Colors.white,
+                        child: Container(
+                          child: Column(
+                            children: [
+                              FluttermojiCircleAvatar(
+                                backgroundColor: Color(0xfff4f4ed),
+                                radius: 45,
+                              ),
+                              Text(
+                                nomPrenom,
+                                textScaleFactor: 2,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+
+                            ],
                           ),
                         ),
                       ),

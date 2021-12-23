@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mon_pass/View/backOffice/validation_facture.dart';
 import 'package:mon_pass/View/backOffice/validation_passeport.dart';
 import 'package:mon_pass/View/frontOffice/ajouter_reclamation.dart';
+import 'package:mon_pass/View/frontOffice/avatar.dart';
 import 'package:mon_pass/View/frontOffice/reclamation_front.dart';
 import 'backOffice/reclamationBack.dart';
 import 'backOffice/stats.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        canvasColor: Color(0xfff4f4ed),
           inputDecorationTheme: const InputDecorationTheme(
             labelStyle: TextStyle(color: Color(0xff111113)),
             hintStyle: TextStyle(color: Colors.grey),
@@ -75,6 +77,9 @@ class MyApp extends StatelessWidget {
         },
         "/introductionAnimationScreen": (BuildContext context) {
           return  IntroductionAnimationScreen();
+        },
+        "/avatar": (BuildContext context) {
+          return  Avatar();
         },
         "/back": (BuildContext context) {
           return const BackOffice();

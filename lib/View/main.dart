@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       title: 'Mon Passe',
       routes: {
         "/": (BuildContext context) {
-          return Accueil();
+          return Stats();
         },
         "/signin": (BuildContext context) {
           return const Signin();

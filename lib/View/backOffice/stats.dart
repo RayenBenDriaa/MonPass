@@ -18,44 +18,50 @@ class _StatsState extends State<Stats> {
   late List<UserData> _chartData;
   late List<UserDataP> _chartDataP;
   late Future<bool> fetchedStat;
-  late String countuser, countpass, countcin;
+  late double countuser, countpass, countcin;
   final String _baseUrl = "10.0.2.2:8000";
 
-  Future<int> fetcheduser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  Future<bool> fetcheduser() async {
+    
     http.Response response =
         await http.get(Uri.http(_baseUrl, "/api/countUserJson"));
-
-    int x = json.decode(response.body);
-    prefs.setString("userC", x.toString());
-    countuser = prefs.getString("userC")!;
-
-    return x;
-  }
-
-  Future<int> fetchedCin() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    http.Response response =
+    http.Response response1 =
+        await http.get(Uri.http(_baseUrl, "/passeport/countPassportJson"));
+    http.Response response2 =
         await http.get(Uri.http(_baseUrl, "/cin/countCinJson"));
+    
+    countuser = double.parse(json.decode(response.body).toString());
+    countpass = double.parse(json.decode(response2.body).toString());
+    countcin = double.parse(json.decode(response1.body).toString());
+    print(countuser);
+    _chartData = getUserData();
+    _chartDataP = getUserDataP();
 
-    int x = json.decode(response.body);
-    prefs.setString("CinC", x.toString());
-    countcin = prefs.getString("CinC")!;
 
-    return x;
-  }
 
-  Future<int> fetchedPassport() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    http.Response response =
+
+    return true;
+    /*
+    
+    
+    http.Response response1 =
         await http.get(Uri.http(_baseUrl, "/passeport/countPassportJson"));
 
-    int x = json.decode(response.body);
-    prefs.setString("passportC", x.toString());
-    countpass = prefs.getString("passortC")!;
+    
+  
+    countpass = json.decode(response1.body);
+    http.Response response2 =json.decode(response1.body);
+        await http.get(Uri.http(_baseUrl, "/passeport/countPassportJson"));
 
-    return x;
+    int y = json.decode(response.body);
+    
+    
+
+
+    return true;*/
   }
+
+  
 
 
 
@@ -64,14 +70,19 @@ class _StatsState extends State<Stats> {
 
   void initState() {
 //intialinsing list of Cin and passport
-    _chartData = getUserData();
-    _chartDataP = getUserDataP();
+    
+    fetchedStat = fetcheduser();
     super.initState();
+    
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return FutureBuilder(
+      future: fetchedStat,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        if (snapshot.hasData) {
+          return SafeArea(
         child: Scaffold(
           drawer: Drawer(
             child: ListView(
@@ -238,25 +249,76 @@ class _StatsState extends State<Stats> {
             ],
           ),
         ));
+
+        } else {
+          return Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/Bubbles.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Scaffold(
+              appBar: AppBar(
+                //title: const Text("Mon Passe"),
+                backgroundColor: Colors.green,
+                toolbarHeight: 80,
+                flexibleSpace: SafeArea(
+                  child: Container(
+                    height: 80,
+                    margin: const EdgeInsets.fromLTRB(60, 20, 20, 20),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Reclamations",
+                          textScaleFactor: 1.5,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 100,
+                          ),
+                        ),
+                        const Icon(
+                          Icons.help_outline,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              body: Center(child: CircularProgressIndicator()),
+              backgroundColor: Colors.transparent,
+            ),
+          );
+        }
+      },
+    );
   }
 
   //adding data to our class
   List<UserData> getUserData() {
-    var countuserD = double.parse(countuser);
+    
+    
     //storing data into List
     final List<UserData> userChart = [
-      UserData(5, 5),
-      UserData(10, 7),
-      UserData(10, 5),
+      UserData(countuser - 6, countcin - 1),
+      UserData(countuser - 3, countcin - 1),
+      UserData(countuser, countcin),
     ];
     return userChart;
   }
 
   List<UserDataP> getUserDataP() {
     final List<UserDataP> userChartP = [
-      UserDataP(10, 3),
-      UserDataP(15, 5),
-      UserDataP(20, 8),
+      UserDataP(countuser - 6, countpass - 1),
+      UserDataP(countuser - 3, countpass - 1),
+      UserDataP(countuser, countpass),
     ];
     return userChartP;
   }

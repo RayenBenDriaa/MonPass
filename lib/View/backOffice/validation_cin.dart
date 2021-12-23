@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:mon_pass/Model/document.dart';
+import 'package:pinch_zoom/pinch_zoom.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
@@ -22,8 +24,11 @@ class _ValidationCinState extends State<ValidationCin> {
   final String _baseUrl = "10.0.2.2:8000";
 
   late Future<bool> fetchedData;
+  late String nomPrenom;
 
   Future<bool> fetchData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    nomPrenom=prefs.getString("nomPrenom")!;
     http.Response response= await http.get(Uri.http(_baseUrl, "/cin/getAllCinJSON"));
     List<dynamic> docsFromSever = json.decode(response.body);
     print("________");
@@ -76,11 +81,11 @@ class _ValidationCinState extends State<ValidationCin> {
                     // Important: Remove any padding from the ListView.
                     padding: EdgeInsets.zero,
                     children: [
-                      const DrawerHeader(
+                       DrawerHeader(
                         decoration: BoxDecoration(
-                          color: Colors.green,
+                          color: Color(0xff00a67c),
                         ),
-                        child: Text('Admin',
+                        child: Text(nomPrenom,
                           textScaleFactor: 2,
                           style: TextStyle(
                             color: Colors.white,
@@ -94,7 +99,11 @@ class _ValidationCinState extends State<ValidationCin> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Statistique",textScaleFactor: 1.2),
+                            Text("Statistique",textScaleFactor: 1.3,
+                              style: TextStyle(
+                                color : Color(0xff111113),
+                              ),
+                            ),
                           ],
                         ),
                         onTap: () {
@@ -108,7 +117,11 @@ class _ValidationCinState extends State<ValidationCin> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Carte d'identité national",textScaleFactor: 1.2),
+                            Text("Carte d'identité national",textScaleFactor: 1.3,
+                              style: TextStyle(
+                                color : Color(0xff111113),
+                              ),
+                            ),
                           ],
                         ),
                         onTap: () {
@@ -122,7 +135,11 @@ class _ValidationCinState extends State<ValidationCin> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Passeport",textScaleFactor: 1.2),
+                            Text("Passeport",textScaleFactor: 1.3,
+                              style: TextStyle(
+                                color : Color(0xff111113),
+                              ),
+                            ),
                           ],
                         ),
                         onTap: () {
@@ -136,7 +153,11 @@ class _ValidationCinState extends State<ValidationCin> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Facture",textScaleFactor: 1.2),
+                            Text("Facture",textScaleFactor: 1.3,
+                              style: TextStyle(
+                                color : Color(0xff111113),
+                              ),
+                            ),
                           ],
                         ),
                         onTap: () {
@@ -150,12 +171,15 @@ class _ValidationCinState extends State<ValidationCin> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Reclamations", textScaleFactor: 1.2),
+                            Text("Reclamations",textScaleFactor: 1.3,
+                              style: TextStyle(
+                                color : Color(0xff111113),
+                              ),
+                            ),
                           ],
                         ),
                         onTap: () {
-                          Navigator.pushNamed(
-                              context, "/back/reclamationBack");
+                          Navigator.pushNamed(context, "/back/reclamationBack");
                         },
                       ),
                       ListTile(
@@ -165,7 +189,11 @@ class _ValidationCinState extends State<ValidationCin> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Se déconnecter",textScaleFactor: 1.2),
+                            Text("Se déconnecter",textScaleFactor: 1.3,
+                              style: TextStyle(
+                                color : Color(0xff111113),
+                              ),
+                            ),
                           ],
                         ),
                         onTap: () async {
@@ -173,14 +201,13 @@ class _ValidationCinState extends State<ValidationCin> {
                           SharedPreferences prefs = await SharedPreferences.getInstance();
                           prefs.clear();
                         },
-
                       ),
                     ],
                   ),
                 ),
                 appBar: AppBar(
                   //title: const Text("Mon Passe"),
-                  backgroundColor: Colors.green,
+                  backgroundColor: Color(0xff00a67c),
                   toolbarHeight: 80,
                   flexibleSpace: SafeArea(
                     child: Container(
@@ -225,7 +252,11 @@ class _ValidationCinState extends State<ValidationCin> {
                           title: const Text('Validation de la CIN'),
                           content: Container(
                             margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Image(image: AssetImage("assets/uploadedImages/"+_documents[index].url_image),),
+                            child: PinchZoom(
+                              child: Image(image: AssetImage("assets/uploadedImages/"+_documents[index].url_image)),
+                              resetDuration: const Duration(milliseconds: 100),
+                              maxScale: 2.5,
+                            ),
                           ),
                           actions: <Widget>[
                             TextButton(
@@ -343,7 +374,7 @@ class _ValidationCinState extends State<ValidationCin> {
               child:  Scaffold(
                 appBar: AppBar(
                   //title: const Text("Mon Passe"),
-                  backgroundColor: Colors.green,
+                  backgroundColor: Color(0xff00a67c),
                   toolbarHeight: 80,
                   flexibleSpace: SafeArea(
                     child: Container(
@@ -373,7 +404,7 @@ class _ValidationCinState extends State<ValidationCin> {
                     ),
                   ),
                 ),
-                body: Center(child: CircularProgressIndicator()),
+                body: Center(child: SpinKitFadingGrid(color: Color(0xff00a67c))),
                 backgroundColor: Colors.transparent,
               ),
 

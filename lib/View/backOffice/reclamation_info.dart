@@ -16,7 +16,6 @@ class MyReclaInfo extends StatelessWidget {
           children: [
             Container(
               margin: const EdgeInsets.fromLTRB(10, 10, 20, 10),
-
             ),
             Text(_id.toString()),
             Text(_date)

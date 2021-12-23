@@ -38,15 +38,22 @@ class _SignupState extends State<Signup> {
                         margin: EdgeInsets.fromLTRB(15, 100, 15, 0),
                         child: Column(
                             children: [
-                              Text("S'inscrire", textAlign: TextAlign.center, style: TextStyle(
-                                  color: Color(0xff111113),
-                                  fontFamily: 'Red Hat Display',
-                                  fontSize: 27,
-                                  letterSpacing: 0 /*percentages not used in flutter. defaulting to zero*/,
-                                  fontWeight: FontWeight.normal,
-                                  height: 1
+                              Container(
+                                width: 200,
+                                height: 100,
+                                child:Image(
+                                    image: AssetImage("assets/images/logo.png")
+                                ),
                               ),
-                              ),
+                              // Text("S'inscrire", textAlign: TextAlign.center, style: TextStyle(
+                              //     color: Color(0xff111113),
+                              //     fontFamily: 'Red Hat Display',
+                              //     fontSize: 27,
+                              //     letterSpacing: 0 /*percentages not used in flutter. defaulting to zero*/,
+                              //     fontWeight: FontWeight.normal,
+                              //     height: 1
+                              //   ),
+                              // ),
 
                               Container(
                                 margin: const EdgeInsets.fromLTRB(10, 35, 10, 10),
@@ -145,7 +152,7 @@ class _SignupState extends State<Signup> {
                                 child: TextFormField(
 
                                   decoration: const InputDecoration(
-                                      border: OutlineInputBorder(), labelText: "telephone"),
+                                      border: OutlineInputBorder(), labelText: "Num téléphone"),
                                   onSaved: (String? value) {
                                     _numtel = value;
                                   },

@@ -193,7 +193,8 @@ class _AccueilState extends State<Accueil> {
                             Text("Accueil",textScaleFactor: 1.3,
                               style: TextStyle(
                                 color : Color(0xff111113),
-                              ),),
+                              ),
+                            ),
                           ],
                         ),
                         onTap: () {

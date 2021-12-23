@@ -34,7 +34,7 @@ class _StatsState extends State<Stats> {
               children: [
                 const DrawerHeader(
                   decoration: BoxDecoration(
-                    color: Colors.green,
+                    color: Color(0xff00a67c),
                   ),
                   child: Text('Admin',
                     textScaleFactor: 2,
@@ -50,7 +50,11 @@ class _StatsState extends State<Stats> {
                       SizedBox(
                         width: 10,
                       ),
-                      Text("Statistique",textScaleFactor: 1.2),
+                      Text("Statistique",textScaleFactor: 1.3,
+                        style: TextStyle(
+                          color : Color(0xff111113),
+                        ),
+                      ),
                     ],
                   ),
                   onTap: () {
@@ -60,25 +64,15 @@ class _StatsState extends State<Stats> {
                 ListTile(
                   title: Row(
                     children: const [
-                      Icon(Icons.attach_email_outlined),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("Reclamations",textScaleFactor: 1.2),
-                    ],
-                  ),
-                  onTap: () {
-                    Navigator.pushNamed(context, "/back/reclamationBack");
-                  },
-                ),
-                ListTile(
-                  title: Row(
-                    children: const [
                       Icon(Icons.insert_drive_file),
                       SizedBox(
                         width: 10,
                       ),
-                      Text("Carte d'identité national",textScaleFactor: 1.2),
+                      Text("Carte d'identité national",textScaleFactor: 1.3,
+                        style: TextStyle(
+                          color : Color(0xff111113),
+                        ),
+                      ),
                     ],
                   ),
                   onTap: () {
@@ -92,7 +86,11 @@ class _StatsState extends State<Stats> {
                       SizedBox(
                         width: 10,
                       ),
-                      Text("Passeport",textScaleFactor: 1.2),
+                      Text("Passeport",textScaleFactor: 1.3,
+                        style: TextStyle(
+                          color : Color(0xff111113),
+                        ),
+                      ),
                     ],
                   ),
                   onTap: () {
@@ -106,7 +104,11 @@ class _StatsState extends State<Stats> {
                       SizedBox(
                         width: 10,
                       ),
-                      Text("Facture",textScaleFactor: 1.2),
+                      Text("Facture",textScaleFactor: 1.3,
+                        style: TextStyle(
+                          color : Color(0xff111113),
+                        ),
+                      ),
                     ],
                   ),
                   onTap: () {
@@ -116,11 +118,33 @@ class _StatsState extends State<Stats> {
                 ListTile(
                   title: Row(
                     children: const [
+                      Icon(Icons.attach_email_outlined),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text("Reclamations",textScaleFactor: 1.3,
+                        style: TextStyle(
+                          color : Color(0xff111113),
+                        ),
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, "/back/reclamationBack");
+                  },
+                ),
+                ListTile(
+                  title: Row(
+                    children: const [
                       Icon(Icons.exit_to_app),
                       SizedBox(
                         width: 10,
                       ),
-                      Text("Se déconnecter",textScaleFactor: 1.2),
+                      Text("Se déconnecter",textScaleFactor: 1.3,
+                        style: TextStyle(
+                          color : Color(0xff111113),
+                        ),
+                      ),
                     ],
                   ),
                   onTap: () async {
@@ -128,14 +152,13 @@ class _StatsState extends State<Stats> {
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     prefs.clear();
                   },
-
                 ),
               ],
             ),
           ),
           appBar: AppBar(
             //title: const Text("Mon Passe"),
-            backgroundColor: Colors.green,
+            backgroundColor: Color(0xff00a67c),
             toolbarHeight: 80,
             flexibleSpace: SafeArea(
               child: Container(

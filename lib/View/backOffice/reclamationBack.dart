@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:mon_pass/Model/reclamation.dart';
 import 'package:mon_pass/View/backOffice/reclamation_info.dart';
@@ -23,8 +24,11 @@ class _ReclamationBackState extends State<ReclamationBack> {
   final List<Reclamation> _reclamations = [];
 
   final String _baseUrl = "10.0.2.2:8000";
+  late String nomPrenom;
 
   Future<bool> fetchReclamations() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    nomPrenom=prefs.getString("nomPrenom")!;
     IconData icone;
     Color couleur;
 
@@ -81,7 +85,7 @@ class _ReclamationBackState extends State<ReclamationBack> {
           return Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/Bubbles.pnf'),
+                  image: AssetImage('assets/images/Bubbles.png'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -93,10 +97,10 @@ class _ReclamationBackState extends State<ReclamationBack> {
                       children: [
                         DrawerHeader(
                           decoration: BoxDecoration(
-                            color: Colors.green,
+                            color: Color(0xff00a67c),
                           ),
                           child: Text(
-                            "Admin",
+                            nomPrenom,
                             textScaleFactor: 2,
                             style: TextStyle(
                               color: Colors.white,
@@ -110,7 +114,11 @@ class _ReclamationBackState extends State<ReclamationBack> {
                               SizedBox(
                                 width: 10,
                               ),
-                              Text("Statistique",textScaleFactor: 1.2),
+                              Text("Statistique",textScaleFactor: 1.3,
+                                style: TextStyle(
+                                  color : Color(0xff111113),
+                                ),
+                              ),
                             ],
                           ),
                           onTap: () {
@@ -124,7 +132,11 @@ class _ReclamationBackState extends State<ReclamationBack> {
                               SizedBox(
                                 width: 10,
                               ),
-                              Text("Carte d'identité national",textScaleFactor: 1.2),
+                              Text("Carte d'identité national",textScaleFactor: 1.3,
+                                style: TextStyle(
+                                  color : Color(0xff111113),
+                                ),
+                              ),
                             ],
                           ),
                           onTap: () {
@@ -138,7 +150,11 @@ class _ReclamationBackState extends State<ReclamationBack> {
                               SizedBox(
                                 width: 10,
                               ),
-                              Text("Passeport",textScaleFactor: 1.2),
+                              Text("Passeport",textScaleFactor: 1.3,
+                                style: TextStyle(
+                                  color : Color(0xff111113),
+                                ),
+                              ),
                             ],
                           ),
                           onTap: () {
@@ -152,7 +168,11 @@ class _ReclamationBackState extends State<ReclamationBack> {
                               SizedBox(
                                 width: 10,
                               ),
-                              Text("Facture",textScaleFactor: 1.2),
+                              Text("Facture",textScaleFactor: 1.3,
+                                style: TextStyle(
+                                  color : Color(0xff111113),
+                                ),
+                              ),
                             ],
                           ),
                           onTap: () {
@@ -166,12 +186,15 @@ class _ReclamationBackState extends State<ReclamationBack> {
                               SizedBox(
                                 width: 10,
                               ),
-                              Text("Reclamations", textScaleFactor: 1.2),
+                              Text("Reclamations",textScaleFactor: 1.3,
+                                style: TextStyle(
+                                  color : Color(0xff111113),
+                                ),
+                              ),
                             ],
                           ),
                           onTap: () {
-                            Navigator.pushNamed(
-                                context, "/back/reclamationBack");
+                            Navigator.pushNamed(context, "/back/reclamationBack");
                           },
                         ),
                         ListTile(
@@ -181,7 +204,11 @@ class _ReclamationBackState extends State<ReclamationBack> {
                               SizedBox(
                                 width: 10,
                               ),
-                              Text("Se déconnecter",textScaleFactor: 1.2),
+                              Text("Se déconnecter",textScaleFactor: 1.3,
+                                style: TextStyle(
+                                  color : Color(0xff111113),
+                                ),
+                              ),
                             ],
                           ),
                           onTap: () async {
@@ -189,14 +216,13 @@ class _ReclamationBackState extends State<ReclamationBack> {
                             SharedPreferences prefs = await SharedPreferences.getInstance();
                             prefs.clear();
                           },
-
                         ),
                       ],
                     ),
                   ),
                   appBar: AppBar(
                     //title: const Text("Mon Passe"),
-                    backgroundColor: Colors.green,
+                    backgroundColor: Color(0xff00a67c),
                     toolbarHeight: 80,
                     flexibleSpace: SafeArea(
                       child: Container(
@@ -362,7 +388,7 @@ class _ReclamationBackState extends State<ReclamationBack> {
             child: Scaffold(
               appBar: AppBar(
                 //title: const Text("Mon Passe"),
-                backgroundColor: Colors.green,
+                backgroundColor: Color(0xff00a67c),
                 toolbarHeight: 80,
                 flexibleSpace: SafeArea(
                   child: Container(
@@ -385,7 +411,7 @@ class _ReclamationBackState extends State<ReclamationBack> {
                           ),
                         ),
                         const Icon(
-                          Icons.help_outline,
+                          Icons.attach_email_outlined,
                           color: Colors.white,
                         ),
                       ],
@@ -393,7 +419,7 @@ class _ReclamationBackState extends State<ReclamationBack> {
                   ),
                 ),
               ),
-              body: Center(child: CircularProgressIndicator()),
+              body: Center(child: SpinKitFadingGrid(color: Color(0xff00a67c))),
               backgroundColor: Colors.transparent,
             ),
           );

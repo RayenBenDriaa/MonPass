@@ -47,4 +47,16 @@ class PasseportRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function getNbrePassport(): int
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            "SELECT count(p)
+            FROM App\Entity\Passeport p"
+        )->getResult();
+        // returns an array of Product objects
+        return $query[0][1];
+    }
+
 }

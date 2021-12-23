@@ -147,6 +147,18 @@ class PasseportController extends AbstractController
     }
 
     /**
+     * @Route("/countPassportJson",name="countPassport")
+     */
+    public function countPassoportJSON(Request $request,PasseportRepository $repository,NormalizerInterface $Normalizer): Response
+    {
+        $count = $repository->getNbrePassport();
+        $jsonContent=$Normalizer->normalize($count,'json',['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+
+    }
+
+
+    /**
      * @Route("/{id}", name="passeport_show", methods={"GET"})
      */
     public function show(Passeport $passeport): Response

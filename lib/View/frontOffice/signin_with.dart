@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -99,12 +100,12 @@ class _SigninWithState extends State<SigninWith> {
             return Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/Bubbles.jpg'),
+                  image: AssetImage('assets/images/Bubbles.png'),
                   fit: BoxFit.cover,
                 ),
               ),
               child:  Scaffold(
-                body: Center(child: CircularProgressIndicator()),
+                body: Center(child: SpinKitFadingGrid(color: Color(0xff00a67c))),
                 backgroundColor: Colors.transparent,
               ),
 
@@ -115,12 +116,12 @@ class _SigninWithState extends State<SigninWith> {
             return Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/Bubbles.jpg'),
+                  image: AssetImage('assets/images/Bubbles.png'),
                   fit: BoxFit.cover,
                 ),
               ),
               child:  Scaffold(
-                body: Center(child: CircularProgressIndicator()),
+                body: Center(child: SpinKitFadingGrid(color: Color(0xff00a67c))),
                 backgroundColor: Colors.transparent,
               ),
 

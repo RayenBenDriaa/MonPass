@@ -145,13 +145,16 @@ class CenterNextButton extends StatelessWidget {
                       fontWeight: FontWeight.normal,
                     ),
                   ),
-                  Text(
-                    'Se connecter',
-                    style: TextStyle(
-                      color: Color(0xff132137),
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                  InkWell(
+                    child: Text(
+                      'Se connecter',
+                      style: TextStyle(
+                        color: Color(0xff132137),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
+                    onTap: () {Navigator.pushNamed(context, "/signin");},
                   ),
                 ],
               ),

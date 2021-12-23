@@ -39,15 +39,14 @@ class _SignupState extends State<Signup> {
                         child: Column(
                             children: [
                               Text("S'inscrire", textAlign: TextAlign.center, style: TextStyle(
-                                  color: Color.fromRGBO(18, 14, 33, 1),
+                                  color: Color(0xff111113),
                                   fontFamily: 'Red Hat Display',
                                   fontSize: 27,
                                   letterSpacing: 0 /*percentages not used in flutter. defaulting to zero*/,
                                   fontWeight: FontWeight.normal,
                                   height: 1
-                              ),)
-
-                              ,
+                              ),
+                              ),
 
                               Container(
                                 margin: const EdgeInsets.fromLTRB(10, 35, 10, 10),

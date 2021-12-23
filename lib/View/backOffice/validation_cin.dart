@@ -66,7 +66,7 @@ class _ValidationCinState extends State<ValidationCin> {
             return Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/Bubbles.jpg'),
+                  image: AssetImage('assets/images/Bubbles.png'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -336,7 +336,7 @@ class _ValidationCinState extends State<ValidationCin> {
             return Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/Bubbles.jpg'),
+                  image: AssetImage('assets/images/Bubbles.png'),
                   fit: BoxFit.cover,
                 ),
               ),

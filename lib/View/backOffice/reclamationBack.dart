@@ -81,7 +81,7 @@ class _ReclamationBackState extends State<ReclamationBack> {
           return Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/Bubbles.jpg'),
+                  image: AssetImage('assets/images/Bubbles.pnf'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -355,7 +355,7 @@ class _ReclamationBackState extends State<ReclamationBack> {
           return  Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/Bubbles.jpg'),
+                image: AssetImage('assets/images/Bubbles.png'),
                 fit: BoxFit.cover,
               ),
             ),

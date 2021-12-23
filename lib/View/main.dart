@@ -31,9 +31,24 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+          inputDecorationTheme: const InputDecorationTheme(
+            labelStyle: TextStyle(color: Color(0xff111113)),
+            hintStyle: TextStyle(color: Colors.grey),
+            border: UnderlineInputBorder(),
+            fillColor: Colors.white,
+            filled: true,
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Color(0xff00a67c)),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Color(0xff00a67c)),
+            ),
+          ),
         textTheme: GoogleFonts.latoTextTheme(
           Theme.of(context).textTheme,
         ),
+
+
       ),
       title: 'Mon Passe',
       routes: {

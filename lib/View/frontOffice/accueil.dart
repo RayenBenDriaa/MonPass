@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'package:fluttermoji/fluttermoji.dart';
+import 'package:flutter/foundation.dart' show TargetPlatform;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Accueil extends StatefulWidget {
@@ -168,17 +169,30 @@ class _AccueilState extends State<Accueil> {
                     // Important: Remove any padding from the ListView.
                     padding: EdgeInsets.zero,
                     children: [
+                      
                       DrawerHeader(
                         decoration: BoxDecoration(
                           color: Color(0xff00a67c),
                         ),
-                        child: Text(nomPrenom,
-                          textScaleFactor: 2,
-                          style: TextStyle(
-                            color: Colors.white,
+                        child: Container(
+                          child: Column(
+                            children: [
+                              FluttermojiCircleAvatar(
+                                radius: 45,
+                              ),
+                              Text(
+                                nomPrenom,
+                                textScaleFactor: 2,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                             
+                            ],
                           ),
                         ),
                       ),
+                      
                       ListTile(
                         title: Row(
                           children: const [

@@ -102,6 +102,17 @@ class CinController extends AbstractController
         $entityManager->flush();
         return new Response("Cin modifié avec succés");
     }
+    /**
+     * @Route("/countCinJson",name="countCin")
+     */
+    public function countCinJSON(Request $request,CinRepository $repository,NormalizerInterface $Normalizer): Response
+    {
+          $count = $repository->getNbreCin();
+          $jsonContent=$Normalizer->normalize($count,'json',['groups'=>'post:read']);
+          return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+
+    }
+  
 
     /**
      * @Route("/deleteCinJSON/{id}", name="cinJSON_delete")

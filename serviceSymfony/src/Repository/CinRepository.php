@@ -47,4 +47,15 @@ class CinRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function getNbreCin(): int
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            "SELECT count(c)
+            FROM App\Entity\cin c"
+        )->getResult();
+        // returns an array of Product objects
+        return $query[0][1];
+    }
 }

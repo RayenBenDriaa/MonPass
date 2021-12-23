@@ -3,6 +3,8 @@ import 'package:mon_pass/Model/user_data.dart';
 import 'package:mon_pass/Model/user_data_p.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Stats extends StatefulWidget {
   const Stats({Key? key}) : super(key: key);
@@ -15,6 +17,50 @@ class _StatsState extends State<Stats> {
   //Creating lists
   late List<UserData> _chartData;
   late List<UserDataP> _chartDataP;
+  late Future<bool> fetchedStat;
+  late String countuser, countpass, countcin;
+  final String _baseUrl = "10.0.2.2:8000";
+
+  Future<int> fetcheduser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    http.Response response =
+        await http.get(Uri.http(_baseUrl, "/api/countUserJson"));
+
+    int x = json.decode(response.body);
+    prefs.setString("userC", x.toString());
+    countuser = prefs.getString("userC")!;
+
+    return x;
+  }
+
+  Future<int> fetchedCin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    http.Response response =
+        await http.get(Uri.http(_baseUrl, "/cin/countCinJson"));
+
+    int x = json.decode(response.body);
+    prefs.setString("CinC", x.toString());
+    countcin = prefs.getString("CinC")!;
+
+    return x;
+  }
+
+  Future<int> fetchedPassport() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    http.Response response =
+        await http.get(Uri.http(_baseUrl, "/passeport/countPassportJson"));
+
+    int x = json.decode(response.body);
+    prefs.setString("passportC", x.toString());
+    countpass = prefs.getString("passortC")!;
+
+    return x;
+  }
+
+
+
+
+
 
   void initState() {
 //intialinsing list of Cin and passport
@@ -196,11 +242,12 @@ class _StatsState extends State<Stats> {
 
   //adding data to our class
   List<UserData> getUserData() {
+    var countuserD = double.parse(countuser);
     //storing data into List
     final List<UserData> userChart = [
+      UserData(5, 5),
+      UserData(10, 7),
       UserData(10, 5),
-      UserData(15, 7),
-      UserData(20, 11),
     ];
     return userChart;
   }

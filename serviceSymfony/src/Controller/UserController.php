@@ -135,6 +135,16 @@ class UserController extends AbstractController
         return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
 
     }
+     /**
+     * @Route("/countUserJson",name="countUser")
+     */
+    public function countPassoportJSON(Request $request,UserRepository $repository,NormalizerInterface $Normalizer): Response
+    {
+          $count = $repository->getNbreUser();
+          $jsonContent=$Normalizer->normalize($count,'json',['groups'=>'post:read']);
+          return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+
+    }
 
     /**
      * @Route("/editAdmin/{id}", name="editToAdmin")

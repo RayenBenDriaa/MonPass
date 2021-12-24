@@ -70,10 +70,13 @@ class WelcomeView extends StatelessWidget {
                   ),
                 ),
               ),
+              SizedBox(
+                height: 20,
+              ),
               SlideTransition(
                 position: _welcomeFirstHalfAnimation,
                 child: Text(
-                  "Welcome",
+                  "Bienvenue",
                   style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -81,8 +84,9 @@ class WelcomeView extends StatelessWidget {
                 padding:
                     EdgeInsets.only(left: 64, right: 64, top: 16, bottom: 16),
                 child: Text(
-                  "Stay organised and live stress-free with you-do app",
+                  "Une fois que vos documents sont valides vous pouvez vous connectez à vos sites favoris en quelques clics",
                   textAlign: TextAlign.center,
+                  textScaleFactor: 1.2,
                 ),
               ),
             ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:mon_pass/Model/reclamation.dart';
 import 'dart:convert';
@@ -62,14 +63,14 @@ class _AjouterReclamationState extends State<AjouterReclamation> {
             return Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/Bubbles.jpg'),
+                  image: AssetImage('assets/images/Splash Screen.png'),
                   fit: BoxFit.cover,
                 ),
               ),
               child: Scaffold(
                 appBar: AppBar(
                   //title: const Text("Mon Passe"),
-                  backgroundColor: Colors.green,
+                  backgroundColor: Color(0xff00a67c),
                   toolbarHeight: 80,
                   flexibleSpace: SafeArea(
                     child: Container(
@@ -110,7 +111,10 @@ class _AjouterReclamationState extends State<AjouterReclamation> {
                         children: [
                           Row(
                             children: [
-                              Text("Type de la réclamation :",textScaleFactor: 1.5,),
+                              Text("Type de la réclamation :",textScaleFactor: 1.5,
+                                style: TextStyle(
+                                  color : Color(0xff111113),
+                                ),),
                               SizedBox(
                                 width: 10,
                               ),
@@ -120,7 +124,7 @@ class _AjouterReclamationState extends State<AjouterReclamation> {
                                 icon: const Icon(Icons.arrow_downward),
                                 iconSize: 24,
                                 elevation: 16,
-                                style: const TextStyle(color: Colors.green),
+                                style: const TextStyle(color: Color(0xff00a67c)),
                                 underline: Container(
                                   height: 2,
                                   color: Colors.greenAccent,
@@ -147,7 +151,10 @@ class _AjouterReclamationState extends State<AjouterReclamation> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Description :",textScaleFactor: 1.5,),
+                              Text("Description :",textScaleFactor: 1.5,
+                                style: TextStyle(
+                                  color : Color(0xff111113),
+                                ),),
                               SizedBox(
                                 height: 10,
                               ),
@@ -160,7 +167,7 @@ class _AjouterReclamationState extends State<AjouterReclamation> {
                                       maxLines: 4,
                                       decoration: const InputDecoration(
                                           border: OutlineInputBorder(),
-                                          hintText: "Description"),
+                                          ),
                                       onSaved: (String? value) {
                                         _description = value;
                                       },
@@ -190,7 +197,7 @@ class _AjouterReclamationState extends State<AjouterReclamation> {
                               ElevatedButton(
                                 child: const Text("Envoyer"),
                                 style:  ElevatedButton.styleFrom(
-                                  primary : Colors.green,
+                                  primary : Color(0xff00a67c),
                                 ),
                                 onPressed: () async {
                                   if (_keyForm.currentState!.validate()) {
@@ -236,14 +243,14 @@ class _AjouterReclamationState extends State<AjouterReclamation> {
             return Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/Bubbles.jpg'),
+                  image: AssetImage('assets/images/Splash Screen.png'),
                   fit: BoxFit.cover,
                 ),
               ),
               child: Scaffold(
                 appBar: AppBar(
                   //title: const Text("Mon Passe"),
-                  backgroundColor: Colors.green,
+                  backgroundColor: Color(0xff00a67c),
                   toolbarHeight: 80,
                   flexibleSpace: SafeArea(
                     child: Container(
@@ -274,7 +281,7 @@ class _AjouterReclamationState extends State<AjouterReclamation> {
                     ),
                   ),
                 ),
-                body: Center(child: CircularProgressIndicator()),
+                body: Center(child: SpinKitFadingGrid(color: Color(0xff00a67c))),
                 backgroundColor: Colors.transparent,
               ),
             );

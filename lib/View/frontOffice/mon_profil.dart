@@ -1,9 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttermoji/fluttermoji.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'avatar.dart';
 
 
 
@@ -51,6 +55,7 @@ class _MonProfilState extends State<MonProfil> {
   final TextEditingController _confirmPass = TextEditingController();
 
   final String _baseUrl = "10.0.2.2:8000";
+  var scaffoldKey = GlobalKey<ScaffoldState>();
 
 
   //Selecteur de fichier pour bouton CIN
@@ -97,29 +102,40 @@ class _MonProfilState extends State<MonProfil> {
               //Mise en place arriére plan
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/Bubbles.jpg'),
+                  image: AssetImage('assets/images/Bubbles.png'),
                   fit: BoxFit.cover,
                 ),
               ),
               child: Scaffold(
+                key: scaffoldKey,
                 drawer: Drawer(
                   child: ListView(
                     // Important: Remove any padding from the ListView.
                     padding: EdgeInsets.zero,
                     children: [
                       DrawerHeader(
-                        // entête menu hamburger
                         decoration: BoxDecoration(
-                          color: Colors.green,
+                          color: Color(0xff00a67c),
                         ),
-                        child: Text(nomPrenom,
-                          textScaleFactor: 2,
-                          style: TextStyle(
-                            color: Colors.white,
+                        child: Container(
+                          child: Column(
+                            children: [
+                              FluttermojiCircleAvatar(
+                                backgroundColor: Color(0xfff4f4ed),
+                                radius: 45,
+                              ),
+                              Text(
+                                nomPrenom,
+                                textScaleFactor: 2,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+
+                            ],
                           ),
                         ),
                       ),
-                      //les elements du menu hamburger
                       ListTile(
                         title: Row(
                           children: const [
@@ -127,7 +143,10 @@ class _MonProfilState extends State<MonProfil> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Accueil",textScaleFactor: 1.2),
+                            Text("Accueil",textScaleFactor: 1.3,
+                              style: TextStyle(
+                                color : Color(0xff111113),
+                              ),),
                           ],
                         ),
                         onTap: () {
@@ -141,7 +160,10 @@ class _MonProfilState extends State<MonProfil> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Mon profil",textScaleFactor: 1.2),
+                            Text("Mon profil",textScaleFactor: 1.3,
+                              style: TextStyle(
+                                color : Color(0xff111113),
+                              ),),
                           ],
                         ),
                         onTap: () {
@@ -155,7 +177,10 @@ class _MonProfilState extends State<MonProfil> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Mes réclamations", textScaleFactor: 1.2),
+                            Text("Mes réclamations", textScaleFactor: 1.3,
+                              style: TextStyle(
+                                color : Color(0xff111113),
+                              ),),
                           ],
                         ),
                         onTap: () {
@@ -169,7 +194,10 @@ class _MonProfilState extends State<MonProfil> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Se déconnecter",textScaleFactor: 1.2),
+                            Text("Se déconnecter",textScaleFactor: 1.3,
+                              style: TextStyle(
+                                color : Color(0xff111113),
+                              ),),
                           ],
                         ),
                         onTap: () async {
@@ -184,7 +212,11 @@ class _MonProfilState extends State<MonProfil> {
                 ),
                 appBar: AppBar(
                   //title: const Text("Mon Passe"),
-                  backgroundColor: Colors.green,
+                  leading: IconButton(
+                    icon: Image.asset("assets/images/icons8-menu-cerclé-48.png", height: 30, width: 30,),
+                    onPressed: () => scaffoldKey.currentState?.openDrawer(),
+                  ),
+                  backgroundColor: Color(0xff00a67c),
                   toolbarHeight: 80,
                   flexibleSpace: SafeArea(
                     child: Container(
@@ -229,10 +261,8 @@ class _MonProfilState extends State<MonProfil> {
                               margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                               child: TextFormField(
                                 controller: _pass,
-
                                 obscureText: true,
-                                decoration: const InputDecoration(
-                                    border: OutlineInputBorder(), labelText: "Mot de passe"),
+                                decoration: const InputDecoration(labelText: "Mot de passe"),
                                 onSaved: (String? value) {
                                   _password = value;
                                 },
@@ -254,8 +284,7 @@ class _MonProfilState extends State<MonProfil> {
                               child: TextFormField(
                                 controller: _confirmPass,
                                 obscureText: true,
-                                decoration: const InputDecoration(
-                                    border: OutlineInputBorder(), labelText: "Repeter le mot de passe"),
+                                decoration: const InputDecoration(labelText: "Repeter le mot de passe"),
                                 onSaved: (String? value) {
                                   _repeatPassword = value;
                                 },
@@ -276,70 +305,137 @@ class _MonProfilState extends State<MonProfil> {
                             ),
                             Container(
                               margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                              child: OutlinedButton(
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                                  foregroundColor : MaterialStateProperty.all(Color(0xff111113)) ,
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () =>
+                                {Navigator.push(context,
+                                    new MaterialPageRoute(builder: (context) => NewPage()))},
+                                child: Container(
+                                  height: 40,
+                                  margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                  child: Row(
+                                    children: [
+                                      const Text("Customiser mon avatar",textScaleFactor: 1.2,),
+                                      Expanded(
+                                        child: Container(
+                                        ),
+                                      ),
+                                      const Icon(Icons.supervised_user_circle,
+                                        size: 30,
+                                        color: Color(0xff00a67c),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // style: OutlinedButton.styleFrom(
+                                //   backgroundColor: Colors.white,
+                                //   primary: Colors.black,
+                                // ),
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                                    foregroundColor : MaterialStateProperty.all(Color(0xff111113)) ,
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15.0),
+                                        ),
+                                    ),
+                                ),
                                 onPressed: pickergalleryCIN,
                                 child: Container(
+                                  height: 40,
                                   margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                                   child: Row(
                                     children: [
-                                      const Text("Carte d'identité nationale",textScaleFactor: 1.1,),
+                                      const Text("Carte d'identité nationale",textScaleFactor: 1.2,),
                                       Expanded(
                                         child: Container(
                                         ),
                                       ),
-                                      const Icon(Icons.upload_rounded),
+                                      const Icon(Icons.upload_rounded,
+                                        size: 30,
+                                        color: Color(0xff00a67c),
+                                      ),
                                     ],
                                   ),
                                 ),
-                                style: OutlinedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  primary: Colors.black,
-                                ),
+                                // style: OutlinedButton.styleFrom(
+                                //   backgroundColor: Colors.white,
+                                //   primary: Colors.black,
+                                // ),
                               ),
                             ),
                             Container(
                               margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                              child: OutlinedButton(
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                                  foregroundColor : MaterialStateProperty.all(Color(0xff111113)) ,
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                  ),
+                                ),
                                 onPressed: pickergalleryPasseport,
                                 child: Container(
+                                  height: 40,
                                   margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                                   child: Row(
                                     children: [
-                                      const Text("Passeport",textScaleFactor: 1.1,),
+                                      const Text("Passeport",textScaleFactor: 1.2,),
                                       Expanded(
                                         child: Container(
                                         ),
                                       ),
-                                      const Icon(Icons.upload_rounded),
+                                      const Icon(Icons.upload_rounded,
+                                        size: 30,
+                                        color: Color(0xff00a67c),),
                                     ],
                                   ),
-                                ),
-                                style: OutlinedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  primary: Colors.black,
                                 ),
                               ),
                             ),
                             Container(
                               margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                              child: OutlinedButton(
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                                  foregroundColor : MaterialStateProperty.all(Color(0xff111113)) ,
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                  ),
+                                ),
                                 onPressed: pickergalleryFacture,
                                 child: Container(
+                                  height: 40,
                                   margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                                   child: Row(
                                     children: [
-                                      const Text("Facture STEG ou SONEDE",textScaleFactor: 1.1,),
+                                      const Text("Facture STEG ou SONEDE",textScaleFactor: 1.2,),
                                       Expanded(
                                         child: Container(
                                         ),
                                       ),
-                                      const Icon(Icons.upload_rounded),
+                                      const Icon(Icons.upload_rounded,
+                                        size: 30,
+                                        color: Color(0xff00a67c),),
                                     ],
                                   ),
-                                ),
-                                style: OutlinedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  primary: Colors.black,
                                 ),
                               ),
                             ),
@@ -350,7 +446,7 @@ class _MonProfilState extends State<MonProfil> {
                           margin: const EdgeInsets.fromLTRB(100, 20, 100, 0),
                           child: ElevatedButton(
                             style:  ElevatedButton.styleFrom(
-                              primary : Colors.green,
+                              primary : Color(0xff00a67c),
                             ),
                             child: const Text("Enregistrer",textScaleFactor: 1.1,),
                             onPressed: () async{
@@ -516,14 +612,14 @@ class _MonProfilState extends State<MonProfil> {
             return Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/Bubbles.jpg'),
+                  image: AssetImage('assets/images/Bubbles.png'),
                   fit: BoxFit.cover,
                 ),
               ),
               child:  Scaffold(
                 appBar: AppBar(
                   //title: const Text("Mon Passe"),
-                  backgroundColor: Colors.green,
+                  backgroundColor: Color(0xff00a67c),
                   toolbarHeight: 80,
                   flexibleSpace: SafeArea(
                     child: Container(
@@ -545,7 +641,7 @@ class _MonProfilState extends State<MonProfil> {
                             ),
                           ),
                           const Icon(
-                            Icons.home_filled,
+                            Icons.account_circle_rounded,
                             color: Colors.white,
                           ),
                         ],
@@ -553,7 +649,7 @@ class _MonProfilState extends State<MonProfil> {
                     ),
                   ),
                 ),
-                body: Center(child: CircularProgressIndicator()),
+                body: Center(child: SpinKitFadingGrid(color: Color(0xff00a67c))),
                 backgroundColor: Colors.transparent,
               ),
             );

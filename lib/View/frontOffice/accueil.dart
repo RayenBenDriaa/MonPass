@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fluttermoji/fluttermoji.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:fluttermoji/fluttermoji.dart';
 import 'package:flutter/foundation.dart' show TargetPlatform;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Accueil extends StatefulWidget {
   const Accueil({Key? key}) : super(key: key);
@@ -30,6 +32,8 @@ class _AccueilState extends State<Accueil> {
   final String _baseUrl = "10.0.2.2:8000";
 
   late Future<bool> fetchedDocs;
+
+  var scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future<bool> fetchDocs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -164,12 +168,12 @@ class _AccueilState extends State<Accueil> {
                 ),
               ),
               child: Scaffold(
+                key: scaffoldKey,
                 drawer: Drawer(
                   child: ListView(
                     // Important: Remove any padding from the ListView.
                     padding: EdgeInsets.zero,
                     children: [
-                      
                       DrawerHeader(
                         decoration: BoxDecoration(
                           color: Color(0xff00a67c),
@@ -178,6 +182,7 @@ class _AccueilState extends State<Accueil> {
                           child: Column(
                             children: [
                               FluttermojiCircleAvatar(
+                                backgroundColor: Color(0xfff4f4ed),
                                 radius: 45,
                               ),
                               Text(
@@ -187,7 +192,6 @@ class _AccueilState extends State<Accueil> {
                                   color: Colors.white,
                                 ),
                               ),
-                             
                             ],
                           ),
                         ),
@@ -200,7 +204,11 @@ class _AccueilState extends State<Accueil> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Accueil",textScaleFactor: 1.2),
+                            Text("Accueil",textScaleFactor: 1.3,
+                              style: TextStyle(
+                                color : Color(0xff111113),
+                              ),
+                            ),
                           ],
                         ),
                         onTap: () {
@@ -214,7 +222,10 @@ class _AccueilState extends State<Accueil> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Mon profil",textScaleFactor: 1.2),
+                            Text("Mon profil",textScaleFactor: 1.3,
+                              style: TextStyle(
+                                color : Color(0xff111113),
+                              ),),
                           ],
                         ),
                         onTap: () {
@@ -228,7 +239,10 @@ class _AccueilState extends State<Accueil> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Mes réclamations", textScaleFactor: 1.2),
+                            Text("Mes réclamations", textScaleFactor: 1.3,
+                              style: TextStyle(
+                                color : Color(0xff111113),
+                              ),),
                           ],
                         ),
                         onTap: () {
@@ -242,7 +256,10 @@ class _AccueilState extends State<Accueil> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Se déconnecter",textScaleFactor: 1.2),
+                            Text("Se déconnecter",textScaleFactor: 1.3,
+                              style: TextStyle(
+                                color : Color(0xff111113),
+                              ),),
                           ],
                         ),
                         onTap: () async {
@@ -257,6 +274,10 @@ class _AccueilState extends State<Accueil> {
                 ),
                 appBar: AppBar(
                   //title: const Text("Mon Passe"),
+                  leading: IconButton(
+                    icon: Image.asset("assets/images/icons8-menu-cerclé-48.png", height: 30, width: 30,),
+                    onPressed: () => scaffoldKey.currentState?.openDrawer(),
+                  ),
                   backgroundColor: Color(0xff00a67c),
                   toolbarHeight: 80,
                   flexibleSpace: SafeArea(
@@ -324,6 +345,9 @@ class _AccueilState extends State<Accueil> {
                                     children: [
                                       const Text("Carte d'identité nationale",
                                         textScaleFactor: 1.5,
+                                        style: TextStyle(
+                                          color : Color(0xff111113),
+                                        ),
                                       ),
                                       Expanded(
                                         child: Container(
@@ -378,7 +402,12 @@ class _AccueilState extends State<Accueil> {
                                   margin: EdgeInsets.fromLTRB(20, 20, 20, 5),
                                   child: Row(
                                     children: [
-                                      const Text("Passeport", textScaleFactor: 1.5),
+                                      const Text("Passeport",
+                                          textScaleFactor: 1.5,
+                                        style: TextStyle(
+                                          color : Color(0xff111113),
+                                        ),
+                                      ),
                                       Expanded(
                                         child: Container(
                                         ),
@@ -432,7 +461,11 @@ class _AccueilState extends State<Accueil> {
                                   margin: EdgeInsets.fromLTRB(20, 20, 20, 5),
                                   child: Row(
                                     children: [
-                                      const Text("Facture STEG ou SONEDE", textScaleFactor: 1.5),
+                                      const Text("Facture STEG ou SONEDE",
+                                          textScaleFactor: 1.5,
+                                        style: TextStyle(
+                                          color : Color(0xff111113),
+                                        ),),
                                       Expanded(
                                         child: Container(
                                         ),
@@ -493,7 +526,7 @@ class _AccueilState extends State<Accueil> {
               child:  Scaffold(
                 appBar: AppBar(
                   //title: const Text("Mon Passe"),
-                  backgroundColor: Colors.green,
+                  backgroundColor: Color(0xff00a67c),
                   toolbarHeight: 80,
                   flexibleSpace: SafeArea(
                     child: Container(
@@ -523,7 +556,8 @@ class _AccueilState extends State<Accueil> {
                     ),
                   ),
                 ),
-                body: Center(child: CircularProgressIndicator()),
+                body: Center(child: SpinKitFadingGrid(color: Color(0xff00a67c)),
+                ),
                 backgroundColor: Colors.transparent,
               ),
 

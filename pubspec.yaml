@@ -41,8 +41,11 @@ dependencies:
   syncfusion_flutter_charts: ^19.3.56
   animations: ^2.0.0
   google_fonts: ^2.1.0
-  multiavatar: ^0.1.5
+  flutter_spinkit: ^5.1.0
+  pinch_zoom: ^1.0.0
   fluttermoji: ^0.2.3
+  
+
 
 dev_dependencies:
   flutter_test:

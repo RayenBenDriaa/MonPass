@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttermoji/fluttermoji.dart';
 import 'package:http/http.dart' as http;
 import 'package:mon_pass/Model/reclamation.dart';
 import 'dart:convert';
@@ -27,6 +29,8 @@ class _ReclamationFrontState extends State<ReclamationFront> {
   late String dropdownValue;
 
   bool _expanded = false;
+
+  var scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future<bool> fetchData() async {
     //recuperer la session utilisateur
@@ -127,11 +131,12 @@ class _ReclamationFrontState extends State<ReclamationFront> {
             return Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/Bubbles.jpg'),
+                  image: AssetImage('assets/images/Bubbles.png'),
                   fit: BoxFit.cover,
                 ),
               ),
               child: Scaffold(
+                key: scaffoldKey,
                 drawer: Drawer(
                   child: ListView(
                     // Important: Remove any padding from the ListView.
@@ -139,13 +144,24 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                     children: [
                       DrawerHeader(
                         decoration: BoxDecoration(
-                          color: Colors.green,
+                          color: Color(0xff00a67c),
                         ),
-                        child: Text(
-                          nomPrenom,
-                          textScaleFactor: 2,
-                          style: TextStyle(
-                            color: Colors.white,
+                        child: Container(
+                          child: Column(
+                            children: [
+                              FluttermojiCircleAvatar(
+                                backgroundColor: Color(0xfff4f4ed),
+                                radius: 45,
+                              ),
+                              Text(
+                                nomPrenom,
+                                textScaleFactor: 2,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+
+                            ],
                           ),
                         ),
                       ),
@@ -156,7 +172,10 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Accueil", textScaleFactor: 1.2),
+                            Text("Accueil",textScaleFactor: 1.3,
+                              style: TextStyle(
+                                color : Color(0xff111113),
+                              ),),
                           ],
                         ),
                         onTap: () {
@@ -170,7 +189,11 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Mon profil", textScaleFactor: 1.2),
+                            Text("Mon profil",textScaleFactor: 1.3,
+                              style: TextStyle(
+                                color : Color(0xff111113),
+                              ),
+                            ),
                           ],
                         ),
                         onTap: () {
@@ -184,7 +207,10 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Mes réclamations", textScaleFactor: 1.2),
+                            Text("Mes réclamations", textScaleFactor: 1.3,
+                              style: TextStyle(
+                                color : Color(0xff111113),
+                              ),),
                           ],
                         ),
                         onTap: () {
@@ -198,19 +224,29 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Se déconnecter", textScaleFactor: 1.2),
+                            Text("Se déconnecter",textScaleFactor: 1.3,
+                              style: TextStyle(
+                                color : Color(0xff111113),
+                              ),),
                           ],
                         ),
-                        onTap: () {
-                          Navigator.pushNamed(context, "/back");
+                        onTap: () async {
+                          Navigator.pushNamed(context, "/signin");
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          prefs.clear();
                         },
+
                       ),
                     ],
                   ),
                 ),
                 appBar: AppBar(
                   //title: const Text("Mon Passe"),
-                  backgroundColor: Colors.green,
+                  leading: IconButton(
+                    icon: Image.asset("assets/images/icons8-menu-cerclé-48.png", height: 30, width: 30,),
+                    onPressed: () => scaffoldKey.currentState?.openDrawer(),
+                  ),
+                  backgroundColor: Color(0xff00a67c),
                   toolbarHeight: 80,
                   flexibleSpace: SafeArea(
                     child: Container(
@@ -218,9 +254,8 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                       margin: const EdgeInsets.fromLTRB(60, 20, 20, 20),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Mes réclamations",
+                        children:  [
+                          const Text("Mes réclamations",
                             textScaleFactor: 1.5,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -239,6 +274,7 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                         ],
                       ),
                     ),
+
                   ),
                 ),
                 backgroundColor: Colors.transparent,
@@ -343,7 +379,7 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
                       margin: EdgeInsets.all(10),
-                      color: Colors.green,
+                      color: Color(0xff00a67c),
                       child: ExpansionPanelList(
                         animationDuration: Duration(milliseconds: 500),
                         children: [
@@ -396,7 +432,7 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                   onPressed: () {
                     Navigator.pushNamed(context, "/ajouterReclamation");
                   },
-                  backgroundColor: Colors.green,
+                  backgroundColor: Color(0xff00a67c),
                   child: const Icon(Icons.add),
                 ),
               ),
@@ -405,14 +441,14 @@ class _ReclamationFrontState extends State<ReclamationFront> {
             return Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/Bubbles.jpg'),
+                  image: AssetImage('assets/images/Bubbles.png'),
                   fit: BoxFit.cover,
                 ),
               ),
               child: Scaffold(
                 appBar: AppBar(
                   //title: const Text("Mon Passe"),
-                  backgroundColor: Colors.green,
+                  backgroundColor: Color(0xff00a67c),
                   toolbarHeight: 80,
                   flexibleSpace: SafeArea(
                     child: Container(
@@ -443,7 +479,7 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                     ),
                   ),
                 ),
-                body: Center(child: CircularProgressIndicator()),
+                body: Center(child: SpinKitFadingGrid(color: Color(0xff00a67c))),
                 backgroundColor: Colors.transparent,
               ),
             );

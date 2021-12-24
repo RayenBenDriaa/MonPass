@@ -44,7 +44,7 @@ class CinController extends AbstractController
             $cin->setDate($timeDate);
             $imageName= $cin->getIdUser()."CIN".$_POST['imageName'];
             $image= base64_decode($_POST['image64']);
-            file_put_contents("C:\Users\xmr0j\Documents\Flutter Projects\monpassflutterproject\assets\uploadedImages\\".$imageName,$image);
+            file_put_contents("..\..\public\uploadedImages\\".$imageName,$image);
             $cin->setUrlImage($imageName);
             $cin->setUser($userRepository->findOneBy(['id'=>$_POST['idUser']]));
             $user=$userRepository->findOneBy(['id'=>$_POST['idUser']]);
@@ -127,6 +127,8 @@ class CinController extends AbstractController
         $entityManager->flush();
         return new Response("Cin supprimé avec succés");
     }
+
+   
 
     /**
      * @Route("/", name="cin_index", methods={"GET"})

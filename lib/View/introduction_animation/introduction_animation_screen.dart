@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'components/care_view.dart';
 import 'components/center_next_button.dart';
 import 'components/mood_diary_vew.dart';
@@ -10,6 +11,9 @@ import 'package:flutter/material.dart';
 class IntroductionAnimationScreen extends StatefulWidget {
   const IntroductionAnimationScreen({Key? key}) : super(key: key);
 
+
+  
+
   @override
   _IntroductionAnimationScreenState createState() =>
       _IntroductionAnimationScreenState();
@@ -19,8 +23,28 @@ class _IntroductionAnimationScreenState
     extends State<IntroductionAnimationScreen> with TickerProviderStateMixin {
   AnimationController? _animationController;
 
+  late String id;
+  late String nomPrenom;
+  late Future<bool> _session;
+
+  Future<bool> _verifySession() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // prefs.remove("userId");
+
+    if (prefs.containsKey("first")) {
+      Navigator.pushNamed(context, "/signin");
+    } else {}
+
+    return true;
+  }
+
+
   @override
   void initState() {
+    
+    
+    _session = _verifySession();
+    
     _animationController =
         AnimationController(vsync: this, duration: Duration(seconds: 8));
     _animationController?.animateTo(0.0);
@@ -35,8 +59,11 @@ class _IntroductionAnimationScreenState
 
   @override
   Widget build(BuildContext context) {
-    print(_animationController?.value);
-    return Scaffold(
+    return FutureBuilder(
+      future: _session,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        if (snapshot.hasData) {
+          return Scaffold(
       backgroundColor: Color(0xffF7EBE1),
       body: ClipRect(
         child: Stack(
@@ -69,7 +96,22 @@ class _IntroductionAnimationScreenState
         ),
       ),
     );
+
+        } else {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text("G-Store ESPRIT"),
+            ),
+            body: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+      },
+    );
   }
+
+
 
   void _onSkipClick() {
     _animationController?.animateTo(0.8,

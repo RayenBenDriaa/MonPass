@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       title: 'Mon Passe',
       routes: {
         "/": (BuildContext context) {
-          return Stats();
+          return IntroductionAnimationScreen();
         },
         "/signin": (BuildContext context) {
           return const Signin();
@@ -91,4 +91,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

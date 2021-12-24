@@ -28,7 +28,7 @@ class _AccueilState extends State<Accueil> {
   late String dateFacture;
   late MaterialAccentColor colorFacture;
 
-  final String _baseUrl = "10.0.2.2:8000";
+  final String _baseUrl = "lencadrant.tn";
 
   late Future<bool> fetchedDocs;
 
@@ -39,7 +39,10 @@ class _AccueilState extends State<Accueil> {
     id=prefs.getString("id")!;
     nomPrenom=prefs.getString("nomPrenom")!;
     //requete GET pour obtenir l'entité CIN d'un user
-    http.Response response= await http.get(Uri.http(_baseUrl, "/cin/showCinJSON/"+id));
+    print("aaaaa");
+    http.Response response= await http.get(Uri.https(_baseUrl, "/cin/showCinJSON/"+id));
+    print("bbbbbbbbb");
+    print(response.body);
     //Si la réponse n'est pas vide
     if(response.body!="null")
       {

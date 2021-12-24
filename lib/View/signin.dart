@@ -17,7 +17,7 @@ class _SigninState extends State<Signin> {
 
   late String? _email;
   late String? _password;
-  final String _baseUrl = "10.0.2.2:8000";
+  final String _baseUrl = "lencadrant.tn";
   late String role;
   late Future<bool> fetchedDocs;
 
@@ -155,9 +155,10 @@ class _SigninState extends State<Signin> {
                                       };
 
 
-
+                                      print("test");
                                       http.get(Uri.http(_baseUrl, '/api/login/${_email}/${_password}') , )
                                           .then((http.Response response) async {
+                                            print(response);
                                         if(response.body=="null" ) {
                                           showDialog(
                                               context: context,
@@ -167,9 +168,11 @@ class _SigninState extends State<Signin> {
                                                   content: Text("Username et/ou mot de passe incorrect"),
                                                 );
                                               });
+                                          print("test N");
                                         }
                                         else {
                                           if (response.statusCode == 200) {
+                                            print("test Y");
                                             Map<String, dynamic> userFromServer = json.decode(response.body);
                                             //saving email to shared prefs
 
@@ -188,10 +191,6 @@ class _SigninState extends State<Signin> {
 
                                               Navigator.pushNamed(context, "/back/stats");
                                             }
-
-
-
-
                                           }
                                           else {
                                             showDialog(
@@ -205,6 +204,8 @@ class _SigninState extends State<Signin> {
                                                 });
                                           }
                                         }});
+
+                                      print("test End");
 
                                     },
                                     style:  ElevatedButton.styleFrom(

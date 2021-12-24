@@ -5,6 +5,7 @@ import 'package:mon_pass/View/backOffice/validation_passeport.dart';
 import 'package:mon_pass/View/frontOffice/ajouter_reclamation.dart';
 import 'package:mon_pass/View/frontOffice/avatar.dart';
 import 'package:mon_pass/View/frontOffice/reclamation_front.dart';
+import 'package:mon_pass/View/loading_page.dart';
 import 'View/backOffice/reclamationBack.dart';
 import 'View/backOffice/stats.dart';
 import 'View/backOffice/validation_cin.dart';
@@ -55,7 +56,7 @@ class MyApp extends StatelessWidget {
       title: 'Mon Passe',
       routes: {
         "/": (BuildContext context) {
-          return  IntroductionAnimationScreen();
+          return  LoadingPage();
         },
         "/signin": (BuildContext context) {
           return const Signin();

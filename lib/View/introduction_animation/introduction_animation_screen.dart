@@ -1,5 +1,3 @@
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'components/care_view.dart';
 import 'components/center_next_button.dart';
 import 'components/mood_diary_vew.dart';
@@ -21,22 +19,8 @@ class _IntroductionAnimationScreenState
     extends State<IntroductionAnimationScreen> with TickerProviderStateMixin {
   AnimationController? _animationController;
 
-  late Future<bool> _session;
-
-  Future<bool> _verifySession() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    if (prefs.containsKey("first")) {
-      Navigator.pushNamed(context, "/signin");
-    } else {}
-
-    return true;
-  }
-
-
   @override
   void initState() {
-    _session = _verifySession();
     _animationController =
         AnimationController(vsync: this, duration: Duration(seconds: 8));
     _animationController?.animateTo(0.0);
@@ -52,58 +36,40 @@ class _IntroductionAnimationScreenState
   @override
   Widget build(BuildContext context) {
     print(_animationController?.value);
-    return FutureBuilder(
-      future: _session,
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if (snapshot.hasData) {
-          return Scaffold(
-            backgroundColor: Color(0xff6DECAF),
-            body: ClipRect(
-              child: Stack(
-                children: [
-                  SplashView(
-                    animationController: _animationController!,
-                  ),
-                  RelaxView(
-                    animationController: _animationController!,
-                  ),
-                  CareView(
-                    animationController: _animationController!,
-                  ),
-                  MoodDiaryVew(
-                    animationController: _animationController!,
-                  ),
-                  WelcomeView(
-                    animationController: _animationController!,
-                  ),
-                  TopBackSkipView(
-                    onBackClick: _onBackClick,
-                    onSkipClick: _onSkipClick,
-                    animationController: _animationController!,
-                  ),
-                  CenterNextButton(
-                    animationController: _animationController!,
-                    onNextClick: _onNextClick,
-                  ),
-                ],
-              ),
+    return Scaffold(
+      backgroundColor: Color(0xff6DECAF),
+      body: ClipRect(
+        child: Stack(
+          children: [
+            SplashView(
+              animationController: _animationController!,
             ),
-          );
-
-        } else {
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text("G-Store ESPRIT"),
+            RelaxView(
+              animationController: _animationController!,
             ),
-            body: const Center(
-              child: CircularProgressIndicator(),
+            CareView(
+              animationController: _animationController!,
             ),
-          );
-        }
-      },
+            MoodDiaryVew(
+              animationController: _animationController!,
+            ),
+            WelcomeView(
+              animationController: _animationController!,
+            ),
+            TopBackSkipView(
+              onBackClick: _onBackClick,
+              onSkipClick: _onSkipClick,
+              animationController: _animationController!,
+            ),
+            CenterNextButton(
+              animationController: _animationController!,
+              onNextClick: _onNextClick,
+            ),
+          ],
+        ),
+      ),
     );
   }
-
 
   void _onSkipClick() {
     _animationController?.animateTo(0.8,

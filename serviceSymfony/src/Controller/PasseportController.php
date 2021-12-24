@@ -73,7 +73,7 @@ class PasseportController extends AbstractController
             $passeport->setDate($timeDate);
             $imageName= $passeport->getIdUser()."PASSEPORT".$_POST['imageName'];
             $image= base64_decode($_POST['image64']);
-            file_put_contents("C:\Users\xmr0j\Documents\Flutter Projects\monpassflutterproject\assets\uploadedImages\\".$imageName,$image);
+            file_put_contents("..\public\uploadedImages\\".$imageName,$image);
             $passeport->setUrlImage($imageName);
             $passeport->setUser($userRepository->findOneBy(['id'=>$_POST['idUser']]));
             $user=$userRepository->findOneBy(['id'=>$_POST['idUser']]);

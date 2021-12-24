@@ -20,7 +20,7 @@ class _StatsState extends State<Stats> {
   late List<UserDataP> _chartDataP;
   late Future<bool> fetchedStat;
   late double countuser, countpass, countcin;
-  final String _baseUrl = "10.0.2.2:8000";
+  final String _baseUrl = "lencadrant.tn";
   late String nomPrenom;
 
   Future<bool> fetcheduser() async {

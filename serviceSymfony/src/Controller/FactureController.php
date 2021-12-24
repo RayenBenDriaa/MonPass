@@ -71,7 +71,7 @@ class FactureController extends AbstractController
             $facture->setDate($timeDate);
             $imageName= $facture->getIdUser()."FACTURE".$_POST['imageName'];
             $image= base64_decode($_POST['image64']);
-            file_put_contents("C:\Users\xmr0j\Documents\Flutter Projects\monpassflutterproject\assets\uploadedImages\\".$imageName,$image);
+            file_put_contents("..\public\uploadedImages\\".$imageName,$image);
             $facture->setUrlImage($imageName);
             $user=$userRepository->findOneBy(['id'=>$_POST['idUser']]);
             $facture->setUser($user);

@@ -20,22 +20,8 @@ class _SigninState extends State<Signin> {
   final String _baseUrl = "lencadrant.tn";
   late String role;
   late Future<bool> fetchedDocs;
-  late Future<bool> _session;
- 
-  
 
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
-   Future<bool> _verifySession() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    // prefs.remove("userId");
-    prefs.setString("first", "no");
-
-    if (prefs.containsKey("nomPrenom")) {
-      Navigator.pushNamed(context, "/accueil");
-    } else {}
-
-    return true;
-  }
   /*Future<bool> fetchUser() async {
     http.Response response= await http.get(Uri.http(_baseUrl,"/api/login/rayenbd63s@gmail.com/12345678")).then((http.Response response) {
       if(response.statusCode == 200) {
@@ -64,21 +50,10 @@ class _SigninState extends State<Signin> {
     });
     return true;
   }*/
-  @override
-  void initState() {
-    // TODO: implement initState
-    _session = _verifySession();
-    super.initState();
-  }
-
 
   @override
   Widget build(BuildContext context) {
     // Figma Flutter Generator PrincipalctaWidget - INSTANCE
-    return FutureBuilder(
-      future: _session,
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if (snapshot.hasData) {
 
     return Container(
       decoration: const BoxDecoration(
@@ -104,7 +79,17 @@ class _SigninState extends State<Signin> {
                                   image: AssetImage("assets/images/logo.png")
                                 ),
                               ),
-                               Container(
+                              // Text('Se Connecter',
+                      //   textAlign: TextAlign.center,
+                      //   style: TextStyle(
+                      //     color: Color(0xff111113),
+                      //     //fontFamily: 'Red Hat Display',
+                      //     fontSize: 27,
+                      //     letterSpacing: 0 /*percentages not used in flutter. defaulting to zero*/,
+                      //     fontWeight: FontWeight.normal,
+                      //     height: 1),
+                      // ),
+                              Container(
                                 margin: const EdgeInsets.fromLTRB(10, 35, 10, 10),
                                 child: TextFormField(
                                   keyboardType: TextInputType.emailAddress,
@@ -170,9 +155,10 @@ class _SigninState extends State<Signin> {
                                       };
 
 
-
+                                      print("test");
                                       http.get(Uri.http(_baseUrl, '/api/login/${_email}/${_password}') , )
                                           .then((http.Response response) async {
+                                            print(response);
                                         if(response.body=="null" ) {
                                           showDialog(
                                               context: context,
@@ -182,9 +168,11 @@ class _SigninState extends State<Signin> {
                                                   content: Text("Username et/ou mot de passe incorrect"),
                                                 );
                                               });
+                                          print("test N");
                                         }
                                         else {
                                           if (response.statusCode == 200) {
+                                            print("test Y");
                                             Map<String, dynamic> userFromServer = json.decode(response.body);
                                             //saving email to shared prefs
 
@@ -203,10 +191,6 @@ class _SigninState extends State<Signin> {
 
                                               Navigator.pushNamed(context, "/back/stats");
                                             }
-
-
-
-
                                           }
                                           else {
                                             showDialog(
@@ -220,6 +204,8 @@ class _SigninState extends State<Signin> {
                                                 });
                                           }
                                         }});
+
+                                      print("test End");
 
                                     },
                                     style:  ElevatedButton.styleFrom(
@@ -249,19 +235,7 @@ class _SigninState extends State<Signin> {
 
 
                             ]))
-                    ]))),
-          );
-        } else {
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text("G-Store ESPRIT"),
-            ),
-            body: const Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-      },
+              ]))),
     );
   }
 }

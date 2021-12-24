@@ -21,7 +21,7 @@ class _ValidationFactureState extends State<ValidationFacture> {
 
   final List<Document> _documents = [];
 
-  final String _baseUrl = "10.0.2.2:8000";
+  final String _baseUrl = "lencadrant.tn";
 
   late Future<bool> fetchedData;
   late String nomPrenom;
@@ -253,7 +253,7 @@ class _ValidationFactureState extends State<ValidationFacture> {
                           content: Container(
                             margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                             child: PinchZoom(
-                              child: Image(image: AssetImage("assets/uploadedImages/"+_documents[index].url_image)),
+                              child: Image.network("http://"+_baseUrl+"/uploadedImages/"+_documents[index].url_image),
                               resetDuration: const Duration(milliseconds: 100),
                               maxScale: 2.5,
                             ),
@@ -329,8 +329,7 @@ class _ValidationFactureState extends State<ValidationFacture> {
                                     child: Container(
                                     ),
                                   ),
-                                  Image(
-                                    image: AssetImage("assets/uploadedImages/"+_documents[index].url_image),
+                                  Image.network("http://"+_baseUrl+"/uploadedImages/"+_documents[index].url_image,
                                     height: 100,
                                     width: 200,),
                                 ],

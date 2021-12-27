@@ -61,6 +61,11 @@ class RequestedData
      */
     private $facture;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $route;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -146,6 +151,18 @@ class RequestedData
     public function setFacture(string $facture): self
     {
         $this->facture = $facture;
+
+        return $this;
+    }
+
+    public function getRoute(): ?string
+    {
+        return $this->route;
+    }
+
+    public function setRoute(string $route): self
+    {
+        $this->route = $route;
 
         return $this;
     }

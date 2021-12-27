@@ -22,6 +22,8 @@ class _SigninWithState extends State<SigninWith> {
   late String id;
   late String email;
   late String nomPrenom;
+  late String uri;
+  late String route;
 
   final String _baseUrl = "lencadrant.tn";
 
@@ -54,6 +56,8 @@ class _SigninWithState extends State<SigninWith> {
       else
       {
         requestData=true;
+        uri=dataRd["fromWho"];
+        route=dataRd["route"];
         String imageCin="null";
         String imagePasseport="null";
         String imageFacture="null";
@@ -70,7 +74,7 @@ class _SigninWithState extends State<SigninWith> {
           imageFacture=dataDocs["imageFacture"];
         }
         var dataDocsPost = {"email" : email,"cin" : imageCin,"passeport" : imagePasseport, "facture" :imageFacture};
-        http.Response responseDocsEdit = await http.post(Uri.http("10.0.2.2:8001", "/editJSON"), body: dataDocsPost);
+        http.Response responseDocsEdit = await http.post(Uri.http(uri, route), body: dataDocsPost);
         if (responseDocsEdit.statusCode==200 || responseDocsEdit.statusCode==201)
         {
           sendData=true;

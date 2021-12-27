@@ -45,6 +45,7 @@ class RequestedDataController extends AbstractController
             $rd = new RequestedData();
             $timeDate = new \DateTime ();
             $rd->setFromWho($request->get('fromWho'));
+            $rd->setRoute($request->get('route'));
             $rd->setApproval("no");
             $rd->setDate($timeDate);
             $rd->setOfWho($request->get('ofWho'));
@@ -68,8 +69,16 @@ class RequestedDataController extends AbstractController
     public function getRdJSON(String $email,Request $request, NormalizerInterface $Normalizer, RequestedDataRepository $repository,EntityManagerInterface $entityManager): Response
     {
         $rd = $repository->findOneBy(['ofWho' => $email, 'approval'=>'no']);
-        $jsonContent=$Normalizer->normalize($rd,'json',['groups'=>'post:read']);
-        return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+        if($rd!=null)
+        {
+            $jsonContent=$Normalizer->normalize($rd,'json',['groups'=>'post:read']);
+            return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+        }
+        else
+        {
+            return new Response("\n Aucune requéte de donnée a éte trouvé à ce nom");
+        }
+
     }
 
     /**
@@ -78,10 +87,18 @@ class RequestedDataController extends AbstractController
     public function showRdJSON(String $email,Request $request, NormalizerInterface $Normalizer, RequestedDataRepository $repository,EntityManagerInterface $entityManager): Response
     {
         $rd = $repository->findOneBy(['ofWho' => $email, 'approval'=>'no']);
-        $jsonContent=$Normalizer->normalize($rd,'json',['groups'=>'post:read']);
-        $rd->setApproval("yes");
-        $entityManager->flush();
-        return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+        if($rd!=null)
+        {
+            $jsonContent=$Normalizer->normalize($rd,'json',['groups'=>'post:read']);
+            $rd->setApproval("yes");
+            $entityManager->flush();
+            return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+        }
+        else
+        {
+            return new Response("\n Aucune requéte de donnée a éte trouvé à ce nom");
+        }
+
     }
 
     /**

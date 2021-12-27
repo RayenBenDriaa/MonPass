@@ -40,11 +40,12 @@ class DummyUserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($dummyUser);
             $entityManager->flush();
-
-
-            $response = $client->request('POST', 'http://127.0.0.1:8000/requested/data/addRdJSON', [
-                'body' => ['fromWho' => 'dummyClient',
-                    'ofWho' => 'rayenbd63s@gmail.com',
+            $uri = $request->getUri();
+            $array=parse_url($uri);
+            $response = $client->request('POST', 'http://lencadrant.tn/requested/data/addRdJSON', [
+                'body' => ['fromWho' => $array['host'].":".$array['port'],
+                    'route'=>'/editJSON',
+                    'ofWho' => $dummyUser->getEmail(),
                     'cin' => 'yes',
                     'passeport' => 'no',
                     'facture' => 'no',]

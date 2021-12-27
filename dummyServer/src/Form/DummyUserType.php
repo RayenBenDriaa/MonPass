@@ -13,7 +13,7 @@ class DummyUserType extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('cin')
+           // ->add('cin')
         ;
     }
 

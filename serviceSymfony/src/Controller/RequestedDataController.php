@@ -63,6 +63,16 @@ class RequestedDataController extends AbstractController
     }
 
     /**
+     * @Route("/getRdJSON/{email}", name="getJSON_show")
+     */
+    public function getRdJSON(String $email,Request $request, NormalizerInterface $Normalizer, RequestedDataRepository $repository,EntityManagerInterface $entityManager): Response
+    {
+        $rd = $repository->findOneBy(['ofWho' => $email, 'approval'=>'no']);
+        $jsonContent=$Normalizer->normalize($rd,'json',['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
+    }
+
+    /**
      * @Route("/showRdJSON/{email}", name="rdJSON_show")
      */
     public function showRdJSON(String $email,Request $request, NormalizerInterface $Normalizer, RequestedDataRepository $repository,EntityManagerInterface $entityManager): Response

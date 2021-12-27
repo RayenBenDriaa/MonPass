@@ -124,6 +124,7 @@ class _ReclamationFrontState extends State<ReclamationFront> {
 
   @override
   Widget build(BuildContext context) {
+    double c_width = (MediaQuery.of(context).size.width)*0.4;
     return FutureBuilder(
         future: fetchedData,
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
@@ -233,7 +234,10 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                         onTap: () async {
                           Navigator.pushNamed(context, "/signin");
                           SharedPreferences prefs = await SharedPreferences.getInstance();
-                          prefs.clear();
+                          prefs.remove("email");
+                          prefs.remove("id");
+                          prefs.remove("nomPrenom");
+                          prefs.remove("role");
                         },
 
                       ),
@@ -278,99 +282,7 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                   ),
                 ),
                 backgroundColor: Colors.transparent,
-                body:
-
-                    // ListView(
-                    //   children: [
-                    //     Container(
-                    //       margin: EdgeInsets.all(10),
-                    //       color: Colors.green,
-                    //       child: ExpansionPanelList(
-                    //         animationDuration: Duration(milliseconds: 500),
-                    //         children: [
-                    //           ExpansionPanel(
-                    //             headerBuilder: (context, isExpanded) {
-                    //               return ListTile(
-                    //                 title: Text(
-                    //                   'Click To Expand',
-                    //                   style: TextStyle(color: Colors.black),
-                    //                 ),
-                    //               );
-                    //             },
-                    //             body: ListTile(
-                    //               title: Text('Description text',
-                    //                   style: TextStyle(color: Colors.black)),
-                    //             ),
-                    //             isExpanded: _expanded,
-                    //             canTapOnHeader: true,
-                    //           ),
-                    //         ],
-                    //         dividerColor: Colors.grey,
-                    //         expansionCallback: (panelIndex, isExpanded) {
-                    //           _expanded = !_expanded;
-                    //           setState(() {});
-                    //         },
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-
-                    // Container(
-                    //   child: Card(
-                    //     margin: EdgeInsets.fromLTRB(5, 10, 5, 10),
-                    //     shape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(15.0),
-                    //     ),
-                    //     child: Column(
-                    //       crossAxisAlignment: CrossAxisAlignment.start,
-                    //       children: [
-                    //         Container(
-                    //           margin: EdgeInsets.fromLTRB(20, 20, 20, 5),
-                    //           child: Row(
-                    //             children: [
-                    //               Text(
-                    //                 // le nom et prenom de la personne qui a envoyé la réclamation
-                    //                   _reclamations[index].user["prenom"] +
-                    //                       " " +
-                    //                       _reclamations[index].user["Nom"],
-                    //                   textScaleFactor: 1.5),
-                    //               Expanded(
-                    //                 child: Container(),
-                    //               ),
-                    //               Text(_reclamations[index].date,
-                    //                   textScaleFactor: 1),
-                    //             ],
-                    //           ),
-                    //         ),
-                    //         const SizedBox(
-                    //           height: 10,
-                    //         ),
-                    //         Container(
-                    //           margin: EdgeInsets.fromLTRB(12, 0, 12, 5),
-                    //           child: Column(
-                    //             crossAxisAlignment: CrossAxisAlignment.start,
-                    //             children: [
-                    //               Text(
-                    //                 //afficher le type de la réclamation
-                    //                   _reclamations[index]
-                    //                       .typeReclamation["typereclamation"],
-                    //                   textScaleFactor: 1.2),
-                    //               const SizedBox(
-                    //                 height: 8,
-                    //               ),
-                    //               Text(
-                    //                 //afficher la description de la reclamation
-                    //                   _reclamations[index].descriptionReclamation,
-                    //                   textScaleFactor: 1),
-                    //             ],
-                    //           ),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // )
-
-                    ListView.builder(
+                body: ListView.builder(
                   scrollDirection: Axis.vertical,
                   //Direction du scroll
                   shrinkWrap: true,
@@ -390,11 +302,14 @@ class _ReclamationFrontState extends State<ReclamationFront> {
                                   SizedBox(
                                     width: 20,
                                   ),
-                                  Text(
-                                      //afficher le type de la réclamation
-                                      _reclamations[index]
-                                          .typeReclamation["typereclamation"],
-                                      textScaleFactor: 1.5),
+                                  Container(
+                                    width : c_width,
+                                    child: Text(
+                                        //afficher le type de la réclamation
+                                        _reclamations[index]
+                                            .typeReclamation["typereclamation"],
+                                        textScaleFactor: 1.5),
+                                  ),
                                   Expanded(
                                     child: Container(),
                                   ),

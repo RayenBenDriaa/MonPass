@@ -109,41 +109,36 @@ class _AjouterReclamationState extends State<AjouterReclamation> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Text("Type de la réclamation :",textScaleFactor: 1.5,
-                                style: TextStyle(
-                                  color : Color(0xff111113),
-                                ),),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              //liste déroulante
-                              DropdownButton<String>(
-                                value: dropdownValue,
-                                icon: const Icon(Icons.arrow_downward),
-                                iconSize: 24,
-                                elevation: 16,
-                                style: const TextStyle(color: Color(0xff00a67c)),
-                                underline: Container(
-                                  height: 2,
-                                  color: Colors.greenAccent,
-                                ),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    //quand la valeur de liste change elle sera assigné au dropdownValue
-                                    dropdownValue = newValue!;
-                                  });
-                                },
-                                //insérer les élements de la list déroulante à partir de la liste récuperer dans le futur
-                                items: _typeReclamations.map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                              )
-                            ],
+                          Text("Type de la réclamation :",textScaleFactor: 1.5,
+                            style: TextStyle(
+                              color : Color(0xff111113),
+                            ),),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          DropdownButton<String>(
+                            value: dropdownValue,
+                            icon: const Icon(Icons.arrow_downward),
+                            iconSize: 24,
+                            elevation: 16,
+                            style: const TextStyle(color: Color(0xff00a67c)),
+                            underline: Container(
+                              height: 2,
+                              color: Colors.greenAccent,
+                            ),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                //quand la valeur de liste change elle sera assigné au dropdownValue
+                                dropdownValue = newValue!;
+                              });
+                            },
+                            //insérer les élements de la list déroulante à partir de la liste récuperer dans le futur
+                            items: _typeReclamations.map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
                           ),
                           SizedBox(
                             height: 20,

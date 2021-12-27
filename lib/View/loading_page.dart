@@ -1,5 +1,7 @@
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
@@ -13,13 +15,34 @@ class LoadingPage extends StatefulWidget {
 class _LoadingPageState extends State<LoadingPage> {
 
   late Future<bool> _session;
+  final String _baseUrl = "lencadrant.tn";
 
   Future<bool> _verifySession() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (prefs.containsKey("first")) {
       if (prefs.containsKey("nomPrenom")) {
-        Navigator.pushNamed(context, "/accueil");
+        String email=prefs.getString("email")!;
+        http.Response responseRd= await http.get(Uri.http(_baseUrl, "/requested/data/getRdJSON/"+email));
+        print(responseRd.body);
+        if(responseRd.statusCode==200)
+          {
+            print(responseRd.body);
+            Map<String,dynamic> dataRd = json.decode(responseRd.body);
+            if(dataRd["approval"].toString()=="no")
+              {
+                Navigator.pushNamed(context, "/signinWith");
+              }
+            else
+              {
+                Navigator.pushNamed(context, "/accueil");
+              }
+
+          }
+        else
+          {
+            Navigator.pushNamed(context, "/accueil");
+          }
       }
       else
         {

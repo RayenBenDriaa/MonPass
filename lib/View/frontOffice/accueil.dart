@@ -32,6 +32,7 @@ class _AccueilState extends State<Accueil> {
 
   late Future<bool> fetchedDocs;
 
+
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future<bool> fetchDocs() async {
@@ -78,7 +79,7 @@ class _AccueilState extends State<Accueil> {
 
 
     //requete GET pour obtenir l'entité Passeport d'un user
-    http.Response responsePasseport= await http.get(Uri.http(_baseUrl, "/passeport/showPasseportJSON/"+id));
+    http.Response responsePasseport= await http.get(Uri.https(_baseUrl, "/passeport/showPasseportJSON/"+id));
     //Si la réponse n'est pas vide
     if(responsePasseport.body!="null")
     {
@@ -112,7 +113,7 @@ class _AccueilState extends State<Accueil> {
     }
 
     //requete GET pour obtenir l'entité Passeport d'un user
-    http.Response responseFacture= await http.get(Uri.http(_baseUrl, "/facture/showFactureJSON/"+id));
+    http.Response responseFacture= await http.get(Uri.https(_baseUrl, "/facture/showFactureJSON/"+id));
     //Si la réponse n'est pas vide
     if(responseFacture.body!="null")
     {
@@ -158,6 +159,7 @@ class _AccueilState extends State<Accueil> {
 
   @override
   Widget build(BuildContext context) {
+    double c_width = (MediaQuery.of(context).size.width-30-40-64)*0.8;
     return FutureBuilder(
       future: fetchedDocs,
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
@@ -267,7 +269,10 @@ class _AccueilState extends State<Accueil> {
                         onTap: () async {
                           Navigator.pushNamed(context, "/signin");
                           SharedPreferences prefs = await SharedPreferences.getInstance();
-                          prefs.clear();
+                          prefs.remove("email");
+                          prefs.remove("id");
+                          prefs.remove("nomPrenom");
+                          prefs.remove("role");
                         },
 
                       ),
@@ -345,10 +350,13 @@ class _AccueilState extends State<Accueil> {
                                   margin: EdgeInsets.fromLTRB(20, 20, 20, 5),
                                   child: Row(
                                     children: [
-                                      const Text("Carte d'identité nationale",
-                                        textScaleFactor: 1.5,
-                                        style: TextStyle(
-                                          color : Color(0xff111113),
+                                      Container(
+                                        width : c_width,
+                                        child: const Text("Carte d'identité nationale",
+                                          textScaleFactor: 1.5,
+                                          style: TextStyle(
+                                            color : Color(0xff111113),
+                                          ),
                                         ),
                                       ),
                                       Expanded(
@@ -404,10 +412,13 @@ class _AccueilState extends State<Accueil> {
                                   margin: EdgeInsets.fromLTRB(20, 20, 20, 5),
                                   child: Row(
                                     children: [
-                                      const Text("Passeport",
-                                          textScaleFactor: 1.5,
-                                        style: TextStyle(
-                                          color : Color(0xff111113),
+                                      Container(
+                                        width: c_width,
+                                        child: const Text("Passeport",
+                                            textScaleFactor: 1.5,
+                                          style: TextStyle(
+                                            color : Color(0xff111113),
+                                          ),
                                         ),
                                       ),
                                       Expanded(
@@ -463,11 +474,14 @@ class _AccueilState extends State<Accueil> {
                                   margin: EdgeInsets.fromLTRB(20, 20, 20, 5),
                                   child: Row(
                                     children: [
-                                      const Text("Facture STEG ou SONEDE",
-                                          textScaleFactor: 1.5,
-                                        style: TextStyle(
-                                          color : Color(0xff111113),
-                                        ),),
+                                      Container(
+                                        width: c_width,
+                                        child: const Text("Facture STEG ou SONEDE",
+                                            textScaleFactor: 1.5,
+                                          style: TextStyle(
+                                            color : Color(0xff111113),
+                                          ),),
+                                      ),
                                       Expanded(
                                         child: Container(
                                         ),

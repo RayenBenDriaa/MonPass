@@ -10,7 +10,6 @@ import 'View/backOffice/reclamationBack.dart';
 import 'View/backOffice/stats.dart';
 import 'View/backOffice/validation_cin.dart';
 import 'View/frontOffice/accueil.dart';
-import 'View/backOffice/back_office.dart';
 import 'View/frontOffice/mon_profil.dart';
 import 'View/frontOffice/signin_with.dart';
 import 'package:mon_pass/View/signin.dart';
@@ -81,9 +80,6 @@ class MyApp extends StatelessWidget {
         },
         "/avatar": (BuildContext context) {
           return  Avatar();
-        },
-        "/back": (BuildContext context) {
-          return const BackOffice();
         },
         "/back/stats": (BuildContext context) {
           return const Stats();

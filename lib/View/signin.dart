@@ -156,7 +156,7 @@ class _SigninState extends State<Signin> {
 
 
                                       print("test");
-                                      http.get(Uri.http(_baseUrl, '/api/login/${_email}/${_password}') , )
+                                      http.get(Uri.https(_baseUrl, '/api/login/${_email}/${_password}') , )
                                           .then((http.Response response) async {
                                             print(response);
                                         if(response.body=="null" ) {

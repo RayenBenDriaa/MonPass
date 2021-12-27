@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 
-import 'document_info.dart';
 
 class ValidationFacture extends StatefulWidget {
   const ValidationFacture({Key? key}) : super(key: key);
@@ -199,7 +198,10 @@ class _ValidationFactureState extends State<ValidationFacture> {
                         onTap: () async {
                           Navigator.pushNamed(context, "/signin");
                           SharedPreferences prefs = await SharedPreferences.getInstance();
-                          prefs.clear();
+                          prefs.remove("email");
+                          prefs.remove("id");
+                          prefs.remove("nomPrenom");
+                          prefs.remove("role");
                         },
                       ),
                     ],

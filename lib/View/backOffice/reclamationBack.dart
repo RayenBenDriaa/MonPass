@@ -214,7 +214,10 @@ class _ReclamationBackState extends State<ReclamationBack> {
                           onTap: () async {
                             Navigator.pushNamed(context, "/signin");
                             SharedPreferences prefs = await SharedPreferences.getInstance();
-                            prefs.clear();
+                            prefs.remove("email");
+                            prefs.remove("id");
+                            prefs.remove("nomPrenom");
+                            prefs.remove("role");
                           },
                         ),
                       ],

@@ -69,6 +69,8 @@ class RequestedDataController extends AbstractController
     public function getRdJSON(String $email,Request $request, NormalizerInterface $Normalizer, RequestedDataRepository $repository,EntityManagerInterface $entityManager): Response
     {
         $rd = $repository->findOneBy(['ofWho' => $email, 'approval'=>'no']);
+        $jsonContent=$Normalizer->normalize($rd,'json',['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent,JSON_UNESCAPED_UNICODE));
         if($rd!=null)
         {
             $jsonContent=$Normalizer->normalize($rd,'json',['groups'=>'post:read']);

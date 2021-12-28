@@ -23,20 +23,31 @@ class _LoadingPageState extends State<LoadingPage> {
     if (prefs.containsKey("first")) {
       if (prefs.containsKey("nomPrenom")) {
         String email=prefs.getString("email")!;
-        http.Response responseRd= await http.get(Uri.http(_baseUrl, "/requested/data/getRdJSON/"+email));
+        http.Response responseRd= await http.get(Uri.http(_baseUrl, "/requested/data/getRequestedDataJSON/"+email));
         print(responseRd.body);
         if(responseRd.statusCode==200)
           {
             print(responseRd.body);
-            Map<String,dynamic> dataRd = json.decode(responseRd.body);
-            if(dataRd["approval"].toString()=="no")
+            if(responseRd.body.toString().trim()!="null")
               {
-                Navigator.pushNamed(context, "/signinWith");
+                print("good");
+                Map<String,dynamic> dataRd = json.decode(responseRd.body);
+                print(dataRd);
+                if(dataRd["approval"].toString()=="no")
+                {
+                  Navigator.pushNamed(context, "/signinWith");
+                }
+                else
+                {
+                  Navigator.pushNamed(context, "/accueil");
+                }
               }
             else
-              {
-                Navigator.pushNamed(context, "/accueil");
-              }
+            {
+              print("not good");
+              Navigator.pushNamed(context, "/accueil");
+            }
+
 
           }
         else

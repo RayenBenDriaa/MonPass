@@ -28,7 +28,7 @@ class UserController extends AbstractController
      */
     public function getDocsById(int $id,Request $request, NormalizerInterface $Normalizer,UserRepository $repository): Response
     {
-        $imageFolder='C:\Users\xmr0j\Documents\Flutter Projects\monpassflutterproject\assets\uploadedImages\\';
+        $imageFolder='lencadrant.tn/uploadedImages/';
         $user = $repository->findOneBy(['id' => $id]);
         if($user==null){
             return new Response("User not found");
@@ -38,7 +38,7 @@ class UserController extends AbstractController
             $imageCin="null";
             if($user->getCin()!=null)
             {
-                if($user->getCin()->getUrlImage()!=null){
+                if($user->getCin()->getUrlImage()!=null && $user->getCin()->getEtat()=="Validé"){
                     $imageCin=$imageFolder.$user->getCin()->getUrlImage();
                 }
             }
@@ -46,7 +46,7 @@ class UserController extends AbstractController
             $imagePasseport="null";
             if($user->getPasseport()!=null)
             {
-                if($user->getPasseport()->getUrlImage()!=null){
+                if($user->getPasseport()->getUrlImage()!=null && $user->getPasseport()->getEtat()=="Validé"){
                     $imagePasseport=$imageFolder.$user->getPasseport()->getUrlImage();
                 }
             }
@@ -54,7 +54,7 @@ class UserController extends AbstractController
             $imageFacture="null";
             if($user->getFacture()!=null)
             {
-                if($user->getFacture()->getUrlImage()!=null){
+                if($user->getFacture()->getUrlImage()!=null && $user->getFacture()->getEtat()=="Validé"){
                     $imageFacture=$imageFolder.$user->getFacture()->getUrlImage();
                 }
             }

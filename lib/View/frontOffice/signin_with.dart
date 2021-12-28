@@ -57,7 +57,8 @@ class _SigninWithState extends State<SigninWith> {
       {
         requestData=true;
         uri=dataRd["fromWho"];
-        route=dataRd["route"];
+        route=dataRd["route"].toString().substring(1);
+        
         String imageCin="null";
         String imagePasseport="null";
         String imageFacture="null";
@@ -74,9 +75,12 @@ class _SigninWithState extends State<SigninWith> {
           imageFacture=dataDocs["imageFacture"];
         }
         var dataDocsPost = {"email" : email,"cin" : imageCin,"passeport" : imagePasseport, "facture" :imageFacture};
+        print("_________________");
         http.Response responseDocsEdit = await http.post(Uri.http(uri, route), body: dataDocsPost);
+        print("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
         if (responseDocsEdit.statusCode==200 || responseDocsEdit.statusCode==201)
         {
+          print(responseDocsEdit.body);
           sendData=true;
         }
         SystemChannels.platform.invokeMethod('SystemNavigator.pop');

@@ -2,7 +2,7 @@
     package="com.example.mon_pass">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="mon_pass"
+        android:label="Mon passe"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

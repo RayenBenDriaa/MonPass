@@ -35,7 +35,7 @@ class _SignupState extends State<Signup> {
               child: ListView(
                   children: [
                     Container(
-                        margin: EdgeInsets.fromLTRB(15, 100, 15, 0),
+                        margin: EdgeInsets.fromLTRB(15, 90, 15, 0),
                         child: Column(
                             children: [
                               Container(
@@ -56,7 +56,7 @@ class _SignupState extends State<Signup> {
                               // ),
 
                               Container(
-                                margin: const EdgeInsets.fromLTRB(10, 35, 10, 10),
+                                margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                                 child: TextFormField(
                                   keyboardType: TextInputType.emailAddress,
                                   decoration: const InputDecoration(
